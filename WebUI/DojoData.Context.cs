@@ -19,7 +19,7 @@ namespace CoderDojo
             : base("name=CoderDojoData")
         {
         }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

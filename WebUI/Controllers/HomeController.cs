@@ -20,14 +20,45 @@ namespace CoderDojo.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            var quinn = db.Members.First(m => m.FirstName == "Quinn");
-            quinn.PasswordHash = db.GeneratePasswordHash("robot");
-            var molly = db.Members.First(m => m.FirstName == "Molly");
-            molly.PasswordHash = db.GeneratePasswordHash("princess");
-            var brian = db.Adults.First(a => a.FirstName == "Brian");
-            brian.PasswordHash = db.GeneratePasswordHash("princess");
-            db.SaveChanges();
+            /* todo - delete this
+            Member quinn = new Member
+            {
+                FirstName = "Quinn",
+                LastName = "Painter",
+                BirthYear = 2002,
+                ScratchName = "quinnpainter",
+                XboxGamertag = "quinnbot1",
+                Login = "QuinnP",
+                GithubLogin = "QuinnPainter",
+                PasswordHash = db.GeneratePasswordHash("robot")
+            };
+            db.Members.Add(quinn);
 
+            Member molly = new Member
+{
+    FirstName = "Molly",
+    LastName = "Painter",
+    BirthYear = 2005,
+    ScratchName = "mallaidh",
+    XboxGamertag = "mallaidh",
+    Login = "MollyP",
+    PasswordHash = db.GeneratePasswordHash("princess")
+};
+            db.Members.Add(molly);
+
+            Adult russ = new Adult
+            {
+                FirstName="Russ", LastName="Painter", IsMentor=true, IsParent=true, Phone="0879969992", PasswordHash=db.GeneratePasswordHash("beer"), GithubLogin="geekymonkey", Email="russ@geekymonkey.com", Login="RussPainter", XboxGamertag="GeekyMonkey8"
+            };
+            db.Adults.Add(russ);
+
+            Adult brian = new Adult
+            {
+                FirstName="Brian", LastName="Moore", IsParent=true, Login="BrianMoore", PasswordHash=db.GeneratePasswordHash("princess")
+            };
+
+            db.SaveChanges();
+            */
             return View("Login");
         }
 
