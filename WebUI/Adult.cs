@@ -16,6 +16,7 @@ namespace CoderDojo
     {
         public Adult()
         {
+            this.Deleted = false;
             this.MemberBadges = new HashSet<MemberBadge>();
             this.MemberBelts = new HashSet<MemberBelt>();
             this.MemberParents = new HashSet<MemberParent>();
@@ -32,6 +33,7 @@ namespace CoderDojo
         public string PasswordHash { get; set; }
         public string GithubLogin { get; set; }
         public string XboxGamertag { get; set; }
+        public bool Deleted { get; set; }
     
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }
         public virtual ICollection<MemberBelt> MemberBelts { get; set; }
