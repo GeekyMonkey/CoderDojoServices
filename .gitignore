@@ -3,6 +3,7 @@ bin
 obj
 
 *.suo
+thumbs.db
 
 # mstest test results
 TestResults
