@@ -1,0 +1,16 @@
+﻿@model Member
+@{
+    string activePage = ViewBag.MenuActive;
+    string activeClass = "ui-btn-active ui-state-persist";
+    string inactiveClass = "";
+    string memberId = Model.Id.ToString("N");
+}
+
+<div data-role="navbar">
+    <ul>
+        <li><a href="/Mentor/Member/@memberId" class="@(activePage == "Details" ? activeClass : inactiveClass)">Details</a></li>
+        <li><a href="/Mentor/MemberParents/@memberId" class="@(activePage == "Parents" ? activeClass : inactiveClass)">Parents</a></li>
+        <li><a href="/Mentor/MemberBadges/@memberId" class="@(activePage == "Badges" ? activeClass : inactiveClass)">Badges</a></li>
+        <li><a href="/Mentor/MemberAttendance/@memberId" class="@(activePage == "Attendance" ? activeClass : inactiveClass)">Attendance</a></li>
+    </ul>
+</div>

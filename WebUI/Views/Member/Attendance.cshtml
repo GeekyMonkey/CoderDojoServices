@@ -1,0 +1,24 @@
+﻿@model Member
+@{
+    Member member = Model;
+    ViewBag.Title = "Welcome " + member.FirstName;
+    int sessionCount = member.MemberAttendances.Count();
+    ViewBag.MenuActive = "Attendance";
+}
+
+@section Footer
+{
+    @Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
+}
+
+@Html.Partial("_MemberMenu")
+
+<div data-role="content">
+    <h2>Total sessions attended: @(sessionCount)</h2>
+    <h2>Dates</h2>
+    <ul>
+        @foreach(var ma in member.MemberAttendances) {
+            <li>@ma.Date.ToString("dd MMM yyyy")</li>
+        }
+    </ul>
+</div>

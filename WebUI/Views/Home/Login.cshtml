@@ -1,15 +1,20 @@
-﻿@{
-    ViewBag.Title = "Login";
+﻿@model CoderDojo.LoginModel
+@{
+    ViewBag.Title = "Ennis Coder Dojo Login";
 }
-
 
 @using (Html.BeginForm("Login", "Home")) {
     <label for="UsernameInput">User</label>
-    @Html.TextBox("UsernameInput")
+    @Html.TextBoxFor(x => x.Username)
     
     <label for="PassowrdInput">Password</label>
-    @Html.Password("PasswordInput")
+    @Html.PasswordFor(x => x.Password)
+
+   <label for="Remember">Remember Me</label>
+    @Html.CheckBoxFor(x => x.Remember)
     
     <div class="validation-summary-errors">@ViewBag.ValidationMessage</div>
-    <input type="submit" value="Login" />
+    <input type="submit" id="LoginButton" value="Login" data-icon="check" />
+    
+    @Html.AntiForgeryToken()
 }

@@ -1,0 +1,17 @@
+﻿.Controller_Mentor.Action_Attendance .ui-li-static
+{
+    padding: 0px;
+}
+.Controller_Mentor.Action_Attendance .ui-li-static label
+{
+    margin: 0px;
+}
+.Controller_Mentor.Action_Attendance .ui-li-static label > span
+{
+    margin: 0px;
+}
+.Controller_Mentor.Action_Attendance .ui-checkbox,
+.Controller_Mentor.Action_Attendance .ui-btn-corner-all
+{
+    border-radius: 0px;
+}

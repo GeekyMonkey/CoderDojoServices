@@ -1,0 +1,54 @@
+﻿@model MemberSignupModel
+@{
+    ViewBag.Title = "Member Signup ";
+    MemberSignupModel member = Model;
+    int defaultYear = 2000;
+    var years = Enumerable.Range(DateTime.Today.Year - 20, 18).Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString(), Selected = (y == defaultYear) });
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Cancel</a>
+}
+@section HeaderRight {
+    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@using (Html.BeginForm("MemberSignupSave", "Mentor"))
+{
+    @Html.HiddenFor(m => m.Mode)
+
+    <fieldset data-role="controlgroup">
+        <label for="FirstName">First Name</label>
+        @Html.TextBoxFor(m => m.FirstName)
+
+        <label for="LastName">Last Name</label>
+        @Html.TextBoxFor(m => m.LastName)
+
+        <label>Birth Year</label>
+        @Html.DropDownListFor(m => m.BirthYear, years)
+    </fieldset>
+}
+
+
+<script type="text/javascript">
+    (function ($) {
+        $("form").validate({
+            //submitHandler: function (form) {
+            //    $("form").submit();
+            // }
+        });
+
+
+        $("#SaveButton").click(function () {
+            $("form").submit();
+            /*
+            $.ajax("MemberSignup", {
+                type: "POST",
+                data: {
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("LastName").val()
+                }
+            });*/
+        })
+    })(jQuery);
+ </script>

@@ -1,9 +1,20 @@
-﻿@{
-    ViewBag.Title = "Welcome Mentor";
+﻿@model Adult
+@{
+    Adult mentor = Model;
+    ViewBag.Title = "Mentor: " + mentor.FirstName;
 }
 
-<a data-role="button" href="Attendance">Attendance</a>
-<a data-role="button" href="Members">Members</a>
-<a data-role="button" href="Parents">Parents</a>
-<a data-role="button" href="LogOut">Log Out</a>
+@Html.ActionLink("Attendance", "Attendance", "Mentor", null, new { data_role="button"})
+@Html.ActionLink("Members", "Members", "Mentor", null, new { data_role="button"})
+@Html.ActionLink("Parents", "Parents", "Mentor", null, new { data_role="button"})
+@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { data_role="button"})
+@Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
 
+
+@section Footer
+{
+    @if (mentor.IsParent)
+    {
+        @Html.ActionLink("Parent Mode", "Index", "Parent", null, new { data_role = "button" })
+    }
+}

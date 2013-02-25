@@ -5,22 +5,39 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Security.Cryptography;
+using System.Web.Security;
+using System.Web.WebPages;
 
 namespace CoderDojo.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        CoderDojoData db = new CoderDojoData();
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
+            var member = GetCurrentMember();
+            if (member != null)
+            {
+                return RedirectToAction(actionName: "Index", controllerName: "Member");
+            }
+            var adult = GetCurrentAdult();
+            if (adult != null)
+            {
+                if (adult.IsMentor)
+                {
+                    return RedirectToAction(actionName: "Index", controllerName: "Mentor");
+                }
+                return RedirectToAction(actionName: "Index", controllerName: "Parent");
+            }
             return Login();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login()
         {
-            /* todo - delete this
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+    /* todo - delete this
             Member quinn = new Member
             {
                 FirstName = "Quinn",
@@ -59,15 +76,26 @@ namespace CoderDojo.Controllers
 
             db.SaveChanges();
             */
-            return View("Login");
+            LoginModel loginModel = new LoginModel();
+            return View("Login", loginModel);
         }
 
         [HttpPost]
-        public ActionResult Login(string UsernameInput = null, string PasswordInput = null)
+        [AllowAnonymous]
+        // [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModel loginModel)
         {
-            string passwordHash = db.GeneratePasswordHash(PasswordInput);
-            var adult = db.Adults.FirstOrDefault(a => a.Login == UsernameInput && a.PasswordHash == passwordHash);
-            var member = db.Members.FirstOrDefault(m => m.Login == UsernameInput && m.PasswordHash == passwordHash);
+            /* Emergency password reset
+            var me = db.Adults.FirstOrDefault(a => a.Login == "RussPainter");
+            me.PasswordHash = db.GeneratePasswordHash("--newpassword--");
+            db.SaveChanges();
+            */
+
+            string passwordHash = db.GeneratePasswordHash(loginModel.Password);
+            var adult = db.Adults.FirstOrDefault(a => a.Login == loginModel.Username && a.PasswordHash == passwordHash && a.Deleted == false);
+            var member = db.Members.FirstOrDefault(m => m.Login == loginModel.Username && m.PasswordHash == passwordHash && m.Deleted == false);
+            Guid userId;
+            UserRoles role;
 
             if (adult == null && member == null)
             {
@@ -77,19 +105,35 @@ namespace CoderDojo.Controllers
 
             if (adult != null)
             {
+                userId = adult.Id;
                 if (adult.IsMentor)
                 {
-                    return RedirectToAction("Index", "Mentor");
+                    role = UserRoles.Mentor;
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Parent");
+                    role = UserRoles.Parent;
                 }
             }
             else
             {
-                return RedirectToAction("Index", "Member");
+                userId = member.Id;
+                role = UserRoles.Member;
             }
+
+            HttpCookie cookie = FormsAuthentication.GetAuthCookie(role + "|" + userId.ToString(""), loginModel.Remember);
+            cookie.Path = "/";
+            Response.Cookies.Add(cookie);
+
+            return RedirectToAction("Index", role.ToString());
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return Login();
         }
     }
 }

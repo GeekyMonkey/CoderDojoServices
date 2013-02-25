@@ -16,6 +16,7 @@ namespace CoderDojo
     {
         public Member()
         {
+            this.Deleted = false;
             this.MemberAttendances = new HashSet<MemberAttendance>();
             this.MemberBadges = new HashSet<MemberBadge>();
             this.MemberBelts = new HashSet<MemberBelt>();
@@ -31,6 +32,7 @@ namespace CoderDojo
         public string Login { get; set; }
         public string PasswordHash { get; set; }
         public string GithubLogin { get; set; }
+        public bool Deleted { get; set; }
     
         public virtual ICollection<MemberAttendance> MemberAttendances { get; set; }
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }

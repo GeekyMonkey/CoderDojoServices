@@ -1,9 +1,9 @@
-﻿@{
-    ViewBag.Title = "Welcome Member";
+﻿@model Member
+@{
+    Member member = Model;
+    ViewBag.Title = "Welcome " + member.FirstName;
 }
 
 <a data-role="button" href="Profile">My Profile</a>
 <a data-role="button" href="Badges">Badges</a>
 <a data-role="button" href="Belts">Belts</a>
-<a data-role="button" href="LogOut">Log Out</a>
-

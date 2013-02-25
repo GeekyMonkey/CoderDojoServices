@@ -1,0 +1,87 @@
+﻿@model CoderDojo.Member
+@{
+    CoderDojo.Member member = Model;
+    ViewBag.Title = member.MemberName;
+    int defaultYear = 2000;
+    var years = Enumerable.Range(DateTime.Today.Year - 20, 18).Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString(), Selected = (y == defaultYear) });
+    ViewBag.MenuActive = "Details";
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+@section HeaderRight {
+    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@Html.Partial("_MemberMenu")
+
+
+<div data-role="content">
+@using (Html.BeginForm("MemberSave", "Mentor"))
+{
+        @Html.HiddenFor(m => m.Id)
+
+        <label for="FirstName">First Name</label>
+        @Html.TextBoxFor(m => m.FirstName)
+
+        <label for="LastName">Last Name</label>
+        @Html.TextBoxFor(m => m.LastName)
+
+        <label>Birth Year</label>
+        @Html.DropDownListFor(m => m.BirthYear, years)
+
+        <h1>Memberships</h1>
+
+        <fieldset role="controlgroup">
+            <div data-role="collapsible-set" data-corners="false" data-inset="true">
+                <div data-role="collapsible">
+                    <h3>Coder Dojo</h3>
+                    <label for="Login">Login</label>
+                    @Html.TextBoxFor(m => m.Login)
+                    <label for="NewPassword">New Password</label>
+                    @Html.PasswordFor(m => m.NewPassword)
+                </div>
+                <div data-role="collapsible">
+                    <h3>GitHub</h3>
+                    <label for="GithubLogin">GitHub Login</label>
+                    @Html.TextBoxFor(m => m.GithubLogin)
+                </div>
+                <div data-role="collapsible">
+                    <h3>Scratch</h3>
+                    <label for="ScratchName">Scratch Name</label>
+                    @Html.TextBoxFor(m => m.ScratchName)
+                </div>
+                <div data-role="collapsible">
+                    <h3>XBox</h3>
+                    <label for="XboxGamertag">XBox Gamertag</label>
+                    @Html.TextBoxFor(m => m.XboxGamertag)
+                </div>
+            </div>
+        </fieldset>
+}
+
+
+<script type="text/javascript">
+    (function ($) {
+        $("form").validate({
+            //submitHandler: function (form) {
+            //    $("form").submit();
+            // }
+        });
+
+
+        $("#SaveButton").click(function () {
+            $("form").submit();
+            /*
+            $.ajax("MemberSignup", {
+                type: "POST",
+                data: {
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("LastName").val()
+                }
+            });*/
+        })
+    })(jQuery);
+ </script>
+</div>

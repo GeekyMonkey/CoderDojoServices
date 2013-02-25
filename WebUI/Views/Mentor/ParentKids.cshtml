@@ -1,0 +1,20 @@
+﻿@model CoderDojo.Adult
+@{
+    CoderDojo.Adult adult = Model;
+    ViewBag.Title = adult.FullName;
+    ViewBag.MenuActive = "Kids";
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+@section HeaderRight {
+    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@Html.Partial("_ParentMenu")
+
+
+<div data-role="content">
+    <h1>Kids page coming soon.</h1>
+</div>

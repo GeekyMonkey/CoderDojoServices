@@ -66,6 +66,7 @@
           <Property Name="PasswordHash" Type="nvarchar" MaxLength="50" />
           <Property Name="GithubLogin" Type="nvarchar" MaxLength="50" />
           <Property Name="XboxGamertag" Type="nvarchar" MaxLength="50" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Badges">
           <Key>
@@ -132,6 +133,7 @@
           <Property Name="Login" Type="nvarchar" MaxLength="50" />
           <Property Name="PasswordHash" Type="nvarchar" MaxLength="50" />
           <Property Name="GithubLogin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_MemberAttendance_Membe">
           <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
@@ -323,6 +325,7 @@
           <NavigationProperty Name="MemberBadges" Relationship="CoderDojo.FK_MemberBadges_Adult" FromRole="Adults" ToRole="MemberBadges" />
           <NavigationProperty Name="MemberBelts" Relationship="CoderDojo.FK_MemberBelts_Adult" FromRole="Adults" ToRole="MemberBelts" />
           <NavigationProperty Name="MemberParents" Relationship="CoderDojo.FK_MemberParent_Adult" FromRole="Adult" ToRole="MemberParent" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -394,6 +397,7 @@
           <NavigationProperty Name="MemberBadges" Relationship="CoderDojo.FK_MemberBadges_Member" FromRole="Members" ToRole="MemberBadges" />
           <NavigationProperty Name="MemberBelts" Relationship="CoderDojo.FK_MemberBelts_Member" FromRole="Members" ToRole="MemberBelts" />
           <NavigationProperty Name="MemberParents" Relationship="CoderDojo.FK_MemberParent_Member" FromRole="Member" ToRole="MemberParent" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
         </EntityType>
         <Association Name="FK_MemberBadges_Adult">
           <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="0..1" />
@@ -547,6 +551,7 @@
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="GithubLogin" ColumnName="GithubLogin" />
                 <ScalarProperty Name="XboxGamertag" ColumnName="XboxGamertag" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -611,6 +616,7 @@
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="GithubLogin" ColumnName="GithubLogin" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

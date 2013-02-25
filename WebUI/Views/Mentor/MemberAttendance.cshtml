@@ -1,0 +1,27 @@
+﻿@model CoderDojo.Member
+@{
+    CoderDojo.Member member = Model;
+    ViewBag.Title = member.MemberName;
+    ViewBag.MenuActive = "Attendance";
+    int sessionCount = member.MemberAttendances.Count();
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+@section HeaderRight {
+    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@Html.Partial("_MemberMenu")
+
+
+<div data-role="content">
+    <h2>Total sessions attended: @(sessionCount)</h2>
+    <h2>Dates</h2>
+    <ul>
+        @foreach(var ma in member.MemberAttendances) {
+            <li>@ma.Date.ToString("dd MMM yyyy")</li>
+        }
+    </ul>
+</div>

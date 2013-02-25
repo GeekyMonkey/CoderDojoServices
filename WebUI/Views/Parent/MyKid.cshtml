@@ -1,0 +1,13 @@
+﻿@model CoderDojo.Member
+@{
+    CoderDojo.Member member = Model;
+    ViewBag.Title = member.MemberName;
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+
+<div data-role="content">
+    <label>Birth Year: @member.BirthYear</label>
+</div>

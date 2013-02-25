@@ -5,9 +5,9 @@ using System.Web;
 
 namespace CoderDojo
 {
-    public partial class Member : BaseEntity
+    public partial class Adult : BaseEntity
     {
-        public string MemberName
+        public string FullName
         {
             get
             {
@@ -20,5 +20,6 @@ namespace CoderDojo
             get;
             set;
         }
+
     }
 }

@@ -1,0 +1,43 @@
+﻿@model Member
+@{
+    Member member = Model;
+    ViewBag.Title = "Welcome " + member.FirstName;
+    ViewBag.MenuActive = "Profile";
+}
+
+@section Footer
+{
+    @Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
+}
+
+@Html.Partial("_MemberMenu")
+
+<h3>Name: @(member.MemberName)</h3>
+<h3>Birth Year: @member.BirthYear</h3>
+
+<h2>Memberships</h2>
+
+<fieldset role="controlgroup">
+    <div data-role="collapsible-set" data-corners="true" data-inset="true">
+        <div data-role="collapsible">
+            <h3>Coder Dojo</h3>
+            <label for="Login">Login</label>
+            @Html.TextBoxFor(m => m.Login, new { disabled = "disabled" })
+        </div>
+        <div data-role="collapsible">
+            <h3>GitHub</h3>
+            <label for="GithubLogin">GitHub Login</label>
+            @Html.TextBoxFor(m => m.GithubLogin)
+        </div>
+        <div data-role="collapsible">
+            <h3>Scratch</h3>
+            <label for="ScratchName">Scratch Name</label>
+            @Html.TextBoxFor(m => m.ScratchName)
+        </div>
+        <div data-role="collapsible">
+            <h3>XBox</h3>
+            <label for="XboxGamertag">XBox Gamertag</label>
+            @Html.TextBoxFor(m => m.XboxGamertag)
+        </div>
+    </div>
+</fieldset>

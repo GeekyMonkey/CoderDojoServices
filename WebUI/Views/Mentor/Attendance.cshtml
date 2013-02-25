@@ -1,0 +1,42 @@
+﻿@model List<CoderDojo.AttendanceModel>
+@{
+    ViewBag.Title = "Attendance " + DateTime.Today.ToString("d MMM");
+    List<CoderDojo.AttendanceModel> attendance = Model;
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+@section HeaderRight {
+    <a href="MemberSignup?Mode=Attendance" data-role="button" data-icon="plus">Signup</a>
+}
+
+@using (Html.BeginForm("Attendance", "Member")) {
+		<ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search members..." data-filter-theme="a">
+        @foreach (CoderDojo.AttendanceModel a in attendance)
+        {
+            string memId = a.MemberId.ToString("N");
+            <li class="ui-corner-none">
+                <input type="checkbox" id="P@(memId)" class="custom ui-corner-none"
+                @if (a.Present) { <text>checked="checked"</text> } />
+                <label for="P@(memId)">@a.MemberName</label>
+            </li>
+        }
+        </ul>
+}
+
+<script type="text/javascript">
+    (function ($) {
+        $(":checkbox").change(function () {
+            var checkbox = $(this);
+            var checked = checkbox.is(':checked');
+            $.ajax("AttendanceChange", {
+                type: "POST",
+                data: {
+                    memberId: checkbox.attr("id").substr(1),
+                    present: checked
+                }
+            });
+        })
+    })(jQuery);
+</script>

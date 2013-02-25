@@ -43,7 +43,6 @@ namespace CoderDojo.Controllers
 
         //
         // POST: /Adult/Create
-
         [HttpPost]
         public ActionResult Create(Adult adult)
         {
@@ -60,7 +59,6 @@ namespace CoderDojo.Controllers
 
         //
         // GET: /Adult/Edit/5
-
         public ActionResult Edit(Guid id)
         {
             Adult adult = db.Adults.Find(id);
@@ -73,7 +71,6 @@ namespace CoderDojo.Controllers
 
         //
         // POST: /Adult/Edit/5
-
         [HttpPost]
         public ActionResult Edit(Adult adult)
         {

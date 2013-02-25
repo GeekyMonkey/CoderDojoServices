@@ -1,0 +1,59 @@
+﻿@model CoderDojo.Adult
+@{
+    CoderDojo.Adult parent = Model;
+    ViewBag.Title = parent.FullName;
+}
+
+@section HeaderLeft {
+    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+}
+@section HeaderRight {
+    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@using (Html.BeginForm("MyAccountSave", "Parent"))
+{
+    <fieldset data-role="controlgroup">
+
+        @Html.HiddenFor(m => m.Id)
+
+        <label for="FirstName">First Name</label>
+        @Html.TextBoxFor(m => m.FirstName)
+
+        <label for="LastName">Last Name</label>
+        @Html.TextBoxFor(m => m.LastName)
+
+        <label for="LastName">Email</label>
+        @Html.TextBoxFor(m => m.Email)
+
+        <label for="LastName">Phone</label>
+        @Html.TextBoxFor(m => m.Phone)
+
+        <label for="Password">New Password</label>
+        @Html.PasswordFor(m => m.NewPassword)
+    </fieldset>
+}
+
+
+<script type="text/javascript">
+    (function ($) {
+        $("form").validate({
+            //submitHandler: function (form) {
+            //    $("form").submit();
+            // }
+        });
+
+
+        $("#SaveButton").click(function () {
+            $("form").submit();
+            /*
+            $.ajax("MemberSignup", {
+                type: "POST",
+                data: {
+                    FirstName: $("#FirstName").val(),
+                    LastName: $("LastName").val()
+                }
+            });*/
+        })
+    })(jQuery);
+ </script>
