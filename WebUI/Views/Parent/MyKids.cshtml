@@ -1,21 +1,37 @@
-﻿@model List<CoderDojo.Member>
+﻿@model IEnumerable<CoderDojo.Member>
 @{
     ViewBag.Title = "My Kids ";
-    List<CoderDojo.Member> members = Model;
+    IEnumerable<CoderDojo.Member> members = Model;
+    ViewBag.MenuActive = "MyKids";
 }
 
-@section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+@section HeaderLeft
+{
 }
 
-<div data-role="content">
-	<div class="content-primary">
-		<ul data-role="listview" data-autodividers="true">
-        @foreach (CoderDojo.Member m in members)
-        {
-            string memId = m.Id.ToString("N");
-            <li><a href="MyKid/@(memId)">@m.MemberName</a></li>
-        }
-        </ul>
-    </div>
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_ParentMenu")
+}
+
+<div class="content-primary">
+	<ul data-role="listview" data-autodividers="false">
+    @foreach (CoderDojo.Member m in members)
+    {
+        string memId = m.Id.ToString("N");
+        <li><a href="MyKid/@(memId)">@m.MemberName</a></li>
+    }
+    </ul>
+    @if (members.Count() == 0)
+    {
+        <p>Talk to a mentor about linking your account with your kids.</p>
+    }
 </div>

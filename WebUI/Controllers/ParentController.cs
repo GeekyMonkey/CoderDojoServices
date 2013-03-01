@@ -70,7 +70,7 @@ namespace CoderDojo.Views
             adult.Phone = adultChanges.Phone;
             db.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectClient("/Parent/MyAccount");
         }
     }
 }

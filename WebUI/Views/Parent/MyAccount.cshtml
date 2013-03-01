@@ -2,14 +2,27 @@
 @{
     CoderDojo.Adult parent = Model;
     ViewBag.Title = parent.FullName;
+    ViewBag.MenuActive = "MyAccount";
 }
 
-@section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+@section HeaderLeft
+{
 }
-@section HeaderRight {
-    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+
+@section HeaderRight
+{
 }
+
+@section Footer
+{
+    <a data-role="button" data-icon="check" class="FormSave">Save</a>
+}
+
+@section Panels
+{
+    @Html.Partial("_ParentMenu")
+}
+
 
 @using (Html.BeginForm("MyAccountSave", "Parent"))
 {
@@ -33,27 +46,3 @@
         @Html.PasswordFor(m => m.NewPassword)
     </fieldset>
 }
-
-
-<script type="text/javascript">
-    (function ($) {
-        $("form").validate({
-            //submitHandler: function (form) {
-            //    $("form").submit();
-            // }
-        });
-
-
-        $("#SaveButton").click(function () {
-            $("form").submit();
-            /*
-            $.ajax("MemberSignup", {
-                type: "POST",
-                data: {
-                    FirstName: $("#FirstName").val(),
-                    LastName: $("LastName").val()
-                }
-            });*/
-        })
-    })(jQuery);
- </script>

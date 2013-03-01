@@ -4,9 +4,13 @@
     ViewBag.Title = "Parent: " + parent.FirstName;
 }
 
-@Html.ActionLink("My Kids", "MyKids", "Parent", null, new { data_role="button"})
-@Html.ActionLink("My Account", "MyAccount", "Parent", null, new { data_role="button"})
-@Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
+@section HeaderLeft
+{
+}
+
+@section HeaderRight
+{
+}
 
 @section Footer
 {
@@ -14,3 +18,11 @@
         @Html.ActionLink("Mentor Mode", "Index", "Mentor", null, new { data_role="button"});
     }
 }
+
+@section Panels
+{
+    @Html.Partial("_ParentMenu")
+}
+
+<p>Use the menu at the top left to navigate to other parent functions.</p>
+<p>In the future, you will see news and status updates appear here.</p>

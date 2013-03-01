@@ -335,6 +335,7 @@
     <Content Include="Views\Member\Belts.cshtml" />
     <Content Include="Views\Mentor\_MentorMenu.cshtml" />
     <Content Include="Views\Shared\Redirect.cshtml" />
+    <Content Include="Views\Parent\_ParentMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Icons\" />
