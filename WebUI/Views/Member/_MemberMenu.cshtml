@@ -6,11 +6,20 @@
     string memberId = Model.Id.ToString("N");
 }
 
-<div data-role="navbar">
-    <ul>
+<div data-role="panel" data-postion-fixed="true" id="LeftMenu" data-theme="a" class="nav-search">
+        
+    <div data-role="controlgroup" data-type="horizontal" id="PanelClose">
+        <a href="#" data-rel="close" data-role="button" data-icon="arrow-l">Close Menu</a>
+    </div>
+
+    <ul data-role="listview" data-inset="true">
         <li><a href="/Member/Profile" class="@(activePage == "Profile" ? activeClass : inactiveClass)">Profile</a></li>
         <li><a href="/Member/Badges" class="@(activePage == "Badges" ? activeClass : inactiveClass)">Badges</a></li>
         <li><a href="/Member/Belts" class="@(activePage == "Belts" ? activeClass : inactiveClass)">Belts</a></li>
         <li><a href="/Member/Attendance" class="@(activePage == "Attendance" ? activeClass : inactiveClass)">Attendance</a></li>
     </ul>
+
+    <div data-role="controlgroup" data-type="horizontal">
+        <a href="/Home/LogOut" data-icon="delete" data-role="button">Log Out</a>
+    </div>
 </div>

@@ -1,6 +1,11 @@
 ﻿@model CoderDojo.LoginModel
 @{
     ViewBag.Title = "Ennis Coder Dojo Login";
+    ViewBag.HideMenuButton = true;
+}
+
+@section HeaderLeft
+{
 }
 
 @using (Html.BeginForm("Login", "Home")) {

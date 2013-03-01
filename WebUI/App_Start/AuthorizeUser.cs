@@ -13,8 +13,14 @@ namespace CoderDojo
         {
             if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary(new { controller = "Home", action = "Login" }));
+                //filterContext.Result = new RedirectToRouteResult(
+                //    new RouteValueDictionary(new { controller = "Home", action = "Login" }));
+
+                ViewResult result = new ViewResult {
+                    ViewName = "Redirect",
+                };
+                result.ViewData.Model = "/Home/Login";
+                filterContext.Result = result;
             }
         }
 

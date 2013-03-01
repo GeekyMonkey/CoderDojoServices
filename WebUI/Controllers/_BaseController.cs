@@ -44,5 +44,22 @@ namespace CoderDojo
                 return currentUserId;
             }
         }
+
+        /// <summary>
+        /// Before action
+        /// </summary>
+        /// <param name="filterContext"></param>
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            // Set defaults
+            ViewBag.HideMenuButton = false;
+
+            base.OnActionExecuting(filterContext);
+        }
+
+        public ActionResult RedirectClient(string url)
+        {
+            return View("Redirect", model: url);
+        }
     }
 }

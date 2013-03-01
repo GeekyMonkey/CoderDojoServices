@@ -3,6 +3,7 @@ using System.Web.WebPages;
 
 namespace CoderDojo.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ViewSwitcherController : Controller
     {
         public RedirectResult SwitchView(bool mobile, string returnUrl)

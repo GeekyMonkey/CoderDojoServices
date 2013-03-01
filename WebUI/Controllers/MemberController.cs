@@ -8,6 +8,7 @@ using System.Web.Security;
 namespace CoderDojo.Views
 {
     [AuthorizeMember]
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class MemberController : BaseController
     {
         //
@@ -15,7 +16,7 @@ namespace CoderDojo.Views
         public ActionResult Index()
         {
             Member member = GetCurrentMember();
-            return View("Profile", member);
+            return View("Index", member);
         }
 
         [HttpGet]
@@ -23,6 +24,17 @@ namespace CoderDojo.Views
         {
             Member member = GetCurrentMember();
             return View("Profile", member);
+        }
+
+        [HttpPost]
+        public ActionResult ProfileSave(Member memberChanges)
+        {
+            Member member = GetCurrentMember();
+            member.GithubLogin = memberChanges.GithubLogin;
+            member.XboxGamertag = memberChanges.XboxGamertag;
+            member.ScratchName = memberChanges.ScratchName;
+            db.SaveChanges();
+            return RedirectClient("/Member/Profile");
         }
 
         [HttpGet]

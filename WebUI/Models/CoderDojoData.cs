@@ -18,7 +18,7 @@ namespace CoderDojo
         {
             MD5 encryptor = MD5.Create();
             ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] bytes = encoding.GetBytes(password);
+            byte[] bytes = encoding.GetBytes(password ?? string.Empty);
             string passwordHash = Encoding.UTF8.GetString(encryptor.ComputeHash(bytes));
             return passwordHash;
         }

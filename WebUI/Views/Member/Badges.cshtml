@@ -5,11 +5,21 @@
     ViewBag.MenuActive = "Badges";
 }
 
-@section Footer
+@section HeaderLeft
 {
-    @Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
 }
 
-@Html.Partial("_MemberMenu")
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_MemberMenu")
+}
 
 <h2>Coming Soon: Badges</h2>

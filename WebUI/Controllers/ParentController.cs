@@ -7,6 +7,7 @@ using System.Web.Mvc;
 namespace CoderDojo.Views
 {
     [AuthorizeParent]
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class ParentController : BaseController
     {
         //

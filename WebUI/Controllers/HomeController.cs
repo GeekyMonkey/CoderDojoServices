@@ -10,6 +10,7 @@ using System.Web.WebPages;
 
 namespace CoderDojo.Controllers
 {
+    [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
     public class HomeController : BaseController
     {
         [AllowAnonymous]
@@ -91,17 +92,23 @@ namespace CoderDojo.Controllers
             db.SaveChanges();
             */
 
-            string passwordHash = db.GeneratePasswordHash(loginModel.Password);
-            var adult = db.Adults.FirstOrDefault(a => a.Login == loginModel.Username && a.PasswordHash == passwordHash && a.Deleted == false);
-            var member = db.Members.FirstOrDefault(m => m.Login == loginModel.Username && m.PasswordHash == passwordHash && m.Deleted == false);
-            Guid userId;
-            UserRoles role;
+            Adult adult = null;
+            Member member = null;
+            if (!string.IsNullOrEmpty(loginModel.Password))
+            {
+                string passwordHash = db.GeneratePasswordHash(loginModel.Password);
+                adult = db.Adults.FirstOrDefault(a => a.Login == loginModel.Username && a.PasswordHash == passwordHash && a.Deleted == false);
+                member = db.Members.FirstOrDefault(m => m.Login == loginModel.Username && m.PasswordHash == passwordHash && m.Deleted == false);
+            }
 
             if (adult == null && member == null)
             {
                 ViewBag.ValidationMessage = "Username or password is not correct.";
                 return View("Login");
             }
+
+            Guid userId;
+            UserRoles role;
 
             if (adult != null)
             {
@@ -125,7 +132,7 @@ namespace CoderDojo.Controllers
             cookie.Path = "/";
             Response.Cookies.Add(cookie);
 
-            return RedirectToAction("Index", role.ToString());
+            return View("Redirect", model: "/" + role.ToString() + "/Index");
         }
 
         [AllowAnonymous]
@@ -133,7 +140,7 @@ namespace CoderDojo.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
-            return Login();
+            return View("Redirect", model: "/Home/Login");
         }
     }
 }
