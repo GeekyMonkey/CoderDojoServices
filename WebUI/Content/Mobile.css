@@ -15,3 +15,76 @@
 {
     border-radius: 0px;
 }
+
+.CoderDojoLogo {
+    background-image: url("../Images/YingYang32.png");
+    width: 32px;
+    height: 32px;
+}
+
+.ui-icon-xbox {
+	background-image: url("../Images/Icons/xbox-18.png");
+}
+.ui-icon-scratch {
+	background-image: url("../Images/Icons/scratch-18.png");
+}
+.ui-icon-github {
+	background-image: url("../Images/Icons/github-18.png");
+}
+
+@media (min-width:600px) {
+
+    /* wrap on wide viewports once open */
+
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-push.ui-panel-content-fixed-toolbar-position-left,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-reveal.ui-panel-content-fixed-toolbar-position-left,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-display-push.ui-panel-content-wrap-position-left,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-display-reveal.ui-panel-content-wrap-position-left {
+        margin-right: 17em;
+    }
+
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-push.ui-panel-content-fixed-toolbar-position-right,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-reveal.ui-panel-content-fixed-toolbar-position-right,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-display-push.ui-panel-content-wrap-position-right,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-wrap-display-reveal.ui-panel-content-wrap-position-right {
+        margin-left: 17em;
+    }
+
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-push,
+    .ui-responsive-panel.ui-page-panel-open .ui-panel-content-fixed-toolbar-display-reveal {
+        width: auto;
+    }
+
+    /* disable "dismiss" on wide viewports */
+    .ui-responsive-panel .ui-panel-dismiss-display-push {
+        display: none;
+    }
+
+    /* Show the panel */
+    .ui-panel-closed {
+        width: 17em;
+    }
+
+    .ui-responsive-panel.ui-page-panel-closed .ui-panel-content-fixed-toolbar-display-push.ui-panel-content-fixed-toolbar-position-left,
+    .ui-responsive-panel.ui-page-panel-closed .ui-panel-content-fixed-toolbar-display-reveal.ui-panel-content-fixed-toolbar-position-left,
+    .ui-responsive-panel.ui-page-panel-closed .ui-panel-content-wrap-display-push.ui-panel-content-wrap-position-left,
+    .ui-responsive-panel.ui-page-panel-closed .ui-panel-content-wrap-display-reveal.ui-panel-content-wrap-position-left {
+        margin-right: 17em;
+    }
+
+    .ui-panel-content-wrap-closed {
+        position: relative;
+        margin-left: 17em;
+    }
+    .ui-footer {
+        margin-left: 17em;
+    }
+
+    #PanelClose {
+        display: none;
+    }
+
+    #ShowMenuButton {
+        display: none;
+    }
+}

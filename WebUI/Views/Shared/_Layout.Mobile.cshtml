@@ -6,61 +6,76 @@
 <html> 
     <head> 
         <meta charset="utf-8" />
-        <title>@ViewBag.Title</title> 
-        <meta name="viewport" content="width=device-width" />
+        <title>Coder Dojo Members</title> 
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         @* @Styles.Render("~/Content/Mobile/css", "~/Content/jquerymobile/css")
         @Scripts.Render("~/bundles/jquery", "~/bundles/jquerymobile")
         *@
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+        
+        <link href="~/Content/jquery.mobile-1.3.0.min.css" rel="stylesheet" />
+        <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" /> -->
+        
         @Styles.Render("~/Content/mobilecss")
+        
+        <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script src="~/Scripts/jquery.mobile-1.3.0.min.js"></script>
+        <script src="~/Scripts/CoderDojoServices.js"></script>
+        <!--
         <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+        -->
+
         @Scripts.Render("~/bundles/jqueryval")
+
         <style>
             /* Move up the header buttons */
+            /*
             .ui-header .ui-controlgroup {
                 margin-top: 2px;
-            }
+            }*/
         </style>
+
         <script>
             $(document).ready(function () {
-                $.mobile.ajaxEnabled = false; 
+                // $.mobile.ajaxEnabled = true; 
+                // $.mobile.page.prototype.options.domCache = true;
             });
         </script>
     </head> 
-<body class="Controller_@(controllerName) Action_@(actionName)"  > 
 
-    <div data-role="page" data-theme="a" class="ui-responsive-panel">
+    <body > 
+        <div data-role="page" data-theme="a" class="ui-responsive-panel Controller_@(controllerName) Action_@(actionName) pagerole" data-cache="never">
 
-        <div data-role="header">
-            @if (IsSectionDefined("HeaderLeft"))
-            {
+            <div data-role="header">
                 <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
-                    <a data-role="button" href="/" data-icon="home" data-inline="true">Home</a>
-                    @RenderSection("HeaderLeft", false)
+                    @if (!ViewBag.HideMenuButton) {
+                        <a href="#LeftMenu" data-role="button" data-icon="bars" data-inline="true" id="ShowMenuButton">Menu</a>
+                    }
+                    @if (IsSectionDefined("HeaderLeft"))
+                    {
+                        @RenderSection("HeaderLeft", false)
+                    }
                 </div>
-            } else {
-                <i class="DojoLogo"></i>
-            }
-            <h1>@ViewBag.Title</h1>
-            <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
-                @RenderSection("HeaderRight", false)
+                <h1>@ViewBag.Title</h1>
+                <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
+                    @RenderSection("HeaderRight", false)
+                    <div class="CoderDojoLogo"></div>
+                </div>
             </div>
-        </div>
 
-        <div data-role="content">
-            @RenderBody()		
-        </div>
-
-        <div data-role="footer" data-position="fixed">
-            @RenderSection("Footer", false)
-            <div class="view-switcher ui-bar-a">
-                @Html.Partial("_ViewSwitcher")
+            <div data-role="content">
+                @RenderBody()		
             </div>
+
+            <div data-role="footer" data-position="fixed">
+                @RenderSection("Footer", false)
+                <div class="view-switcher ui-bar-a">
+                    @Html.Partial("_ViewSwitcher")
+                </div>
+            </div>
+
+            @RenderSection("Panels", false)
         </div>
-    </div>
 
-    @RenderSection("Panels", false)
-
-</body>
+    </body>
 </html>
