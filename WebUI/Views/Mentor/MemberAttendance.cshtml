@@ -2,15 +2,23 @@
 @{
     CoderDojo.Member member = Model;
     ViewBag.Title = member.MemberName;
-    ViewBag.MenuActive = "Attendance";
+    ViewBag.MenuActive = "Members";
+    ViewBag.MemberMenuActive = "Attendance";
     int sessionCount = member.MemberAttendances.Count();
 }
 
 @section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
 }
+
 @section HeaderRight {
-    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@section Footer {
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
 }
 
 @Html.Partial("_MemberMenu")

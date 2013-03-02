@@ -1,14 +1,24 @@
 ﻿@model List<CoderDojo.AttendanceModel>
 @{
     ViewBag.Title = "Attendance " + DateTime.Today.ToString("d MMM");
+    ViewBag.MenuActive = "Attendance";
     List<CoderDojo.AttendanceModel> attendance = Model;
 }
 
 @section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
 }
+
 @section HeaderRight {
     <a href="MemberSignup?Mode=Attendance" data-role="button" data-icon="plus">Signup</a>
+}
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
 }
 
 @using (Html.BeginForm("Attendance", "Member")) {

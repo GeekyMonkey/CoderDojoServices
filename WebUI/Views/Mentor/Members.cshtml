@@ -1,15 +1,26 @@
 ﻿@model List<CoderDojo.Member>
 @{
     ViewBag.Title = "Members ";
+    ViewBag.MenuActive = "Members";
     List<CoderDojo.Member> members = Model;
 }
 
 @section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
 }
+ 
 @section HeaderRight {
     <a href="MemberSignup" data-role="button" data-icon="plus">Signup</a>
 }
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
 
 <div data-role="content">
 	<div class="content-primary">

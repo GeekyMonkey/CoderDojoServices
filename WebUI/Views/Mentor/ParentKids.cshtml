@@ -2,19 +2,44 @@
 @{
     CoderDojo.Adult adult = Model;
     ViewBag.Title = adult.FullName;
-    ViewBag.MenuActive = "Kids";
+    ViewBag.MenuActive = "Parents";
+    ViewBag.ParentMenuActive = "Kids";
 }
 
-@section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
+@section HeaderLeft
+{
 }
-@section HeaderRight {
-    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
 }
 
 @Html.Partial("_ParentMenu")
 
+<ul data-role="listview" data-autodividers="false" data-corners="true" data-inset="true">
+    @foreach (CoderDojo.MemberParent mp in adult.MemberParents)
+    {
+        string memId = mp.MemberId.ToString("N");
+        <li><a href="/Mentor/Member/@(memId)">@mp.Member.MemberName</a></li>
+    }
+</ul>
 
-<div data-role="content">
-    <h1>Kids page coming soon.</h1>
-</div>
+<a data-role="button" href="#" id="ParentAddKidButton" data-icon="add" data-inline="true">Add Kid</a>
+
+<script type="text/javascript">
+    $(function () {
+        $("#ParentAddKidButton").click(function (e) {
+            e.preventDefault();
+            alert("ToDo: Link kid with parent is not quite ready.");
+        });
+    });
+</script>

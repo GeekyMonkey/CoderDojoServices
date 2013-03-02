@@ -2,19 +2,25 @@
 @{
     Adult mentor = Model;
     ViewBag.Title = "Mentor: " + mentor.FirstName;
+    ViewBag.MenuActive = "Index";
 }
 
-@Html.ActionLink("Attendance", "Attendance", "Mentor", null, new { data_role="button"})
-@Html.ActionLink("Members", "Members", "Mentor", null, new { data_role="button"})
-@Html.ActionLink("Parents", "Parents", "Mentor", null, new { data_role="button"})
-@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { data_role="button"})
-@Html.ActionLink("Log Out", "LogOut", "Home", null, new { data_role="button"})
 
+@section HeaderLeft
+{
+}
+
+@section HeaderRight
+{
+}
 
 @section Footer
 {
-    @if (mentor.IsParent)
-    {
-        @Html.ActionLink("Parent Mode", "Index", "Parent", null, new { data_role = "button" })
-    }
 }
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
+<p>This will soon be the place where you'll get the latest dojo news, and see outstanding badge/belt applications.</p>

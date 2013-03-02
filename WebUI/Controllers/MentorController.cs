@@ -127,6 +127,7 @@ namespace CoderDojo.Views
         {
             Adult adult = db.Adults.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
+            ViewBag.AdultMode = adult.IsMentor ? "Mentor" : "Parent";
             return View("Adult", adult);
         }
 
@@ -202,6 +203,7 @@ namespace CoderDojo.Views
                 adult.IsMentor = adultChanges.IsMentor;
                 adult.GithubLogin = adultChanges.GithubLogin;
                 adult.XboxGamertag = adultChanges.XboxGamertag;
+                adult.ScratchName = adultChanges.ScratchName;
                 adult.Login = adultChanges.Login;
 
                 // Password change
@@ -211,7 +213,7 @@ namespace CoderDojo.Views
                 }
                 db.SaveChanges();
             }
-            return RedirectToAction(adultMode + "s");
+            return RedirectClient("/Mentor/" + adultMode + "s");
         }
 
         [HttpGet]
@@ -240,9 +242,9 @@ namespace CoderDojo.Views
             if (memberSignup.Mode == "Attendance")
             {
                 AttendanceSet(newMember.Id, true);
-                return RedirectToAction("Attendance", new { id = newMember.Id });
+                return RedirectClient("/Mentor/Attendance?id=" + newMember.Id);
             }
-            return RedirectToAction("Members", new { id = newMember.Id });
+            return RedirectClient("/Mentor/Members?id=" + newMember.Id);
         }
 
         [HttpGet]
@@ -300,7 +302,7 @@ namespace CoderDojo.Views
                     member.PasswordHash = db.GeneratePasswordHash(memberChanges.NewPassword);
                 }
                 db.SaveChanges();
-                return RedirectToAction("Member", new { id = member.Id });
+                return RedirectClient("/Mentor/Member?id=" + member.Id);
             }
             return Json("Validation error"); // todo
         }
@@ -325,6 +327,13 @@ namespace CoderDojo.Views
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
             return View("MemberBadges", member);
+        }
+        [HttpGet]
+        public ActionResult MemberBelts(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            ViewBag.ShowBackButton = true;
+            return View("MemberBelts", member);
         }
 
         private void AddMember(string firstName, string lastName, string scratch, int birthYear)

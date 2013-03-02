@@ -2,14 +2,22 @@
 @{
     CoderDojo.Member member = Model;
     ViewBag.Title = member.MemberName;
-    ViewBag.MenuActive = "Badges";
+    ViewBag.MenuActive = "Members";
+    ViewBag.MemberMenuActive = "Badges";
 }
 
 @section HeaderLeft {
-    <a data-rel="back" data-role="button" data-icon="back">Back</a>
 }
+
 @section HeaderRight {
-    <a data-icon="save" data-role="button" id="SaveButton">Save</a>
+}
+
+@section Footer {
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
 }
 
 @Html.Partial("_MemberMenu")
