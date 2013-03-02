@@ -1,0 +1,28 @@
+﻿@model CoderDojo.Member
+@{
+    CoderDojo.Member member = Model;
+    ViewBag.Title = member.MemberName;
+    ViewBag.MenuActive = "Members";
+    ViewBag.MemberMenuActive = "Belts";
+}
+
+@section HeaderLeft {
+}
+
+@section HeaderRight {
+}
+
+@section Footer {
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
+@Html.Partial("_MemberMenu")
+
+
+<div data-role="content">
+    <h1>Belts page coming soon.</h1>
+</div>
