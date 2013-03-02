@@ -72,5 +72,11 @@ namespace CoderDojo.Views
 
             return RedirectClient("/Parent/MyAccount");
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.CurrentAdult = this.GetCurrentAdult();
+            base.OnActionExecuting(filterContext);
+        }
     }
 }

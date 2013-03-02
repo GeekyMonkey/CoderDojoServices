@@ -18,6 +18,12 @@
         <li>@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { @class=(activePage == "Mentors" ? activeClass : inactiveClass)})</li>
     </ul>
 
+    @if (ViewBag.CurrentAdult.IsParent) {
+        <div data-role="controlgroup" data-type="horizontal">
+            @Html.ActionLink("Parent Mode", "Index", "Parent", null, new { data_role="button", data_icon="star" })
+        </div>
+    }
+
     <div data-role="controlgroup" data-type="horizontal">
         <a href="/Home/LogOut" data-icon="delete" data-role="button">Log Out</a>
     </div>

@@ -240,6 +240,12 @@
     <Content Include="App_Data\connections.config" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Images\Icons\github-18.png" />
+    <Content Include="Images\Icons\github-36.png" />
+    <Content Include="Images\Icons\scratch-18.png" />
+    <Content Include="Images\Icons\scratch-36.png" />
+    <Content Include="Images\Icons\xbox-18.png" />
+    <Content Include="Images\Icons\xbox-36.png" />
     <Content Include="Images\YingYang.png" />
     <Content Include="Images\YingYang32.png" />
     <Content Include="Scripts\CoderDojoServices.js" />
@@ -338,9 +344,7 @@
     <Content Include="Views\Parent\_ParentMenu.cshtml" />
     <Content Include="Views\Mentor\MemberBelts.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\Icons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

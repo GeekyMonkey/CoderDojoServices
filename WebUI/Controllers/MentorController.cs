@@ -490,5 +490,11 @@ namespace CoderDojo.Views
             return Content("Data imported");
         }
         */
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.CurrentAdult = this.GetCurrentAdult();
+            base.OnActionExecuting(filterContext);
+        }
     }
 }

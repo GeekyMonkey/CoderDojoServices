@@ -57,5 +57,11 @@ namespace CoderDojo.Views
             Member member = GetCurrentMember();
             return View("Attendance", member);
         }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            ViewBag.CurrentMember = this.GetCurrentMember();
+            base.OnActionExecuting(filterContext);
+        }
     }
 }
