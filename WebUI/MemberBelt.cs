@@ -19,6 +19,12 @@ namespace CoderDojo
         public System.Guid BeltId { get; set; }
         public Nullable<System.DateTime> Awarded { get; set; }
         public Nullable<System.Guid> AwardedByAdultId { get; set; }
+        public string AwardedNotes { get; set; }
+        public Nullable<System.DateTime> ApplicationDate { get; set; }
+        public string ApplicationNotes { get; set; }
+        public Nullable<System.DateTime> RejectedDate { get; set; }
+        public Nullable<System.Guid> RejectedByAdultId { get; set; }
+        public string RejectedNotes { get; set; }
     
         public virtual Adult Adult { get; set; }
         public virtual Belt Belt { get; set; }

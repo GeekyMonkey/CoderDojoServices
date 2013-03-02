@@ -56,7 +56,14 @@
                         @RenderSection("HeaderLeft", false)
                     }
                 </div>
-                <h1>@ViewBag.Title</h1>
+                <h1>
+                    @if (IsSectionDefined("HeaderTitle"))
+                    {
+                        @RenderSection("HeaderTitle", false);
+                    } else {
+                        @ViewBag.Title
+                    }
+                </h1>
                 <div class="ui-btn-right" data-role="controlgroup" data-type="horizontal">
                     @RenderSection("HeaderRight", false)
                     <div class="CoderDojoLogo"></div>

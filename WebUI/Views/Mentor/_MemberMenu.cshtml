@@ -1,9 +1,8 @@
-﻿@model Member
-@{
+﻿@{
     string activePage = ViewBag.MemberMenuActive;
     string activeClass = "ui-btn-active ui-state-persist";
     string inactiveClass = "";
-    string memberId = Model.Id.ToString("N");
+    string memberId = Model.Id.ToString("N"); // todo - get this somewhere else
 }
 
 <div data-role="navbar">

@@ -35,6 +35,7 @@ namespace CoderDojo
         public string XboxGamertag { get; set; }
         public string ScratchName { get; set; }
         public bool Deleted { get; set; }
+        public bool GardaVetted { get; set; }
     
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }
         public virtual ICollection<MemberBelt> MemberBelts { get; set; }

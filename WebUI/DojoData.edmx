@@ -66,8 +66,9 @@
           <Property Name="PasswordHash" Type="nvarchar" MaxLength="50" />
           <Property Name="GithubLogin" Type="nvarchar" MaxLength="50" />
           <Property Name="XboxGamertag" Type="nvarchar" MaxLength="50" />
-          <Property Name="ScratchName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GardaVetted" Type="bit" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="ScratchName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Badges">
           <Key>
@@ -83,6 +84,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Color" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Description" Type="ntext" />
+          <Property Name="HexCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="MemberAttendance">
           <Key>
@@ -112,6 +115,12 @@
           <Property Name="BeltId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Awarded" Type="date" />
           <Property Name="AwardedByAdultId" Type="uniqueidentifier" />
+          <Property Name="AwardedNotes" Type="ntext" />
+          <Property Name="ApplicationDate" Type="date" />
+          <Property Name="ApplicationNotes" Type="ntext" />
+          <Property Name="RejectedDate" Type="date" />
+          <Property Name="RejectedByAdultId" Type="uniqueidentifier" />
+          <Property Name="RejectedNotes" Type="ntext" />
         </EntityType>
         <EntityType Name="MemberParent">
           <Key>
@@ -328,6 +337,7 @@
           <NavigationProperty Name="MemberParents" Relationship="CoderDojo.FK_MemberParent_Adult" FromRole="Adult" ToRole="MemberParent" />
           <Property Type="String" Name="ScratchName" FixedLength="false" MaxLength="50" Unicode="true" Nullable="true" />
           <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
+          <Property Type="Boolean" Name="GardaVetted" Nullable="false" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -345,6 +355,8 @@
           <Property Name="Color" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="MemberBelts" Relationship="CoderDojo.FK_MemberBelts_Belt" FromRole="Belts" ToRole="MemberBelts" />
+          <Property Type="String" Name="HexCode" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="SortOrder" Nullable="false" />
         </EntityType>
         <EntityType Name="MemberAttendance">
           <Key>
@@ -381,6 +393,12 @@
           <NavigationProperty Name="Adult" Relationship="CoderDojo.FK_MemberBelts_Adult" FromRole="MemberBelts" ToRole="Adults" />
           <NavigationProperty Name="Belt" Relationship="CoderDojo.FK_MemberBelts_Belt" FromRole="MemberBelts" ToRole="Belts" />
           <NavigationProperty Name="Member" Relationship="CoderDojo.FK_MemberBelts_Member" FromRole="MemberBelts" ToRole="Members" />
+          <Property Type="String" Name="AwardedNotes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ApplicationDate" Precision="0" />
+          <Property Type="String" Name="ApplicationNotes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="RejectedDate" Precision="0" />
+          <Property Type="Guid" Name="RejectedByAdultId" />
+          <Property Type="String" Name="RejectedNotes" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
@@ -542,6 +560,7 @@
           <EntitySetMapping Name="Adults">
             <EntityTypeMapping TypeName="CoderDojo.Adult">
               <MappingFragment StoreEntitySet="Adults">
+                <ScalarProperty Name="GardaVetted" ColumnName="GardaVetted" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -569,6 +588,8 @@
           <EntitySetMapping Name="Belts">
             <EntityTypeMapping TypeName="CoderDojo.Belt">
               <MappingFragment StoreEntitySet="Belts">
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="HexCode" ColumnName="HexCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -599,6 +620,12 @@
           <EntitySetMapping Name="MemberBelts">
             <EntityTypeMapping TypeName="CoderDojo.MemberBelt">
               <MappingFragment StoreEntitySet="MemberBelts">
+                <ScalarProperty Name="RejectedNotes" ColumnName="RejectedNotes" />
+                <ScalarProperty Name="RejectedByAdultId" ColumnName="RejectedByAdultId" />
+                <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />
+                <ScalarProperty Name="ApplicationNotes" ColumnName="ApplicationNotes" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="AwardedNotes" ColumnName="AwardedNotes" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="BeltId" ColumnName="BeltId" />

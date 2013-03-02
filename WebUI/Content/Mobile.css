@@ -32,6 +32,11 @@
 	background-image: url("../Images/Icons/github-18.png");
 }
 
+blockquote {
+    font-style: italic;
+}
+
+
 @media (min-width:600px) {
 
     /* wrap on wide viewports once open */

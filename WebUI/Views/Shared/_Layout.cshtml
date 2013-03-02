@@ -10,6 +10,11 @@
 </head>
 <body>
     @RenderSection("HeaderLeft", false);
+    @if (IsSectionDefined("HeaderTitle")) {
+        RenderSection("HeaderTitle", false);
+    } else {
+        @ViewBag.Title
+    }
 
     @RenderBody()
 

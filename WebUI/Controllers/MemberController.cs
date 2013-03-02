@@ -47,8 +47,10 @@ namespace CoderDojo.Views
         [HttpGet]
         public ActionResult Belts()
         {
-            Member member = GetCurrentMember();
-            return View("Belts", member);
+            var belts = from belt in db.Belts
+                        orderby belt.SortOrder
+                        select belt;
+            return View("Belts", belts.ToList());
         }
 
         [HttpGet]
@@ -56,6 +58,21 @@ namespace CoderDojo.Views
         {
             Member member = GetCurrentMember();
             return View("Attendance", member);
+        }
+
+        [HttpGet]
+        public ActionResult BeltApplication(Guid id)
+        {
+            Guid beltId = id;
+            MemberBelt application = new MemberBelt
+            {
+                MemberId = GetCurrentMember().Id,
+                BeltId = beltId,
+                ApplicationDate = DateTime.Today
+            };
+            db.MemberBelts.Add(application);
+            db.SaveChanges();
+            return RedirectClient("/Member/Belts");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

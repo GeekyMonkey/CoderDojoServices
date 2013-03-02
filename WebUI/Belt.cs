@@ -22,6 +22,8 @@ namespace CoderDojo
         public System.Guid Id { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
+        public string HexCode { get; set; }
+        public int SortOrder { get; set; }
     
         public virtual ICollection<MemberBelt> MemberBelts { get; set; }
     }
