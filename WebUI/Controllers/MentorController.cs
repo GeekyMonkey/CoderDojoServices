@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -75,6 +76,11 @@ namespace CoderDojo.Views
             }
             Guid membergId = new Guid(memberId);
             AttendanceSet(membergId, present, sessionDate);
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), present.ToString().ToLower());
+
             return Json("OK");
         }
 
@@ -519,6 +525,7 @@ namespace CoderDojo.Views
         }
         */
 
+        /*
         [HttpGet]
         public ActionResult ImportAttendance()
         {
@@ -691,7 +698,7 @@ namespace CoderDojo.Views
             return Content("ok");
         }
 
-                [HttpGet]
+        [HttpGet]
         public ActionResult ImportAttendance2()
         {
             List<DateTime> dates = new List<DateTime>();
@@ -760,8 +767,6 @@ namespace CoderDojo.Views
             return Content("ok");
         }
 
-
-
         private void ImportAttendanceLine(List<DateTime>dates, string[] data)
         {
             string firstName = data[0].Trim();
@@ -782,6 +787,7 @@ namespace CoderDojo.Views
                 AttendanceSet(member.Id, attended, date);
             }
         }
+        */
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

@@ -5,6 +5,7 @@
     ViewBag.Title = "Attendance " + attendanceDateFormatted;
     ViewBag.MenuActive = "Attendance";
     List<CoderDojo.AttendanceModel> attendance = Model;
+    int attendanceCount = attendance.Count(a => a.Present);
 }
 
 @section HeaderLeft {
@@ -28,6 +29,9 @@
 
 @section Footer
 {
+    <div data-role="controlgroup">
+        <label>Total Attendance:&nbsp;</label><span id="TotalAttendanceNumber">@attendanceCount</span>
+    </div>
 }
 
 @section Panels
@@ -51,9 +55,15 @@
 
 <script type="text/javascript">
     (function ($) {
-        $(":checkbox").die().live("change", function () {
+        var updateAttendanceCount = function () {
+            var count = $(":checkbox:checked").length;
+            $("#TotalAttendanceNumber").html(count);
+        }
+
+        $(":checkbox").off().on("change", function () {
             var checkbox = $(this);
             var checked = checkbox.is(':checked');
+            updateAttendanceCount();
 
             // Prevent multiple calls of the same value
             var checkedString = '*' + checked;
@@ -64,7 +74,7 @@
                     data: {
                         memberId: checkbox.attr("id").substr(1),
                         present: checked,
-                        attendanceDate: '@(attendanceDateFormatted)'
+                        attendanceDate: $("#AttendanceDateSelect").val()
                     }
                 });
             }
@@ -74,5 +84,27 @@
             var dateSelected = $("#AttendanceDateSelect").val();
             window.location = "/Mentor/Attendance?attendanceDate=" + dateSelected;
         });
+
+        // Start the SignalR connection
+        $.connection.hub.start().done(function () {
+        });
+
+        // Receive a notification that someone altered attendance
+        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, present) {
+            if ($("#AttendanceDateSelect").val() == attendanceDate) {
+                var checkbox = $("#P" + memberId);
+                var newChecked = (present == "true");
+                //if (checkbox.is(':checked') != newChecked) {
+                    var li = checkbox.closest("li");
+                    var oldBackgroundColor = li.css("background-color");
+                    li.find(".ui-btn-inner").css("transition", "background-color 0.05s").css("background-color", "yellow")
+                    setTimeout(function() {
+                        checkbox.prop("checked", newChecked).checkboxradio("refresh")
+                        updateAttendanceCount();
+                        li.find(".ui-btn-inner").css("transition", "background-color 0.5s").css("background-color", oldBackgroundColor)
+                    }, 50);
+                //}
+            }
+        };
     })(jQuery);
 </script>
