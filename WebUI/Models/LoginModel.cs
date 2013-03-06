@@ -12,7 +12,7 @@ namespace CoderDojo
         {
             Username = "";
             Password = "";
-            Remember = true;
+            Remember = false;
         }
 
         [Required]

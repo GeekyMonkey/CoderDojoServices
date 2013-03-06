@@ -9,10 +9,10 @@ namespace CoderDojo
 
     public class AttendanceHub : Hub
     {
-        public void OnAttendanceChange(DateTime attendanceDate, Guid memberId, bool present)
+        public void OnAttendanceChange(DateTime attendanceDate, Guid memberId, bool present, int sessionCount)
         {
             // Call te broadcastMessage method to update clients.
-            Clients.Others.OnAttendanceChange(attendanceDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), present.ToString().ToLower());
+            Clients.Others.OnAttendanceChange(attendanceDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), present.ToString().ToLower(), sessionCount);
         }
     }
 }

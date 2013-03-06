@@ -29,7 +29,7 @@ namespace CoderDojo.Views
         public ActionResult Attendance(string attendanceDate = null, Guid? memberId = null)
         {
             DateTime firstSessionDate = new DateTime(2012, 3, 24);
-            DateTime sessionDate = DateTime.Today;
+            DateTime? sessionDate = null;
             if (attendanceDate != null)
             {
                 sessionDate = DateTime.ParseExact(attendanceDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -44,6 +44,10 @@ namespace CoderDojo.Views
             {
                 sessionDates.Add(date);
                 date = date.AddDays(-7);
+            }
+            if (sessionDate == null)
+            {
+                sessionDate = sessionDates[0];
             }
             var presentMemberIds = db.MemberAttendances.Where(a => a.Date == sessionDate).OrderBy(a => a.MemberId).Select(a => a.MemberId).ToList();
             List<AttendanceModel> attendance = (from m in db.Members
@@ -75,11 +79,11 @@ namespace CoderDojo.Views
                 sessionDate = DateTime.Today;
             }
             Guid membergId = new Guid(memberId);
-            AttendanceSet(membergId, present, sessionDate);
+            int sessionCount = AttendanceSet(membergId, present, sessionDate);
 
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), present.ToString().ToLower());
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), present.ToString().ToLower(), sessionCount);
 
             return Json("OK");
         }
@@ -89,7 +93,7 @@ namespace CoderDojo.Views
         /// </summary>
         /// <param name="memberId"></param>
         /// <param name="present"></param>
-        private void AttendanceSet(Guid memberId, bool present, DateTime sessionDate)
+        private int AttendanceSet(Guid memberId, bool present, DateTime sessionDate)
         {
             MemberAttendance attendance = db.MemberAttendances.Where(ma => ma.MemberId == memberId && ma.Date == sessionDate).FirstOrDefault();
             bool hasAttendance = (attendance != null);
@@ -109,6 +113,7 @@ namespace CoderDojo.Views
                 db.MemberAttendances.Remove(attendance);
                 db.SaveChanges();
             }
+            return db.MemberAttendances.Count(ma => ma.MemberId == memberId);
         }
 
         [HttpGet]
@@ -251,34 +256,10 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
-        public ActionResult MemberSignup(string Mode = "")
+        public ActionResult MemberSignup(string previousPage = "")
         {
-            MemberSignupModel memberSignup = new MemberSignupModel();
-            memberSignup.Mode = Mode;
-            return View("MemberSignup", memberSignup);
-        }
-
-        [HttpPost]
-        public ActionResult MemberSignupSave(MemberSignupModel memberSignup)
-        {
-            //MemberSignupModel memberSignup = new MemberSignupModel();
-            //UpdateModel(memberSignup);
-
-            Member newMember = new Member
-            {
-                FirstName = memberSignup.FirstName,
-                LastName = memberSignup.LastName,
-                BirthYear = memberSignup.BirthYear
-            };
-            db.Members.Add(newMember);
-            db.SaveChanges();
-
-            if (memberSignup.Mode == "Attendance")
-            {
-                AttendanceSet(newMember.Id, true, DateTime.Today);
-                return RedirectClient("/Mentor/Attendance?id=" + newMember.Id);
-            }
-            return RedirectClient("/Mentor/Members?id=" + newMember.Id);
+            ViewBag.PreviousPage = previousPage;
+            return View("Member", new Member());
         }
 
         [HttpGet]
@@ -294,15 +275,16 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
-        public ActionResult Member(Guid id)
+        public ActionResult Member(Guid id, string previousPage = "")
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            ViewBag.PreviousPage = previousPage;
             ViewBag.ShowBackButton = true;
             return View("Member", member);
         }
 
         [HttpPost]
-        public ActionResult MemberSave(Member memberChanges)
+        public ActionResult MemberSave(Member memberChanges, string previousPage)
         {
             Member member = null;
 
@@ -313,7 +295,7 @@ namespace CoderDojo.Views
                     member = db.Members.Find(memberChanges.Id);
                 }
 
-                // New Adult
+                // New Member
                 if (member == null)
                 {
                     member = new Member();
@@ -336,7 +318,12 @@ namespace CoderDojo.Views
                     member.PasswordHash = db.GeneratePasswordHash(memberChanges.NewPassword);
                 }
                 db.SaveChanges();
-                return RedirectClient("/Mentor/Member?id=" + member.Id);
+                if (previousPage == "Attendance")
+                {
+                    AttendanceSet(member.Id, true, DateTime.Today);
+                    return RedirectClient("/Mentor/Attendance?id=" + member.Id);
+                }
+                return RedirectClient("/Mentor/Members?id=" + member.Id);
             }
             return Json("Validation error"); // todo
         }
@@ -756,7 +743,7 @@ namespace CoderDojo.Views
             ImportAttendanceLine(dates, new [] {"Tresor","Nijimbere","1","1","1","1"});
             ImportAttendanceLine(dates, new [] {"Evan","Twomey","0","1","0","0"});
             ImportAttendanceLine(dates, new [] {"Sean","Burke","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sammi","O'Reagan","0","0","0","1"});
+            ImportAttendanceLine(dates, new [] {"Sami","O'Reagan","0","0","0","1"});
             ImportAttendanceLine(dates, new [] {"Molly","MacCriostail","0","0","0","1"});
             ImportAttendanceLine(dates, new [] {"Michael","Bonfield","0","0","0","1"});
             ImportAttendanceLine(dates, new [] {"Mark","Bonfield","0","0","0","1"});

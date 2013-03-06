@@ -222,7 +222,6 @@
     <Compile Include="Models\Adult.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Member.cs" />
-    <Compile Include="Models\MemberSignupModel.cs" />
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\MentorController.cs" />
@@ -347,7 +346,6 @@
     <Content Include="Views\Parent\Index.cshtml" />
     <Content Include="Views\Member\Index.cshtml" />
     <Content Include="Views\Mentor\Attendance.cshtml" />
-    <Content Include="Views\Mentor\MemberSignup.cshtml" />
     <Content Include="Views\Mentor\Members.cshtml" />
     <Content Include="Views\Mentor\Member.cshtml" />
     <Content Include="Views\Mentor\Adults.cshtml" />

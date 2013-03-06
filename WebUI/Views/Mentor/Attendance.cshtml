@@ -24,7 +24,7 @@
 }
 
 @section HeaderRight {
-    <a href="MemberSignup?Mode=Attendance" data-role="button" data-icon="plus">Signup</a>
+    <a href="MemberSignup?PreviousPage=Attendance" data-role="button" data-icon="plus">Signup</a>
 }
 
 @section Footer
@@ -40,71 +40,28 @@
 }
 
 @using (Html.BeginForm("Attendance", "Member")) {
-		<ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search members..." data-filter-theme="a">
-        @foreach (CoderDojo.AttendanceModel a in attendance)
-        {
-            string memId = a.MemberId.ToString("N");
-            <li class="ui-corner-none">
-                <input type="checkbox" id="P@(memId)" class="custom ui-corner-none"
-                @if (a.Present) { <text>checked="checked"</text> } />
-                <label for="P@(memId)">@a.MemberName</label>
-            </li>
-        }
-        </ul>
+<ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search members..." data-filter-theme="a">
+@foreach (CoderDojo.AttendanceModel a in attendance)
+{
+    string memId = a.MemberId.ToString("N");
+<li>
+    <input type="checkbox" id="P@(memId)" @if (a.Present) { <text>checked="checked"</text> } />
+    <label for="P@(memId)">@a.MemberName</label>
+    <!-- todo: <span class="Count"></span> -->
+</li>
 }
+</ul>
+}
+
+<div data-role="popup" id="MemberWelcomeDialog" data-theme="c" data-transition="pop" data-overlay-theme="a" class="ui-content">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    <h3>Welcome <span id="WelcomeName"></span>!</h3>
+    <p><span id="WelcomSessionCount"></span> Coder Dojo session</p>
+    <a href="#" data-role="button" data-icon="arrow-r" data-corners="true" data-iconpos="right" id="WelcomeDetailsButton">View Member Details</a>
+</div>
 
 <script type="text/javascript">
     (function ($) {
-        var updateAttendanceCount = function () {
-            var count = $(":checkbox:checked").length;
-            $("#TotalAttendanceNumber").html(count);
-        }
-
-        $(":checkbox").off().on("change", function () {
-            var checkbox = $(this);
-            var checked = checkbox.is(':checked');
-            updateAttendanceCount();
-
-            // Prevent multiple calls of the same value
-            var checkedString = '*' + checked;
-            if ($(this).data("sentcheck", checked) != checkedString) {
-                $(this).data("sentcheck", checked, checkedString);
-                $.ajax("AttendanceChange", {
-                    type: "POST",
-                    data: {
-                        memberId: checkbox.attr("id").substr(1),
-                        present: checked,
-                        attendanceDate: $("#AttendanceDateSelect").val()
-                    }
-                });
-            }
-        });
-
-        $("#AttendanceDateSelect").on("change", function (e) {
-            var dateSelected = $("#AttendanceDateSelect").val();
-            window.location = "/Mentor/Attendance?attendanceDate=" + dateSelected;
-        });
-
-        // Start the SignalR connection
-        $.connection.hub.start().done(function () {
-        });
-
-        // Receive a notification that someone altered attendance
-        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, present) {
-            if ($("#AttendanceDateSelect").val() == attendanceDate) {
-                var checkbox = $("#P" + memberId);
-                var newChecked = (present == "true");
-                //if (checkbox.is(':checked') != newChecked) {
-                    var li = checkbox.closest("li");
-                    var oldBackgroundColor = li.css("background-color");
-                    li.find(".ui-btn-inner").css("transition", "background-color 0.05s").css("background-color", "yellow")
-                    setTimeout(function() {
-                        checkbox.prop("checked", newChecked).checkboxradio("refresh")
-                        updateAttendanceCount();
-                        li.find(".ui-btn-inner").css("transition", "background-color 0.5s").css("background-color", oldBackgroundColor)
-                    }, 50);
-                //}
-            }
-        };
+        initAttendancePage();
     })(jQuery);
 </script>

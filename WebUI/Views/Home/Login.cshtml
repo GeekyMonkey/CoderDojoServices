@@ -15,8 +15,10 @@
     <label for="PassowrdInput">Password</label>
     @Html.PasswordFor(x => x.Password)
 
-   <label for="Remember">Remember Me</label>
+    @*
+    <label for="Remember">Remember Me</label>
     @Html.CheckBoxFor(x => x.Remember)
+    *@
     
     <div class="validation-summary-errors">@ViewBag.ValidationMessage</div>
     <input type="submit" id="LoginButton" value="Login" data-icon="check" />
