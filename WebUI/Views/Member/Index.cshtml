@@ -21,5 +21,4 @@
     @Html.Partial("_MemberMenu")
 }
 
-<p>Use the menu at the top left to navigate to other member functions.</p>
-<p>In the future, you will see news and status updates appear here.</p>
+<div id="MemberIndexMessages">@Html.Raw(member.GetLoginMessage())</div>

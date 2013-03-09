@@ -42,7 +42,7 @@
         @Html.HiddenFor(m => m.Id)
 
         <label for="FirstName">First Name</label>
-        @Html.TextBoxFor(m => m.FirstName)
+        @Html.TextBoxFor(m => m.FirstName, new { @class=(newMember ? "AutoFocus" : "") })
 
         <label for="LastName">Last Name</label>
         @Html.TextBoxFor(m => m.LastName)

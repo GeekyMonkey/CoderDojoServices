@@ -17,8 +17,6 @@ namespace CoderDojo
         public Adult()
         {
             this.Deleted = false;
-            this.MemberBadges = new HashSet<MemberBadge>();
-            this.MemberBelts = new HashSet<MemberBelt>();
             this.MemberParents = new HashSet<MemberParent>();
         }
     
@@ -36,9 +34,9 @@ namespace CoderDojo
         public string ScratchName { get; set; }
         public bool Deleted { get; set; }
         public bool GardaVetted { get; set; }
+        public Nullable<System.DateTime> LoginDate { get; set; }
+        public Nullable<System.DateTime> LoginDatePrevious { get; set; }
     
-        public virtual ICollection<MemberBadge> MemberBadges { get; set; }
-        public virtual ICollection<MemberBelt> MemberBelts { get; set; }
         public virtual ICollection<MemberParent> MemberParents { get; set; }
     }
 }

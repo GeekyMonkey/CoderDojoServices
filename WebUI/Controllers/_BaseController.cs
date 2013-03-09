@@ -61,5 +61,14 @@ namespace CoderDojo
         {
             return View("Redirect", model: url);
         }
+
+        public string TrimNullableString(string val)
+        {
+            if (val != null)
+            {
+                val = val.Trim();
+            }
+            return val;
+        }
     }
 }

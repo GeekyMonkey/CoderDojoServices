@@ -1,6 +1,7 @@
 ﻿@{
     string controllerName = ViewContext.RouteData.Values["Controller"].ToString();
     string actionName = ViewContext.RouteData.Values["Action"].ToString();
+    string bodyTheme = ViewBag.BodyTheme ?? "a";
 }
 <!DOCTYPE html> 
 <html> 
@@ -46,7 +47,7 @@
     </head> 
 
     <body > 
-        <div data-role="page" data-theme="a" class="ui-responsive-panel Controller_@(controllerName) Action_@(actionName) pagerole" data-cache="never">
+        <div data-role="page" data-theme="@bodyTheme" class="ui-responsive-panel Controller_@(controllerName) Action_@(actionName) pagerole" data-cache="never">
 
             <div data-role="header">
                 <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">

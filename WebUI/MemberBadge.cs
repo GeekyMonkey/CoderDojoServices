@@ -19,10 +19,16 @@ namespace CoderDojo
         public System.Guid BadgeId { get; set; }
         public System.DateTime Awarded { get; set; }
         public Nullable<System.Guid> AwardedByAdultId { get; set; }
-        public string Notes { get; set; }
+        public string ApplicationNotes { get; set; }
+        public Nullable<System.DateTime> ApplicationDate { get; set; }
+        public Nullable<System.Guid> RejectedByAdultId { get; set; }
+        public Nullable<System.DateTime> RejectedDate { get; set; }
+        public string RejectedNotes { get; set; }
+        public string AwardedNotes { get; set; }
     
-        public virtual Adult Adult { get; set; }
+        public virtual Adult AwardedByAdult { get; set; }
         public virtual Badge Badge { get; set; }
         public virtual Member Member { get; set; }
+        public virtual Adult RejectedByAdult { get; set; }
     }
 }

@@ -145,6 +145,7 @@
     <Compile Include="Adult.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
+    <Compile Include="AppCode\Extensions.cs" />
     <Compile Include="App_Start\AuthorizeUser.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleMobileConfig.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\CoderDojoData.cs" />
     <Compile Include="Models\Adult.cs" />
+    <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\UserRoles.cs" />
@@ -368,6 +370,7 @@
     <Content Include="Views\Shared\Redirect.cshtml" />
     <Content Include="Views\Parent\_ParentMenu.cshtml" />
     <Content Include="Views\Mentor\MemberBelts.cshtml" />
+    <Content Include="Views\Home\SignIn.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

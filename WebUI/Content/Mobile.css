@@ -36,6 +36,23 @@ blockquote {
     font-style: italic;
 }
 
+textarea {
+    resize: vertical;
+}
+
+.ErrorMessage {
+    color: #f44;
+    padding: 20px;
+    margin: 10px;
+    display: none;
+}
+
+.BeltRejection {
+    border-bottom: dashed 1px #888;
+    padding-bottom: 0px;
+    margin-bottom: 20px;
+}
+
 
 @media (min-width:600px) {
 

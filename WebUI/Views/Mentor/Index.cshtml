@@ -3,6 +3,7 @@
     Adult mentor = Model;
     ViewBag.Title = "Mentor: " + mentor.FirstName;
     ViewBag.MenuActive = "Index";
+    List<MemberBelt> beltApplications = ViewBag.BeltApplications;
 }
 
 
@@ -23,4 +24,35 @@
     @Html.Partial("_MentorMenu")
 }
 
-<p>This will soon be the place where you'll get the latest dojo news, and see outstanding badge/belt applications.</p>
+<h2>Belt Applications</h2>
+@if (beltApplications.Count() > 0)
+{
+    <ul data-role="listview" data-inset="true">
+    @foreach (var mb in beltApplications) {
+        <li data-beltcolor="@mb.Belt.HexCode"><a href="/Mentor/MemberBelts/@mb.MemberId.ToString("N")">@mb.Member.MemberName</a></li>
+    }
+    </ul>
+}
+else
+{
+    <p>There are no pending belt applications.</p>
+}
+
+
+<h2>Badge Applications</h2>
+<!-- ToDo -->
+<p>There are no pending badge applications.</p>
+
+
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function () {
+            $("li[data-beltcolor]").each(function () {
+                var color = $(this).data("beltcolor");
+                $(this).find(".ui-btn-text").css("background-color", "rgba(0,0,0,.2)");
+                $(this).find(".ui-li").css("transition", "background-color 0.5s")
+                    .css("background-color", color);
+            });
+        }, 100);
+    });
+</script>

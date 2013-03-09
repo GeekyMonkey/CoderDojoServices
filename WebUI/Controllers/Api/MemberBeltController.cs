@@ -18,7 +18,7 @@ namespace CoderDojo.Controllers.Api
         // GET api/MemberBelt
         public IEnumerable<MemberBelt> GetMemberBelts()
         {
-            var memberbelts = db.MemberBelts.Include(m => m.Adult).Include(m => m.Belt).Include(m => m.Member);
+            var memberbelts = db.MemberBelts.Include(m => m.AwardedByAdult).Include(m => m.Belt).Include(m => m.Member);
             return memberbelts.AsEnumerable();
         }
 

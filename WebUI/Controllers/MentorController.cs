@@ -18,6 +18,13 @@ namespace CoderDojo.Views
         public ActionResult Index()
         {
             Adult mentor = GetCurrentAdult();
+
+            ViewBag.BeltApplications = (from mb in db.MemberBelts.Include("Member")
+                                       where mb.Awarded == null
+                                       && mb.RejectedDate == null
+                                       orderby mb.Belt.SortOrder, mb.Member.FirstName, mb.Member.LastName
+                                       select mb).ToList();
+
             return View("Index", mentor);
         }
 
@@ -34,6 +41,8 @@ namespace CoderDojo.Views
             {
                 sessionDate = DateTime.ParseExact(attendanceDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             }
+
+            /*
             List<DateTime> sessionDates = new List<DateTime>();
             DateTime date = DateTime.Today;
             while (date.DayOfWeek != DayOfWeek.Saturday)
@@ -45,11 +54,20 @@ namespace CoderDojo.Views
                 sessionDates.Add(date);
                 date = date.AddDays(-7);
             }
+            */
+
+            List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
+
             if (sessionDate == null)
             {
                 sessionDate = sessionDates[0];
             }
-            var presentMemberIds = db.MemberAttendances.Where(a => a.Date == sessionDate).OrderBy(a => a.MemberId).Select(a => a.MemberId).ToList();
+
+            var presentMemberIds = db.MemberAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.MemberId)
+                .Select(a => a.MemberId)
+                .ToList();
             List<AttendanceModel> attendance = (from m in db.Members
                                                 where m.Deleted == false
                                                 orderby m.FirstName, m.LastName
@@ -79,42 +97,22 @@ namespace CoderDojo.Views
                 sessionDate = DateTime.Today;
             }
             Guid membergId = new Guid(memberId);
-            int sessionCount = AttendanceSet(membergId, present, sessionDate);
+            int sessionCount = db.AttendanceSet(membergId, present, sessionDate);
+            int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
+            Member member = db.Members.FirstOrDefault(m => m.Id == membergId);
 
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), present.ToString().ToLower(), sessionCount);
+            string memberMessage = "";
+            if (present)
+            {
+                memberMessage = member.GetLoginMessage();
+            }
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), member.MemberName, present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
 
             return Json("OK");
         }
 
-        /// <summary>
-        /// Save attendance change to database
-        /// </summary>
-        /// <param name="memberId"></param>
-        /// <param name="present"></param>
-        private int AttendanceSet(Guid memberId, bool present, DateTime sessionDate)
-        {
-            MemberAttendance attendance = db.MemberAttendances.Where(ma => ma.MemberId == memberId && ma.Date == sessionDate).FirstOrDefault();
-            bool hasAttendance = (attendance != null);
-            if (present == true && hasAttendance == false)
-            {
-                attendance = new MemberAttendance
-                {
-                    Id = Guid.NewGuid(),
-                    MemberId = memberId,
-                    Date = sessionDate
-                };
-                db.MemberAttendances.Add(attendance);
-                db.SaveChanges();
-            }
-            else if (present == false && hasAttendance == true)
-            {
-                db.MemberAttendances.Remove(attendance);
-                db.SaveChanges();
-            }
-            return db.MemberAttendances.Count(ma => ma.MemberId == memberId);
-        }
 
         [HttpGet]
         public ActionResult Adults(Guid? id = null)
@@ -216,6 +214,7 @@ namespace CoderDojo.Views
 
         private ActionResult AdultSave(Adult adultChanges, string adultMode)
         {
+            bool newAdult = false;
             if (ModelState.IsValid)
             {
                 Adult adult = null;
@@ -231,19 +230,20 @@ namespace CoderDojo.Views
                     adult = new Adult();
                     adult.Id = Guid.NewGuid();
                     db.Adults.Add(adult);
+                    newAdult = true;
                 }
 
                 // Save changes
-                adult.FirstName = adultChanges.FirstName;
-                adult.LastName = adultChanges.LastName;
-                adult.Email = adultChanges.Email;
-                adult.Phone = adultChanges.Phone;
+                adult.FirstName = TrimNullableString(adultChanges.FirstName);
+                adult.LastName = TrimNullableString(adultChanges.LastName);
+                adult.Email = TrimNullableString(adultChanges.Email);
+                adult.Phone = TrimNullableString(adultChanges.Phone);
                 adult.IsParent = adultChanges.IsParent;
                 adult.IsMentor = adultChanges.IsMentor;
-                adult.GithubLogin = adultChanges.GithubLogin;
-                adult.XboxGamertag = adultChanges.XboxGamertag;
-                adult.ScratchName = adultChanges.ScratchName;
-                adult.Login = adultChanges.Login;
+                adult.GithubLogin = TrimNullableString(adultChanges.GithubLogin);
+                adult.XboxGamertag = TrimNullableString(adultChanges.XboxGamertag);
+                adult.ScratchName = TrimNullableString(adultChanges.ScratchName);
+                adult.Login = TrimNullableString(adultChanges.Login);
 
                 // Password change
                 if (string.IsNullOrEmpty(adultChanges.NewPassword) == false)
@@ -251,8 +251,44 @@ namespace CoderDojo.Views
                     adult.PasswordHash = db.GeneratePasswordHash(adultChanges.NewPassword);
                 }
                 db.SaveChanges();
+                if (adultMode == "Parent" && newAdult)
+                {
+                    return RedirectClient("/Mentor/ParentKids/" + adult.Id.ToString("N"));
+                }
             }
             return RedirectClient("/Mentor/" + adultMode + "s");
+        }
+
+        [HttpGet]
+        public ActionResult SearchMembersByName(string name)
+        {
+            var members = (from m in db.Members
+                          where m.FirstName.StartsWith(name) || m.LastName.StartsWith(name)
+                          || ((m.FirstName + " " + m.LastName).StartsWith(name))
+                          orderby m.FirstName, m.LastName
+                          select new {
+                            m.FirstName, m.LastName, m.Id
+                          }).ToList()
+                          .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N") });
+            return Json(members, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SearchParentsByName(string name)
+        {
+            var members = (from a in db.Adults
+                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) ||
+                           ((a.FirstName + " " + a.LastName).StartsWith(name)))
+                           && (a.IsParent == true)
+                           orderby a.FirstName, a.LastName
+                           select new
+                           {
+                               a.FirstName,
+                               a.LastName,
+                               a.Id
+                           }).ToList()
+                          .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N") });
+            return Json(members, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -304,13 +340,13 @@ namespace CoderDojo.Views
                 }
 
                 // Save changes
-                member.FirstName = memberChanges.FirstName;
-                member.LastName = memberChanges.LastName;
+                member.FirstName = TrimNullableString(memberChanges.FirstName);
+                member.LastName = TrimNullableString(memberChanges.LastName);
                 member.BirthYear = memberChanges.BirthYear;
-                member.Login = memberChanges.Login;
-                member.GithubLogin = memberChanges.GithubLogin;
-                member.ScratchName = memberChanges.ScratchName;
-                member.XboxGamertag = memberChanges.XboxGamertag;
+                member.Login = TrimNullableString(memberChanges.Login);
+                member.GithubLogin = TrimNullableString(memberChanges.GithubLogin);
+                member.ScratchName = TrimNullableString(memberChanges.ScratchName);
+                member.XboxGamertag = TrimNullableString(memberChanges.XboxGamertag);
 
                 // Password change
                 if (string.IsNullOrEmpty(memberChanges.NewPassword) == false)
@@ -320,7 +356,7 @@ namespace CoderDojo.Views
                 db.SaveChanges();
                 if (previousPage == "Attendance")
                 {
-                    AttendanceSet(member.Id, true, DateTime.Today);
+                    db.AttendanceSet(member.Id, true, DateTime.Today);
                     return RedirectClient("/Mentor/Attendance?id=" + member.Id);
                 }
                 return RedirectClient("/Mentor/Members?id=" + member.Id);
@@ -354,7 +390,62 @@ namespace CoderDojo.Views
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
+            ViewBag.Belts = db.Belts.OrderBy(b => b.SortOrder).ToList();
             return View("MemberBelts", member);
+        }
+
+        [HttpPost]
+        public ActionResult BeltApprove(Guid id, string message)
+        {
+            var memberBelt = db.MemberBelts.FirstOrDefault(mb => mb.Id == id);
+            memberBelt.Awarded = DateTime.UtcNow;
+            memberBelt.AwardedByAdultId = GetCurrentAdult().Id;
+            memberBelt.AwardedNotes = message;
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult BeltReject(Guid id, string message)
+        {
+            var memberBelt = db.MemberBelts.FirstOrDefault(mb => mb.Id == id);
+            memberBelt.RejectedDate = DateTime.UtcNow;
+            memberBelt.RejectedByAdultId = GetCurrentAdult().Id;
+            memberBelt.RejectedNotes = message;
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRelationship(Guid id)
+        {
+            var relationship = db.MemberParents.FirstOrDefault(mp => mp.Id == id);
+            db.MemberParents.Remove(relationship);
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult CreateRelationship(Guid parentId, Guid memberId)
+        {
+            var relationship = new MemberParent
+            {
+                AdultId = parentId,
+                MemberId = memberId
+            };
+            db.MemberParents.Add(relationship);
+            db.SaveChanges();
+
+            relationship = (from mp in db.MemberParents.Include("Adult").Include("Member")
+                            where mp.Id == relationship.Id
+                            select mp).FirstOrDefault();
+            return Json(new {
+                relationshipId = relationship.Id.ToString("N"),
+                memberId = relationship.MemberId.ToString("N"),
+                adultId = relationship.AdultId.ToString("N"),
+                adultFullName = relationship.Adult.FullName.Replace("'", "&quot;"),
+                memberFullName = relationship.Member.MemberName.Replace("'", "&quot;")
+            });
         }
 
         private void AddMember(string firstName, string lastName, string scratch, int birthYear)

@@ -60,19 +60,20 @@ namespace CoderDojo.Views
             return View("Attendance", member);
         }
 
-        [HttpGet]
-        public ActionResult BeltApplication(Guid id)
+        [HttpPost]
+        public ActionResult BeltApplication(Guid id, string message)
         {
             Guid beltId = id;
             MemberBelt application = new MemberBelt
             {
                 MemberId = GetCurrentMember().Id,
                 BeltId = beltId,
-                ApplicationDate = DateTime.Today
+                ApplicationDate = DateTime.UtcNow,
+                ApplicationNotes = message
             };
             db.MemberBelts.Add(application);
             db.SaveChanges();
-            return RedirectClient("/Member/Belts");
+            return Json("OK");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

@@ -33,6 +33,8 @@ namespace CoderDojo
         public string PasswordHash { get; set; }
         public string GithubLogin { get; set; }
         public bool Deleted { get; set; }
+        public Nullable<System.DateTime> LoginDate { get; set; }
+        public Nullable<System.DateTime> LoginDatePrevious { get; set; }
     
         public virtual ICollection<MemberAttendance> MemberAttendances { get; set; }
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }

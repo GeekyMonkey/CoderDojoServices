@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CoderDojo
 {
-    public partial class Adult : BaseEntity
+    public partial class Adult : BaseEntity, IUser
     {
         public string FullName
         {

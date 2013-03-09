@@ -17,7 +17,7 @@ var onPageShow = function()
 
     // Focus the first input on all pages with forms
     setTimeout(function () {
-        $('form :input:visible').first().focus();
+        $('form :input.AutoFocus:visible').first().focus();
     }, 10);
 }
 
@@ -81,35 +81,36 @@ function initAttendancePage() {
     });
 
     // Receive a notification that someone altered attendance
-    $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, present, sessionCount) {
-        if ($("#AttendanceDateSelect").val() == attendanceDate) {
-            var checkbox = $("#P" + memberId);
-            present = present == "true";
-            var newChecked = present;
-            if (window.settingAttendanceMemberId != memberId) {
-                // Attendance change came from other mentor
-            } else {
-                // Attendance change came from current mentor
-                displayMemberWelcome(memberId, present, sessionCount);
+    $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, present, sessionCount, dojoAttendanceCount, memberMessage) {
+        if ($("#AttendanceDateSelect").length) {
+            if ($("#AttendanceDateSelect").val() == attendanceDate) {
+                var checkbox = $("#P" + memberId);
+                present = present == "true";
+                var newChecked = present;
+                if (window.settingAttendanceMemberId != memberId) {
+                    // Attendance change came from other mentor
+                } else {
+                    // Attendance change came from current mentor
+                    displayMemberWelcome(memberId, present, sessionCount, memberMessage);
+                }
+                var li = checkbox.closest("li");
+                var oldBackgroundColor = li.css("background-color");
+                li.find(".ui-btn-inner").css("transition", "background-color 0.05s").css("background-color", "yellow")
+                setTimeout(function () {
+                    checkbox.prop("checked", newChecked).checkboxradio("refresh")
+                    updateAttendanceCount();
+                    li.find(".ui-btn-inner").css("transition", "background-color 0.5s").css("background-color", oldBackgroundColor)
+                }, 50);
             }
-            var li = checkbox.closest("li");
-            var oldBackgroundColor = li.css("background-color");
-            li.find(".ui-btn-inner").css("transition", "background-color 0.05s").css("background-color", "yellow")
-            setTimeout(function () {
-                checkbox.prop("checked", newChecked).checkboxradio("refresh")
-                updateAttendanceCount();
-                li.find(".ui-btn-inner").css("transition", "background-color 0.5s").css("background-color", oldBackgroundColor)
-            }, 50);
         }
     };
 
-    var displayMemberWelcome = function (memberId, present, sessionCount)
+    var displayMemberWelcome = function (memberId, present, sessionCount, memberMessage)
     {
         if (present) {
             var checkbox = $("#P" + memberId);
             var memberName = checkbox.closest("li").find("label").text();
-            $("#WelcomeName").html(memberName);
-            $("#WelcomSessionCount").html(sessionCount + integerSuffix(sessionCount));
+            $("#MemberMessages").html(memberMessage);
             $("#WelcomeDetailsButton").attr("href", "/Mentor/Member/" + memberId + "?PreviousPage=Attendance");
             $("#MemberWelcomeDialog").popup("open"/*, { positionTo: "#P" + memberId }*/)
             //$("#MemberWelcomeDialog").on("click", function () {

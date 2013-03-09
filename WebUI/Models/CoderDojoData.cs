@@ -27,13 +27,44 @@ namespace CoderDojo
         /// Get a list of all of the coder dojo sessions that have been held
         /// </summary>
         /// <returns></returns>
-        public IQueryable<DateTime> GetSessionDates()
+        public IList<DateTime> GetSessionDates(DateTime? DateToInclude)
         {
-            IQueryable<DateTime> dates = this.MemberAttendances
+            List<DateTime> dates = this.MemberAttendances
                 .Select(ma => ma.Date)
                 .Distinct()
-                .OrderBy(d => d);
+                .OrderByDescending(d => d)
+                .ToList();
+            if (DateToInclude != null && !dates.Contains(DateToInclude.Value))
+            {
+                dates.Add(DateToInclude.Value);
+            }
             return dates;
         }
+
+        public int AttendanceSet(Guid memberId, bool present, DateTime sessionDate)
+        {
+            MemberAttendance attendance = this.MemberAttendances
+                .Where(ma => ma.MemberId == memberId && ma.Date == sessionDate)
+                .FirstOrDefault();
+            bool hasAttendance = (attendance != null);
+            if (present == true && hasAttendance == false)
+            {
+                attendance = new MemberAttendance
+                {
+                    Id = Guid.NewGuid(),
+                    MemberId = memberId,
+                    Date = sessionDate
+                };
+                this.MemberAttendances.Add(attendance);
+                this.SaveChanges();
+            }
+            else if (present == false && hasAttendance == true)
+            {
+                this.MemberAttendances.Remove(attendance);
+                this.SaveChanges();
+            }
+            return this.MemberAttendances.Count(ma => ma.MemberId == memberId);
+        }
+
     }
 }

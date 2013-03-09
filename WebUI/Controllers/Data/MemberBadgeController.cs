@@ -17,7 +17,7 @@ namespace CoderDojo.Controllers
 
         public ActionResult Index()
         {
-            var memberbadges = db.MemberBadges.Include(m => m.Adult).Include(m => m.Badge).Include(m => m.Member);
+            var memberbadges = db.MemberBadges.Include(m => m.AwardedByAdult).Include(m => m.Badge).Include(m => m.Member);
             return View(memberbadges.ToList());
         }
 

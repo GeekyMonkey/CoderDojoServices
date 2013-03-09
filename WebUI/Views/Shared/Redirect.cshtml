@@ -16,7 +16,7 @@
 		<!-- Change page : JQueryMobile redirect -->
 		<div data-role="page" id="redirect">
 			<script>
-				$.mobile.changePage('@Url');
+				$.mobile.changePage('@Html.Raw(Url)');
 			</script>
 		</div>
 	</body>

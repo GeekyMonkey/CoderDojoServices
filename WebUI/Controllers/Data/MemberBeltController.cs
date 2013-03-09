@@ -17,7 +17,7 @@ namespace CoderDojo.Controllers
 
         public ActionResult Index()
         {
-            var memberbelts = db.MemberBelts.Include(m => m.Adult).Include(m => m.Belt).Include(m => m.Member);
+            var memberbelts = db.MemberBelts.Include(m => m.AwardedByAdult).Include(m => m.Belt).Include(m => m.Member);
             return View(memberbelts.ToList());
         }
 

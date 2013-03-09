@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm("Login", "Home")) {
     <label for="UsernameInput">User</label>
-    @Html.TextBoxFor(x => x.Username)
+    @Html.TextBoxFor(x => x.Username, new { @class = "AutoFocus" })
     
     <label for="PassowrdInput">Password</label>
     @Html.PasswordFor(x => x.Password)

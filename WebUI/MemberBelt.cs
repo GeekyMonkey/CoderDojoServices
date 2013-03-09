@@ -26,8 +26,9 @@ namespace CoderDojo
         public Nullable<System.Guid> RejectedByAdultId { get; set; }
         public string RejectedNotes { get; set; }
     
-        public virtual Adult Adult { get; set; }
+        public virtual Adult AwardedByAdult { get; set; }
         public virtual Belt Belt { get; set; }
         public virtual Member Member { get; set; }
+        public virtual Adult RejectedByAdult { get; set; }
     }
 }
