@@ -33,5 +33,6 @@ namespace CoderDojo
         public DbSet<MemberBelt> MemberBelts { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<MemberParent> MemberParents { get; set; }
+        public DbSet<BadgeCategory> BadgeCategories { get; set; }
     }
 }

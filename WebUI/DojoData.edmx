@@ -7,6 +7,7 @@
     <Schema Namespace="CoderDojo.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="CoderDojoStoreContainer">
           <EntitySet Name="Adults" EntityType="CoderDojo.Store.Adults" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="BadgeCategories" EntityType="CoderDojo.Store.BadgeCategories" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Badges" EntityType="CoderDojo.Store.Badges" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Belts" EntityType="CoderDojo.Store.Belts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MemberAttendance" EntityType="CoderDojo.Store.MemberAttendance" store:Type="Tables" Schema="dbo" />
@@ -14,6 +15,10 @@
           <EntitySet Name="MemberBelts" EntityType="CoderDojo.Store.MemberBelts" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MemberParent" EntityType="CoderDojo.Store.MemberParent" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Members" EntityType="CoderDojo.Store.Members" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Badges_BadgeCategories" Association="CoderDojo.Store.FK_Badges_BadgeCategories">
+            <End Role="BadgeCategories" EntitySet="BadgeCategories" />
+            <End Role="Badges" EntitySet="Badges" />
+          </AssociationSet>
           <AssociationSet Name="FK_MemberAttendance_Membe" Association="CoderDojo.Store.FK_MemberAttendance_Membe">
             <End Role="Members" EntitySet="Members" />
             <End Role="MemberAttendance" EntitySet="MemberAttendance" />
@@ -80,12 +85,21 @@
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
         </EntityType>
+        <EntityType Name="BadgeCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CategoryDescription" Type="ntext" />
+        </EntityType>
         <EntityType Name="Badges">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Achievement" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="BadgeCategoryId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Belts">
           <Key>
@@ -162,6 +176,18 @@
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
         </EntityType>
+        <Association Name="FK_Badges_BadgeCategories">
+          <End Role="BadgeCategories" Type="CoderDojo.Store.BadgeCategories" Multiplicity="0..1" />
+          <End Role="Badges" Type="CoderDojo.Store.Badges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeCategories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Badges">
+              <PropertyRef Name="BadgeCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MemberAttendance_Membe">
           <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -365,6 +391,11 @@
             <End Role="Adult" EntitySet="Adults" />
             <End Role="MemberBadge" EntitySet="MemberBadges" />
           </AssociationSet>
+          <EntitySet Name="BadgeCategories" EntityType="CoderDojo.BadgeCategory" />
+          <AssociationSet Name="FK_Badges_BadgeCategories" Association="CoderDojo.FK_Badges_BadgeCategories">
+            <End Role="BadgeCategory" EntitySet="BadgeCategories" />
+            <End Role="Badge" EntitySet="Badges" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adult">
           <Key>
@@ -395,6 +426,8 @@
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Achievement" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="MemberBadges" Relationship="CoderDojo.FK_MemberBadges_Badge" FromRole="Badges" ToRole="MemberBadges" />
+          <Property Type="Guid" Name="BadgeCategoryId" />
+          <NavigationProperty Name="BadgeCategory" Relationship="CoderDojo.FK_Badges_BadgeCategories" FromRole="Badge" ToRole="BadgeCategory" />
         </EntityType>
         <EntityType Name="Belt">
           <Key>
@@ -633,6 +666,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="BadgeCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CategoryName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CategoryDescription" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Badges" Relationship="CoderDojo.FK_Badges_BadgeCategories" FromRole="BadgeCategory" ToRole="Badge" />
+        </EntityType>
+        <Association Name="FK_Badges_BadgeCategories">
+          <End Type="CoderDojo.BadgeCategory" Role="BadgeCategory" Multiplicity="0..1" />
+          <End Type="CoderDojo.Badge" Role="Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Badge">
+              <PropertyRef Name="BadgeCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -664,6 +718,7 @@
           <EntitySetMapping Name="Badges">
             <EntityTypeMapping TypeName="CoderDojo.Badge">
               <MappingFragment StoreEntitySet="Badges">
+                <ScalarProperty Name="BadgeCategoryId" ColumnName="BadgeCategoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Achievement" ColumnName="Achievement" />
               </MappingFragment>
@@ -746,6 +801,15 @@
               <MappingFragment StoreEntitySet="MemberParent">
                 <ScalarProperty Name="AdultId" ColumnName="AdultId" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BadgeCategories">
+            <EntityTypeMapping TypeName="CoderDojo.BadgeCategory">
+              <MappingFragment StoreEntitySet="BadgeCategories">
+                <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

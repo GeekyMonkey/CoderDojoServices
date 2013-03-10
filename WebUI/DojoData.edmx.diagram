@@ -24,6 +24,8 @@
         <AssociationConnector Association="CoderDojo.FK_MemberParent_Member" />
         <AssociationConnector Association="CoderDojo.FK_MemberBelts_AdultRejected" />
         <AssociationConnector Association="CoderDojo.FK_MemberBadges_AdultRejected" />
+        <EntityTypeShape EntityType="CoderDojo.BadgeCategory" Width="1.75" PointX="0.5" PointY="7.375" />
+        <AssociationConnector Association="CoderDojo.FK_Badges_BadgeCategories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

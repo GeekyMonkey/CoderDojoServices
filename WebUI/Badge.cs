@@ -21,7 +21,9 @@ namespace CoderDojo
     
         public System.Guid Id { get; set; }
         public string Achievement { get; set; }
+        public Nullable<System.Guid> BadgeCategoryId { get; set; }
     
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }
+        public virtual BadgeCategory BadgeCategory { get; set; }
     }
 }

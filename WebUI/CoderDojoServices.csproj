@@ -161,6 +161,9 @@
     <Compile Include="Badge.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
+    <Compile Include="BadgeCategory.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Belt.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
