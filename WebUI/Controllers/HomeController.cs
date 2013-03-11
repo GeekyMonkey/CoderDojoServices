@@ -110,12 +110,14 @@ namespace CoderDojo.Controllers
         [HttpGet]
         public ActionResult LogOut()
         {
+            FormsAuthentication.SetAuthCookie(null, false);
             FormsAuthentication.SignOut();
             return View("Redirect", model: "/Home/Login");
         }
 
         [HttpGet]
         [AllowAnonymous]
+        [SignInModeFilter]
         public ActionResult SignIn()
         {
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);

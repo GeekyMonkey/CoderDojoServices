@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace CoderDojo.Views
 {
@@ -459,6 +460,15 @@ namespace CoderDojo.Views
             };
             db.Members.Add(m);
             db.SaveChanges();
+        }
+
+        // Mentor is kicking off SignIn mode
+        public ActionResult SignInMode()
+        {
+            FormsAuthentication.SetAuthCookie(null, false);
+            FormsAuthentication.SignOut();
+            Response.SetCookie(new HttpCookie("SignInCookie", DateTime.Today.ToString("yyyy-MM-dd")));
+            return RedirectClient("/SignIn");
         }
 
         /*

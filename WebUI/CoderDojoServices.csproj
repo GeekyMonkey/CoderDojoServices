@@ -146,6 +146,7 @@
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
     <Compile Include="AppCode\Extensions.cs" />
+    <Compile Include="AppCode\SignInModeFilter.cs" />
     <Compile Include="App_Start\AuthorizeUser.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\BundleMobileConfig.cs" />
