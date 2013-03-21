@@ -89,9 +89,10 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="50" />
           <Property Name="CategoryDescription" Type="ntext" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Badges">
           <Key>
@@ -100,6 +101,8 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Achievement" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="BadgeCategoryId" Type="uniqueidentifier" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
         </EntityType>
         <EntityType Name="Belts">
           <Key>
@@ -110,6 +113,7 @@
           <Property Name="Description" Type="ntext" />
           <Property Name="HexCode" Type="nvarchar" MaxLength="10" />
           <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MemberAttendance">
           <Key>
@@ -428,6 +432,8 @@
           <NavigationProperty Name="MemberBadges" Relationship="CoderDojo.FK_MemberBadges_Badge" FromRole="Badges" ToRole="MemberBadges" />
           <Property Type="Guid" Name="BadgeCategoryId" />
           <NavigationProperty Name="BadgeCategory" Relationship="CoderDojo.FK_Badges_BadgeCategories" FromRole="Badge" ToRole="BadgeCategory" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Belt">
           <Key>
@@ -439,6 +445,7 @@
           <NavigationProperty Name="MemberBelts" Relationship="CoderDojo.FK_MemberBelts_Belt" FromRole="Belts" ToRole="MemberBelts" />
           <Property Type="String" Name="HexCode" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="SortOrder" Nullable="false" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
         </EntityType>
         <EntityType Name="MemberAttendance">
           <Key>
@@ -670,10 +677,11 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="CategoryName" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="CategoryDescription" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Badges" Relationship="CoderDojo.FK_Badges_BadgeCategories" FromRole="BadgeCategory" ToRole="Badge" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
         </EntityType>
         <Association Name="FK_Badges_BadgeCategories">
           <End Type="CoderDojo.BadgeCategory" Role="BadgeCategory" Multiplicity="0..1" />
@@ -718,6 +726,8 @@
           <EntitySetMapping Name="Badges">
             <EntityTypeMapping TypeName="CoderDojo.Badge">
               <MappingFragment StoreEntitySet="Badges">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="BadgeCategoryId" ColumnName="BadgeCategoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Achievement" ColumnName="Achievement" />
@@ -727,6 +737,7 @@
           <EntitySetMapping Name="Belts">
             <EntityTypeMapping TypeName="CoderDojo.Belt">
               <MappingFragment StoreEntitySet="Belts">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
                 <ScalarProperty Name="HexCode" ColumnName="HexCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -808,6 +819,7 @@
           <EntitySetMapping Name="BadgeCategories">
             <EntityTypeMapping TypeName="CoderDojo.BadgeCategory">
               <MappingFragment StoreEntitySet="BadgeCategories">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

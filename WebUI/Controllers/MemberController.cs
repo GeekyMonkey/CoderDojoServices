@@ -48,6 +48,7 @@ namespace CoderDojo.Views
         public ActionResult Belts()
         {
             var belts = from belt in db.Belts
+                        where belt.Deleted == false
                         orderby belt.SortOrder
                         select belt;
             return View("Belts", belts.ToList());

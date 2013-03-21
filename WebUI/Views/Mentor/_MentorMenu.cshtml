@@ -18,6 +18,15 @@
         <li>@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { @class=(activePage == "Mentors" ? activeClass : inactiveClass)})</li>
     </ul>
 
+    <div data-role="collapsible" data-content-theme="a">
+        <h3>Maintenance</h3>
+        <ul data-role="listview" data-inset="true">
+            <li>@Html.ActionLink("Belts", "Belts", "Mentor", null, new { @class=(activePage == "Belts" ? activeClass : inactiveClass)})</li>
+            <li>@Html.ActionLink("Badges", "Badges", "Mentor", null, new { @class=(activePage == "Badges" ? activeClass : inactiveClass)})</li>
+            <li>@Html.ActionLink("Badge Categories", "BadgeCategories", "Mentor", null, new { @class=(activePage == "BadgeCategories" ? activeClass : inactiveClass)})</li>
+        </ul>
+    </div>
+
     <div data-role="controlgroup" data-type="vertical">
         @if (ViewBag.CurrentAdult.IsParent) {
                 @Html.ActionLink("Parent Mode", "Index", "Parent", null, new { data_role="button", data_icon="star" })

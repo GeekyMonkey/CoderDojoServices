@@ -391,7 +391,7 @@ namespace CoderDojo.Views
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
-            ViewBag.Belts = db.Belts.OrderBy(b => b.SortOrder).ToList();
+            ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
             return View("MemberBelts", member);
         }
 
@@ -471,411 +471,187 @@ namespace CoderDojo.Views
             return RedirectClient("/SignIn");
         }
 
-        /*
-        [HttpGet]
-        public ActionResult ImportData()
+        /// <summary>
+        /// Belt Maintenance
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Belts()
         {
-            AddMember("Katie", "Arthur", "", 2004);
-            AddMember("Emmanuel", "Atijohn", "", 2000);
-            AddMember("Peter", "Bailey", "", 1998);
-            AddMember("John", "Bailey", "", 2006);
-            AddMember("Amy", "Bailey", "", 2001);
-            AddMember("Tiernan", "Boyce", "darkvoid", 1999);
-            AddMember("Jack", "Brennan", "", 2000);
-            AddMember("Rory", "Brennan", "", 1999);
-            AddMember("Ephram", "Brotherton", "", 2005);
-            AddMember("Garry", "Cahill", "", 1996);
-            AddMember("Padraig", "Cahill", "", 2001);
-            AddMember("William", "Cahir Whelan", "", 2004);
-            AddMember("Andrew", "Cahir Whelan", "", 2006);
-            AddMember("Kane", "Cantrell", "", 2001);
-            AddMember("Slaine", "Carey", "", 1996);
-            AddMember("Aobha", "Carey", "", 2000);
-            AddMember("Oran", "Carey", "", 2003);
-            AddMember("Catherine", "Casey", "", 1998);
-            AddMember("Andrew", "Casey", "", 2002);
-            AddMember("Colm", "Cleary", "", 2003);
-            AddMember("Kieran", "Clohessy", "", 2000);
-            AddMember("Jack", "Conlon", "", 2002);
-            AddMember("Patrick", "Conlon", "", 2000);
-            AddMember("Joseph", "Connaughton", "", 2000);
-            AddMember("Oisin", "Connole", "", 2001);
-            AddMember("Jack", "Corry", "", 1999);
-            AddMember("Niall", "Corry", "", 2001);
-            AddMember("Ben", "Cosgrove", "cnebdragon", 2001);
-            AddMember("Michael", "Costello", "", 2003);
-            AddMember("Thomas", "Costello", "", 2001);
-            AddMember("Ally", "Crimmins", "", 2001);
-            AddMember("Oisin", "Crimmins", "", 2003);
-            AddMember("Vincent", "Crowley", "", 2006);
-            AddMember("Dylan", "Cummins", "", 1999);
-            AddMember("James", "Doherty", "", 2004);
-            AddMember("Ella", "Doherty", "", 2002);
-            AddMember("Noah", "Doherty", "", 2004);
-            AddMember("Sean", "Donnelly", "Seandon", 1999);
-            AddMember("Diarmuid", "Edwards", "", 1996);
-            AddMember("Liam", "Fahy", "", 1999);
-            AddMember("Gillian", "Fahy", "", 2000);
-            AddMember("Roisin", "fahy", "", 2001);
-            AddMember("Ronan", "Fallon", "", 1996);
-            AddMember("Barry", "Fitzgerald", "", 1998);
-            AddMember("Mark", "Fitzgerald", "", 1999);
-            AddMember("Abbie", "Fitzgerald", "", 2003);
-            AddMember("Diarmuid", "Fitzgerald", "", 2001);
-            AddMember("Colum", "Francis O Dalaigh", "", 2002);
-            AddMember("Conor", "Francis O Dalaigh", "", 2000);
-            AddMember("Joannah", "Francis O Dalaigh", "", 2003);
-            AddMember("Oliver", "Gavin", "", 1995);
-            AddMember("Carla", "Griffin", "", 2003);
-            AddMember("Alma", "Griffin", "", 2005);
-            AddMember("Kevin", "Hayes", "", 1999);
-            AddMember("Sean", "Hehir", "", 2001);
-            AddMember("Ciaran", "Hickey", "", 1998);
-            AddMember("Alana", "Higgins", "", 2003);
-            AddMember("Caleb", "Higgins", "", 2000);
-            AddMember("Joseph", "Kelly", "", 1996);
-            AddMember("Dan", "Kennedy", "", 2002);
-            AddMember("Jack", "Kirrane", "", 1999);
-            AddMember("Luke", "Kirrane", "", 2001);
-            AddMember("Cian", "Lahiffe", "", 2003);
-            AddMember("Caoimhe", "Lally", "", 2003);
-            AddMember("Oisin", "Lally", "", 1998);
-            AddMember("Aoibhinn", "Leyden", "", 2003);
-            AddMember("Ruth", "Leyden", "", 2005);
-            AddMember("Abdelqahman", "Liani", "", 2005);
-            AddMember("Jamila", "Liani", "", 2003);
-            AddMember("Sara", "Liani", "", 2004);
-            AddMember("Darragh", "Liddy", "", 2000);
-            AddMember("Seadhna", "Liddy", "", 2003);
-            AddMember("Eliza", "Liddy", "", 2001);
-            AddMember("Reuben", "Liddy", "", 2004);
-            AddMember("Cormac", "Lynam", "", 2005);
-            AddMember("Jack", "Lynch", "", 2004);
-            AddMember("Daniel", "Maguire", "", 2000);
-            AddMember("Cormac", "Maher", "", 2005);
-            AddMember("Mark", "Mc Govern", "", 1995);
-            AddMember("Jack", "Mc Morrough", "", 2000);
-            AddMember("John", "McArdle", "", 2004);
-            AddMember("Brian", "McArdle", "", 2006);
-            AddMember("Roisin", "McAteer", "", 1999);
-            AddMember("Caomhe", "McAteer", "", 2002);
-            AddMember("Conor", "McCarthy", "", 2002);
-            AddMember("Sean", "McCarthy", "", 2003);
-            AddMember("Ben", "McNamara", "", 1996);
-            AddMember("Luke", "Meade", "", 2002);
-            AddMember("Aaron", "Meade", "", 2000);
-            AddMember("Christopher", "Meaney", "", 1997);
-            AddMember("Aidan", "Meaney", "", 2003);
-            AddMember("Cian", "Meere", "", 2003);
-            AddMember("Sean", "Meere", "", 2000);
-            AddMember("Ciara", "Miesle", "", 2004);
-            AddMember("Liam", "Morgan", "", 2004);
-            AddMember("Sadie", "Morgan", "", 2006);
-            AddMember("Dean", "Morrissey", "", 2002);
-            AddMember("Caoimhe", "Murch", "", 2005);
-            AddMember("Eoghan", "Murch", "", 2003);
-            AddMember("Doireann", "Ni Bhraoiin", "", 2006);
-            AddMember("Sarah", "Ni Cheallaigh", "", 2002);
-            AddMember("Teide", "Nolan", "", 2002);
-            AddMember("Christopher", "Notre", "", 2001);
-            AddMember("Fiachra", "O Braoin", "", 2005);
-            AddMember("Eoin", "O Ceallaigh", "", 1999);
-            AddMember("Daithi", "O Cearbhallain", "Condroid", 1999);
-            AddMember("Aaron", "O'Brien", "", 2005);
-            AddMember("Liam", "O'Brien", "", 2002);
-            AddMember("Roan", "O'Flaherty", "", 2002);
-            AddMember("Seoda", "O'Keeffe", "", 2003);
-            AddMember("Cadhla", "O'Keeffe", "", 2005);
-            AddMember("Tadhg", "O'Keeffe", "", 2007);
-            AddMember("Fintan", "O'Kelly", "", 2002);
-            AddMember("Tom", "O'Looney", "", 2002);
-            AddMember("Matt", "O'Looney", "", 2003);
-            AddMember("James", "O'Neill", "Jammysquirrel", 1999);
-            AddMember("Sami", "O'Regan", "", 1998);
-            AddMember("Ciaran", "Otuos", "", 2003);
-            AddMember("Kieran", "Parry", "", 2001);
-            AddMember("Alexander", "Peach", "", 2002);
-            AddMember("Cian", "Perill", "sethanic", 2002);
-            AddMember("Donnacha", "Ralph", "", 2003);
-            AddMember("Emma", "Ryan", "", 2000);
-            AddMember("Conor", "Shanahan", "", 2003);
-            AddMember("Ciara", "Shanahan", "", 2004);
-            AddMember("Jack", "Sheehan", "", 1999);
-            AddMember("Emmett", "Shivers", "", 2000);
-            AddMember("Abbie", "Sullivan", "", 1996);
-            AddMember("Crea", "Sullivan", "", 1999);
-            AddMember("Nora", "Tchadjobo", "", 2002);
-            AddMember("Dillon", "Toumanguelov", "", 2002);
-            AddMember("Tamlyn", "Toumanguelov", "", 2005);
-            AddMember("Oran", "Treacy", "", 1999);
-            AddMember("Ronan", "Wall", "", 2000);
-            return Content("Data imported");
-        }
-        */
-
-        /*
-        [HttpGet]
-        public ActionResult ImportAttendance()
-        {
-            List<DateTime> dates = new List<DateTime>();
-            dates.Add(new DateTime(2012,9,8));
-            dates.Add(new DateTime(2012,9,15));
-            dates.Add(new DateTime(2012,9,22));
-            dates.Add(new DateTime(2012,9,29));
-            dates.Add(new DateTime(2012,10,6));
-            dates.Add(new DateTime(2012,10,20));
-            dates.Add(new DateTime(2012,11,3));
-            dates.Add(new DateTime(2012,11,10));
-            dates.Add(new DateTime(2012,11,17));
-            dates.Add(new DateTime(2012,11,24));
-            dates.Add(new DateTime(2012,12,1));
-            dates.Add(new DateTime(2012,12,8));
-            dates.Add(new DateTime(2012,12,15));
-            dates.Add(new DateTime(2013,1,12));
-            dates.Add(new DateTime(2013,1,19));
-            dates.Add(new DateTime(2013,1,26));
-            dates.Add(new DateTime(2013,2,2));
-            dates.Add(new DateTime(2013,2,9));
-            dates.Add(new DateTime(2013,2,16));
-            dates.Add(new DateTime(2013,3,2));
-
-            ImportAttendanceLine(dates, new [] {"Katie","Arthur","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Emmanuel","Atijohn","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Peter","Bailey","0","0","1","1","1","1","1","1","0","1","1","1","1","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"John","Bailey","0","0","1","1","1","1","1","1","0","1","1","1","1","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Amy","Bailey","0","0","0","1","1","1","1","1","0","1","1","1","1","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tiernan","Boyce","1","1","1","1","1","1","1","1","0","1","1","1","1","1","1","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Jack","Brennan","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Rory","Brennan","0","0","0","0","0","1","1","1","1","1","0","1","0","0","1","1","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Ephram","Brotherton","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Garry","Cahill","0","1","1","1","1","1","1","1","1","1","1","1","1","1","1","0","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Padraig","Cahill","0","0","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"William","Cahir Whelan","0","1","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Andrew","Cahir Whelan","0","1","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Kane","Cantrell","0","0","0","0","0","0","0","0","0","1","1","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Slaine","Carey","1","1","1","1","1","1","1","1","1","0","0","1","1","0","0","1","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Aobha","Carey","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oran","Carey","1","1","1","1","1","1","1","1","1","0","0","1","1","0","0","1","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Catherine","Casey","0","0","0","0","0","1","1","0","0","1","1","0","0","1","1","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Andrew","Casey","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Colm","Cleary","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Kieran","Clohessy","0","0","1","1","1","1","0","1","1","1","1","0","1","0","1","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Jack","Conlon","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","1","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Patrick","Conlon","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Joseph","Connaughton","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oisin","Connole","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Jack","Corry","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Niall","Corry","0","0","0","0","0","0","0","1","0","0","0","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ben","Cosgrove","0","0","0","0","0","1","0","1","1","0","0","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Michael","Costello","0","0","0","0","0","0","0","0","0","1","1","0","0","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Thomas","Costello","0","0","0","0","0","0","0","0","0","1","1","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ally","Crimmins","0","0","0","0","0","0","0","1","1","1","1","1","1","0","1","0","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Oisin","Crimmins","0","0","0","0","0","0","0","0","0","0","1","1","1","0","1","0","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Vincent","Crowley","0","0","0","0","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Dylan","Cummins","0","0","0","0","0","0","0","1","1","1","1","1","0","1","1","1","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"James","Doherty","0","0","0","0","0","0","0","0","0","0","0","1","0","1","1","0","1","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Ella","Doherty","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Noah","Doherty","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sean","Donnelly","0","0","0","1","0","0","1","1","1","0","1","1","1","1","1","1","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Diarmuid","Edwards","0","0","0","0","1","1","0","1","0","1","1","1","1","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Liam","Fahy","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Gillian","Fahy","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Roisin","fahy","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ronan","Fallon","0","0","0","0","1","1","0","0","1","1","1","1","1","1","0","0","1","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Barry","Fitzgerald","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Mark","Fitzgerald","0","0","0","0","0","1","1","1","0","1","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Abbie","Fitzgerald","0","0","0","0","0","1","1","1","1","1","0","0","0","0","0","0","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Diarmuid","Fitzgerald","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Colum","Francis O Dalaigh","0","0","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Conor","Francis O Dalaigh","0","0","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Joannah","Francis O Dalaigh","0","0","0","0","0","0","1","1","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oliver","Gavin","1","1","1","1","1","1","1","1","0","1","1","1","1","1","1","1","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Carla","Griffin","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Alma","Griffin","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Kevin","Hayes","0","0","0","1","0","0","0","0","1","1","0","0","0","0","1","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Sean","Hehir","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ciaran","Hickey","0","1","1","1","1","1","0","0","1","1","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Alana","Higgins","0","0","1","0","1","1","1","1","0","0","1","0","1","1","0","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Caleb","Higgins","0","0","1","1","1","1","1","1","1","1","1","0","1","1","0","1","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Emer","Keane","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Nathan","Keane","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Joseph","Kelly","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Dan","Kennedy","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Jack","Kirrane","1","1","1","0","0","0","0","0","0","0","0","0","1","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Luke","Kirrane","1","1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cian","Lahiffe","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Caoimhe","Lally","1","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oisin","Lally","1","1","0","1","1","1","1","1","1","1","1","1","1","0","0","1","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Aoibhinn","Leyden","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ruth","Leyden","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Abdelqahman","Liani","0","1","1","1","1","1","0","1","1","1","1","1","0","1","0","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Jamila","Liani","0","1","1","1","1","1","0","1","1","1","1","1","0","1","0","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sara","Liani","0","1","1","1","1","1","0","1","1","1","1","1","0","1","0","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Darragh","Liddy","1","0","0","1","1","1","1","1","1","1","1","1","1","1","1","1","1","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Seadhna","Liddy","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Eliza","Liddy","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Reuben","Liddy","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Cormac","Lynam","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Jack","Lynch","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Daniel","Maguire","0","1","1","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cormac","Maher","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Mark","Mc Govern","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Jack","Mc Morrough","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"John","McArdle","0","0","0","0","0","1","0","1","1","0","0","1","1","0","0","1","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Brian","McArdle","0","0","0","0","0","0","0","1","1","0","0","1","1","0","0","1","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Roisin","McAteer","0","0","0","1","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Caomhe","McAteer","0","0","0","1","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Conor","McCarthy","1","0","0","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sean","McCarthy","1","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ben","McNamara","1","0","0","1","1","1","0","1","1","1","0","1","0","1","1","1","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Luke","Meade","0","0","0","0","1","1","1","1","1","1","1","1","0","1","1","1","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Aaron","Meade","0","0","0","0","1","0","0","1","1","1","1","1","0","1","1","1","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Christopher","Meaney","1","1","0","1","1","1","1","1","1","1","1","1","1","1","0","1","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Aidan","Meaney","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Cian","Meere","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Sean","Meere","0","1","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ciara","Miesle","1","1","0","0","1","1","1","0","1","0","1","1","0","1","0","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Liam","Morgan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Sadie","Morgan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Dean","Morrissey","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Caoimhe","Murch","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Eoghan","Murch","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tim","Murphy-Underhill","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Doireann","Ni Bhraoiin","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Sarah","Ni Cheallaigh","0","0","0","0","0","1","1","0","0","0","0","0","0","0","1","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Teide","Nolan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Christopher","Notre","0","0","0","0","0","0","1","0","1","1","1","0","0","0","0","1","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Fiachra","O Braoin","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Eoin","O Ceallaigh","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Daithi","O Cearbhallain","0","1","1","1","1","0","0","1","1","1","1","0","1","1","0","1","0","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Aaron","O'Brien","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Liam","O'Brien","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Roan","O'Flaherty","0","0","0","0","0","0","1","1","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Daniel","O'Flanagan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Roisin","O'Flanagan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Meadbh","O'Flanagan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Patrick","O'Grady","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Seoda","O'Keeffe","0","1","0","0","0","0","0","0","0","0","0","0","0","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cadhla","O'Keeffe","0","1","0","0","0","1","0","0","0","0","0","0","0","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tadhg","O'Keeffe","0","1","0","0","0","1","0","0","0","0","0","0","0","1","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Fintan","O'Kelly","0","0","0","0","0","1","0","0","1","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tom","O'Looney","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Matt","O'Looney","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"James","O'Neill","1","1","1","1","1","1","1","1","0","1","1","1","1","1","1","1","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sami","O'Regan","0","0","0","1","1","0","0","0","0","0","1","1","0","0","1","1","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ciaran","Otuos","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Quinn","Painter","1","1","1","0","1","1","1","1","1","0","1","1","1","1","1","1","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Molly","Painter","1","1","1","0","1","1","1","1","1","0","1","1","1","1","1","1","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Kieran","Parry","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Alexander","Peach","0","0","0","0","0","1","0","1","1","1","0","0","0","1","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cian","Perill","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Donnacha","Ralph","1","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Emma","Ryan","0","0","0","0","0","1","1","1","1","1","1","1","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Conor","Shanahan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Ciara","Shanahan","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Jack","Sheehan","0","0","0","0","0","0","0","0","1","1","1","0","0","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Emmett","Shivers","0","0","1","1","1","1","0","1","1","1","1","0","1","1","0","1","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Abbie","Sullivan","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Crea","Sullivan","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Nora","Tchadjobo","0","0","0","0","0","0","0","0","0","0","1","0","0","0","0","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Dillon","Toumanguelov","0","0","0","0","0","0","0","0","1","1","0","0","0","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tamlyn","Toumanguelov","0","0","0","0","0","0","0","0","1","0","0","0","0","0","1","0","0","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oran","Treacy","0","1","0","1","1","1","0","0","0","0","0","0","0","0","1","0","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Ronan","Wall","0","0","0","0","0","0","0","1","1","0","0","0","0","0","1","0","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Fomek","Zajas","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","1","0"});
-            return Content("ok");
+            var belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
+            return View("Belts", belts);
         }
 
-        [HttpGet]
-        public ActionResult ImportAttendance2()
+        public ActionResult BeltAdd()
         {
-            List<DateTime> dates = new List<DateTime>();
-            dates.Add(new DateTime(2012,3,24));
-            dates.Add(new DateTime(2012,3,31));
-            dates.Add(new DateTime(2012,4,14));
-            dates.Add(new DateTime(2012,4,21));
-
-            ImportAttendanceLine(dates, new [] {"Ralph","Brady","0","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Grainne","Brady","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Ephram","Brotherton","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"William","Cahir Whelan","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Andrew","Cahir Whelan","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Ailbhe","Cannon","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Grainne","Cannon","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Slaine","Carey","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Aobha","Carey","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oran","Carey","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Ralph","Collins","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Dylan","Collins","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Fatoumata","Diallo","0","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Samira","Tchadjobo","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Nora","Tchadjobo","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Ronan","Lannigan","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Barry","Fitzgerald","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Aisling","Flouch","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Aoife","Flouch","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Oliver","Gavin","1","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Samuel","Gavin","1","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Kieran","Hosty","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Liam","Jones","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Saul","Kenny","0","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Oisin","Lally","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Daniel","Lynch","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Conor","McCarthy","1","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Ciara","Miesle","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Conall","Moore","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Roisin","Moore","1","1","0","1"});
-            ImportAttendanceLine(dates, new [] {"Adam","Nix","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Cormac","O'Muineachain","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cian","O'Muineachain","1","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Cadhla","O'Keeffe","1","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Tadhg","O'Keeffe","0","1","1","0"});
-            ImportAttendanceLine(dates, new [] {"Seoda","O'Keeffe","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Eimear","O'Loughlin","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Holly","O'Loughlin","0","0","1","0"});
-            ImportAttendanceLine(dates, new [] {"Jasvir","Kalsi","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Molly","Painter","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Quinn","Painter","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Kieran","Parry","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Cian","Perill","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Cian","Reilly","0","0","1","1"});
-            ImportAttendanceLine(dates, new [] {"Sean","Sweeney","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Erin","Sweeney","1","0","0","0"});
-            ImportAttendanceLine(dates, new [] {"Tresor","Nijimbere","1","1","1","1"});
-            ImportAttendanceLine(dates, new [] {"Evan","Twomey","0","1","0","0"});
-            ImportAttendanceLine(dates, new [] {"Sean","Burke","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Sami","O'Reagan","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Molly","MacCriostail","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Michael","Bonfield","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Mark","Bonfield","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Tiarnan","Boyce","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Saoirse","Boyce","0","0","0","1"});
-            ImportAttendanceLine(dates, new [] {"Finn","McCarthy","0","0","0","1"});
-            ImportAttendanceLine(dates, new[] { "Colum", "McCarthy", "0", "0", "0", "1" });
-            return Content("ok");
+            Belt newBelt = new Belt();
+            newBelt.SortOrder = (int)(db.Belts.Max(b => b.SortOrder) + 1.0);
+            newBelt.HexCode = "#000000";
+            return View("Belt", newBelt);
         }
 
-        private void ImportAttendanceLine(List<DateTime>dates, string[] data)
+        public ActionResult Belt(Guid id)
         {
-            string firstName = data[0].Trim();
-            string lastName = data[1].Trim();
-            Member member = db.Members.FirstOrDefault(m => m.FirstName == firstName && m.LastName == lastName);
-            if (member == null)
+            Belt belt = db.Belts.FirstOrDefault(b => b.Id == id);
+            return View("Belt", belt);
+        }
+
+        [HttpPost]
+        public ActionResult BeltSave(Belt b)
+        {
+            Belt belt;
+            if (b.Id == null || b.Id == Guid.Empty)
             {
-                throw new Exception("Member not found: " + firstName + " " + lastName);
+                belt = new Belt();
+                db.Belts.Add(belt);
+            } else {
+                belt = db.Belts.FirstOrDefault(x => x.Id == b.Id);
             }
-            if (data.Count() != dates.Count() + 2)
-            {
-                throw new Exception("Invalid data for " + firstName + " " + lastName);
-            }
-            for (int i = 0; i < dates.Count(); i++)
-            {
-                DateTime date = dates[i];
-                bool attended = data[i + 2] != "0";
-                AttendanceSet(member.Id, attended, date);
-            }
+            belt.Color = b.Color;
+            belt.Description = b.Description;
+            belt.HexCode = b.HexCode;
+            belt.SortOrder = b.SortOrder;
+            db.SaveChanges();
+            return RedirectClient("/Mentor/Belts");
         }
-        */
+
+        [HttpPost]
+        public ActionResult BeltDelete(Guid id)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                Belt belt;
+                belt = db.Belts.FirstOrDefault(x => x.Id == id);
+                belt.Deleted = true;
+                db.SaveChanges();
+            }
+            return RedirectClient("/Mentor/Belts");
+        }
+
+        /// <summary>
+        /// BadgeCategory Maintenance
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult BadgeCategories()
+        {
+            var badgeCategories = GetBadgeCategories();
+            return View("BadgeCategories", badgeCategories);
+        }
+
+        public ActionResult BadgeCategoryAdd()
+        {
+            BadgeCategory newBadgeCategory = new BadgeCategory();
+            return View("BadgeCategory", newBadgeCategory);
+        }
+
+        public ActionResult BadgeCategory(Guid id)
+        {
+            BadgeCategory badgeCategory = db.BadgeCategories.FirstOrDefault(b => b.Id == id);
+            return View("BadgeCategory", badgeCategory);
+        }
+
+        [HttpPost]
+        public ActionResult BadgeCategorySave(BadgeCategory b)
+        {
+            BadgeCategory badgeCategory;
+            if (b.Id == null || b.Id == Guid.Empty)
+            {
+                badgeCategory = new BadgeCategory();
+                db.BadgeCategories.Add(badgeCategory);
+            }
+            else
+            {
+                badgeCategory = db.BadgeCategories.FirstOrDefault(x => x.Id == b.Id);
+            }
+            badgeCategory.CategoryName = b.CategoryName;
+            badgeCategory.CategoryDescription = b.CategoryDescription;
+            db.SaveChanges();
+            return RedirectClient("/Mentor/BadgeCategories");
+        }
+
+        [HttpPost]
+        public ActionResult BadgeCategoryDelete(Guid id)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                BadgeCategory badgeCategory;
+                badgeCategory = db.BadgeCategories.FirstOrDefault(x => x.Id == id);
+                badgeCategory.Deleted = true;
+                db.SaveChanges();
+            }
+            return RedirectClient("/Mentor/BadgeCategories");
+        }
+
+        /// <summary>
+        /// Badge Maintenance
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Badges()
+        {
+            var badges = db.Badges.Include("BadgeCategory").Where(b => !b.Deleted)
+                .OrderBy(b => b.BadgeCategory.CategoryName)
+                .ThenBy(b => b.Achievement)
+                .ToList();
+            return View("Badges", badges);
+        }
+
+        public ActionResult BadgeAdd()
+        {
+            Badge newBadge = new Badge
+            {
+                Achievement = "",
+                Description = ""
+            };
+            ViewBag.BadgeCategories = GetBadgeCategories();
+            return View("Badge", newBadge);
+        }
+
+        public ActionResult Badge(Guid id)
+        {
+            Badge badge = db.Badges.FirstOrDefault(b => b.Id == id);
+            ViewBag.BadgeCategories = GetBadgeCategories();
+            return View("Badge", badge);
+        }
+
+        private IEnumerable<BadgeCategory> GetBadgeCategories()
+        {
+            return db.BadgeCategories
+                .Where(bc => bc.Deleted == false)
+                .OrderBy(bc => bc.CategoryName)
+                .ToList();
+        }
+
+        [HttpPost]
+        public ActionResult BadgeSave(Badge b)
+        {
+            Badge badge;
+            if (b.Id == null || b.Id == Guid.Empty)
+            {
+                badge = new Badge();
+                db.Badges.Add(badge);
+            }
+            else
+            {
+                badge = db.Badges.FirstOrDefault(x => x.Id == b.Id);
+            }
+            badge.BadgeCategoryId = b.BadgeCategoryId;
+            badge.Achievement = b.Achievement;
+            badge.Description = b.Description;
+            db.SaveChanges();
+            return RedirectClient("/Mentor/Badges");
+        }
+
+        [HttpPost]
+        public ActionResult BadgeDelete(Guid id)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                Badge badge;
+                badge = db.Badges.FirstOrDefault(x => x.Id == id);
+                badge.Deleted = true;
+                db.SaveChanges();
+            }
+            return RedirectClient("/Mentor/Badges");
+        }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

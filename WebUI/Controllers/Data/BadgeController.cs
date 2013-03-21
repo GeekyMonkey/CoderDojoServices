@@ -88,7 +88,6 @@ namespace CoderDojo.Controllers
 
         //
         // GET: /Badge/Delete/5
-
         public ActionResult Delete(Guid id)
         {
             Badge badge = db.Badges.Find(id);

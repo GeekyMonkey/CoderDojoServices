@@ -22,6 +22,7 @@ namespace CoderDojo
         public System.Guid Id { get; set; }
         public string CategoryName { get; set; }
         public string CategoryDescription { get; set; }
+        public bool Deleted { get; set; }
     
         public virtual ICollection<Badge> Badges { get; set; }
     }

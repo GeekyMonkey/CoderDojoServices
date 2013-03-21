@@ -293,6 +293,10 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Views\Mentor\BadgeCategories.cshtml" />
+    <Content Include="Views\Mentor\BadgeCategory.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -375,6 +379,10 @@
     <Content Include="Views\Parent\_ParentMenu.cshtml" />
     <Content Include="Views\Mentor\MemberBelts.cshtml" />
     <Content Include="Views\Home\SignIn.cshtml" />
+    <Content Include="Views\Mentor\Belts.cshtml" />
+    <Content Include="Views\Mentor\Belt.cshtml" />
+    <Content Include="Views\Mentor\Badges.cshtml" />
+    <Content Include="Views\Mentor\Badge.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
