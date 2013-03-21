@@ -15,7 +15,7 @@
 
 @section Footer
 {
-    <a data-role="button" data-icon="check" class="FormSave">Save</a>
+    <a data-role="button" data-icon="check" id="SaveButton">Save</a>
 }
 
 @section Panels
@@ -44,5 +44,27 @@
 
         <label for="Password">New Password</label>
         @Html.PasswordFor(m => m.NewPassword)
+
+        <label for="ConfirmPassword">Confirm Password</label>
+        <input type="password" id="ConfirmPassword" />
+ 
     </fieldset>
 }
+
+
+<script type="text/javascript">
+    $(function() {
+        $("#SaveButton").on("click", function (e) {
+            e.preventDefault();
+            if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
+                alert("Password and Confirm Password do not match.");
+            } else {
+                var form = $(this).closest("div.pagerole").find("form");
+                if (form.length == 0) {
+                    console.log("Form save clicked, but form not found");
+                }
+                form.submit();
+            }
+        });
+    });
+</script>

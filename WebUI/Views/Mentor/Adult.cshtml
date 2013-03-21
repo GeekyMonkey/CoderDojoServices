@@ -21,7 +21,7 @@
 
 @section Footer
 {
-    <a data-role="button" data-icon="check" class="FormSave">Save</a>
+    <a data-role="button" data-icon="check" id="SaveButton">Save</a>
 }
 
 @section Panels
@@ -72,6 +72,8 @@
                 @Html.TextBoxFor(m => m.Login)
                 <label for="NewPassword">New Password</label>
                 @Html.PasswordFor(m => m.NewPassword)
+                <label for="ConfirmPassword">Confirm Password</label>
+                <input type="password" id="ConfirmPassword" />
             </div>
             <div data-role="collapsible">
                 <h3>Scratch</h3>
@@ -117,6 +119,18 @@
         $(".Controller_Mentor.Action_Adult #GithubButton").off().on("click", function (e) {
             e.preventDefault();
             openNewWindow("https://github.com/" + $(".Controller_Mentor.Action_Adult #GithubLogin").val() + "/");
+        });
+        $("#SaveButton").on("click", function (e) {
+            e.preventDefault();
+            if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
+                alert("Password and Confirm Password do not match.");
+            } else {
+                var form = $(this).closest("div.pagerole").find("form");
+                if (form.length == 0) {
+                    console.log("Form save clicked, but form not found");
+                }
+                form.submit();
+            }
         });
     });
 </script>
