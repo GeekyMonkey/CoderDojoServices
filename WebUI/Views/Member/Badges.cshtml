@@ -6,7 +6,7 @@
     ViewBag.MenuActive = "Badges";
     List<MemberBadge> MemberBadges = member.MemberBadges
         .Where(mb => mb.Awarded != null)
-        .OrderBy(mb => mb.Badge.BadgeCategory)
+        .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
     List<MemberBadge> MemberBadgesPending = member.MemberBadges
@@ -17,6 +17,7 @@
     List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
     List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
     List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false).ToList();
+    MemberBadge badgePending;
 }
 
 @section HeaderLeft
@@ -59,7 +60,6 @@
 
 @if (BadgesNotEarned.Count() > 0)
 {
-    bool first = true;
     <div data-role="collapsible-set" data-corners="true" data-inset="true">
         <h3>Badges Not Earned</h3>
         @foreach (var badge in BadgesNotEarned)
@@ -68,34 +68,30 @@
                 <h3>@(badge.BadgeCategory.CategoryName) - @(badge.Achievement)</h3>
                 <div data-role="fieldcontain">
                     <p>@badge.Description</p>
-                    @if (first)
+                    @* Rejections *@
+                    @foreach (var rejection in member.MemberBadges
+                        .Where(mb => (mb.BadgeId == badge.Id) && (mb.RejectedDate != null))
+                        .OrderBy(mb => mb.RejectedDate))
                     {
-                        first = false;
-
-                        @* Rejections *@
-                        foreach (var rejection in member.MemberBadges
-                            .Where(mb => (mb.BadgeId == badge.Id) && (mb.RejectedDate != null))
-                            .OrderBy(mb => mb.RejectedDate))
-                        {
-                            <div class="BadgeRejection">
-                                <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
-                                <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
-                            </div>
-                        }
+                        <div class="BadgeRejection">
+                            <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
+                            <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
+                        </div>
+                    }
                         
-                        @* Application Pending *@
-                        if (BadgesPendingIds.Contains(badge.Id))
-                        {
-                            <p>Application for the @(badge.BadgeCategory.CategoryName) + @(badge.Achievement) badge was submitted on @(MemberBadgesPending.FirstOrDefault(mb => mb.BadgeId == badge.Id).ApplicationDate.Value.ToString("yyyy MMM dd")). Talk to a mentor to find out what's up.</p>
-                        }
-                        else
-                        {
-                            <div data-role="fieldcontain">
-                                <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
-                                <textarea id="BadgeApplicationMessage"></textarea>
-                            </div>
-                            <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" id="BadgeApplyButton" data-role="button" data-inline="false" data-icon="star" class="ui-disabled">Apply</a>
-                        }
+                    @* Application Pending *@
+                    @if (BadgesPendingIds.Contains(badge.Id))
+                    {
+                        badgePending = MemberBadgesPending.FirstOrDefault(mb => mb.BadgeId == badge.Id);
+                        <p>Application for the @(badge.BadgeCategory.CategoryName) - @(badge.Achievement) badge was submitted on @(badgePending.ApplicationDate.Value.ToString("yyyy MMM dd")). Talk to a mentor to find out what's up.</p>
+                    }
+                    else
+                    {
+                        <div data-role="fieldcontain">
+                            <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
+                            <textarea id="BadgeApplicationMessage" class="BadgeApplicationMessage"></textarea>
+                        </div>
+                        <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" data-role="button" data-inline="false" data-icon="star" class="BadgeApplyButton ui-disabled">Apply</a>
                     }
                 </div>
             </div>
@@ -107,9 +103,10 @@
     var minMessageLength = 5;
 
     $(function () {
-        $("#BadgeApplyButton").on("click", function (e) {
+        $(".BadgeApplyButton").on("click", function (e) {
             e.preventDefault();
-            var message = $("#BadgeApplicationMessage").val();
+            var applicationContainer = $(this).closest(".BadgeHeader");
+            var message = applicationContainer.find(".BadgeApplicationMessage").val();
             if (message.length >= minMessageLength) {
                 $.ajax($(this).attr("href"), {
                     type: "POST",
@@ -122,19 +119,20 @@
                     }
                 });
             } else {
-                $("#BadgeApplicationMessage").focus();
-                $("#BadgeApplicationMessage").prev("label").css("color", "red");
+                applicationContainer.find(".BadgeApplicationMessage").focus();
+                applicationContainer.find(".BadgeApplicationMessage").prev("label").css("color", "red");
             }
         });
 
-        $("#BadgeApplicationMessage").on("keyup change", function () {
+        $(".BadgeApplicationMessage").on("keyup change", function () {
+            var applicationContainer = $(this).closest(".BadgeHeader");
             setTimeout(function () {
-                var message = $("#BadgeApplicationMessage").val();
-                $('a#ApproveBadge').button();
+                var message = applicationContainer.find(".BadgeApplicationMessage").val();
+                applicationContainer.find('a.ApproveBadge').button();
                 if (message.length >= minMessageLength) {
-                    $('a#BadgeApplyButton').removeClass('ui-disabled');
+                    applicationContainer.find('a.BadgeApplyButton').removeClass('ui-disabled');
                 } else {
-                    $('a#BadgeApplyButton').addClass('ui-disabled');
+                    applicationContainer.find('a.BadgeApplyButton').addClass('ui-disabled');
                 }
             }, 5);
         }

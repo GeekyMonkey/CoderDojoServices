@@ -48,7 +48,7 @@ namespace CoderDojo
                 string beltMessage = "<p><strong>You have been awareded the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt!</strong>";
                 if (!string.IsNullOrEmpty(mb.AwardedNotes))
                 {
-                    beltMessage += "<br /><blockquote>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</blockquote>";
+                    beltMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
                 }
                 beltMessage += "</p>";
                 messages.Add(beltMessage);
@@ -61,13 +61,13 @@ namespace CoderDojo
                            select mb;
             foreach (var mb in newBadges)
             {
-                string beltMessage = "<p><strong>You have been awareded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge</strong>";
+                string badgeMessage = "<p><strong>You have been awareded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge.</strong>";
                 if (!string.IsNullOrEmpty(mb.AwardedNotes))
                 {
-                    beltMessage += "<br /><blockquote>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</blockquote>";
+                    badgeMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
                 }
-                beltMessage += "</p>";
-                messages.Add(beltMessage);
+                badgeMessage += "</p>";
+                messages.Add(badgeMessage);
             }
 
             string html = "";

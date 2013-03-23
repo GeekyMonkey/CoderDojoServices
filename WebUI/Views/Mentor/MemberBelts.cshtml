@@ -127,15 +127,18 @@
             }
         });
 
-        $("#ApproveRejectMessage").on("keyup change", function() {setTimeout(function () {
-            var message = $("#ApproveRejectMessage").val();
-            $('a#ApproveBelt,a#RejectBelt').button();
-            if (message.length) {
-                $('a#ApproveBelt,a#RejectBelt').removeClass('ui-disabled');
-            } else {
-                $('a#ApproveBelt,a#RejectBelt').addClass('ui-disabled');
-            }
-        },5);}
+        $("#ApproveRejectMessage").on("keyup change", function () {
+            var applicationContainer = $(this).closest(".ApplicationPending");
+            setTimeout(function () {
+                var message = applicationContainer.find("#ApproveRejectMessage").val();
+                applicationContainer.find('a#ApproveBelt,a#RejectBelt').button();
+                if (message.length) {
+                    applicationContainer.find('a#ApproveBelt,a#RejectBelt').removeClass('ui-disabled');
+                } else {
+                    applicationContainer.find('a#ApproveBelt,a#RejectBelt').addClass('ui-disabled');
+                }
+            }, 5);
+        }
         );
     });
 </script>

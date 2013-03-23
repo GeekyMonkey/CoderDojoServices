@@ -93,10 +93,10 @@
                         }
                         <div data-role="fieldcontain">
                             <label for="ApproveRejectMessage">Approval / Rejection Message</label>
-                            <textarea id="ApproveRejectMessage"></textarea>
+                            <textarea id="ApproveRejectMessage" class="ApproveRejectMessage"></textarea>
                         </div>
-                        <a href="/Mentor/BadgeApprove/@badgeApplication.Id.ToString("N")" id="ApproveBadge" data-role="button" data-icon="star" class="ui-disabled">Approve</a>
-                        <a href="/Mentor/BadgeReject/@badgeApplication.Id.ToString("N")" id="RejectBadge" data-role="button" data-icon="delete" class="ui-disabled">Reject</a>
+                        <a href="/Mentor/BadgeApprove/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="star" class="ui-disabled ApproveBadge">Approve</a>
+                        <a href="/Mentor/BadgeReject/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="delete" class="ui-disabled RejectBadge">Reject</a>
                     }
                 </div>
             </div>
@@ -111,9 +111,10 @@
             $(".ApplicationPending h3").first().trigger("click");
         }, 1000);
 
-        $("#ApproveBadge,#RejectBadge").on("click", function (e) {
+        $(".ApproveBadge,.RejectBadge").on("click", function (e) {
             e.preventDefault();
-            var message = $("#ApproveRejectMessage").val();
+            var applicationContainer = $(this).closest(".ApplicationPending");
+            var message = applicationContainer.find(".ApproveRejectMessage").val();
             if (message.length) {
                 $.ajax($(this).attr("href"), {
                     type: "POST",
@@ -128,14 +129,15 @@
             }
         });
 
-        $("#ApproveRejectMessage").on("keyup change", function () {
+        $(".ApproveRejectMessage").on("keyup change", function () {
+            var applicationContainer = $(this).closest(".ApplicationPending");
             setTimeout(function () {
-                var message = $("#ApproveRejectMessage").val();
-                $('a#ApproveBadge,a#RejectBadge').button();
+                var message = applicationContainer.find(".ApproveRejectMessage").val();
+                applicationContainer.find('a.ApproveBadge,a.RejectBadge').button();
                 if (message.length) {
-                    $('a#ApproveBadge,a#RejectBadge').removeClass('ui-disabled');
+                    applicationContainer.find('a.ApproveBadge,a.RejectBadge').removeClass('ui-disabled');
                 } else {
-                    $('a#ApproveBadge,a#RejectBadge').addClass('ui-disabled');
+                    applicationContainer.find('a.ApproveBadge,a.RejectBadge').addClass('ui-disabled');
                 }
             }, 5);
         }

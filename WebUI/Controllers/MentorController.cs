@@ -390,7 +390,12 @@ namespace CoderDojo.Views
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
-            ViewBag.Badges = db.Badges.Where(b => !b.Deleted).OrderBy(b => b.BadgeCategory.CategoryName).ThenBy(b => b.Achievement).ToList();
+            ViewBag.Badges = db.Badges
+                .Include("BadgeCategory")
+                .Where(b => !b.Deleted)
+                .OrderBy(b => b.BadgeCategory.CategoryName)
+                .ThenBy(b => b.Achievement)
+                .ToList();
             return View("MemberBadges", member);
         }
         [HttpGet]
