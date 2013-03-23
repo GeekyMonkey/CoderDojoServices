@@ -26,6 +26,12 @@ namespace CoderDojo.Views
                                        orderby mb.Belt.SortOrder, mb.Member.FirstName, mb.Member.LastName
                                        select mb).ToList();
 
+            ViewBag.BadgeApplications = (from mb in db.MemberBadges.Include("Member").Include("Badge.BadgeCategory")
+                                        where mb.Awarded == null
+                                        && mb.RejectedDate == null
+                                        orderby mb.Member.FirstName, mb.Member.LastName, mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
+                                        select mb).ToList();
+
             return View("Index", mentor);
         }
 
@@ -384,6 +390,7 @@ namespace CoderDojo.Views
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
+            ViewBag.Badges = db.Badges.Where(b => !b.Deleted).OrderBy(b => b.BadgeCategory.CategoryName).ThenBy(b => b.Achievement).ToList();
             return View("MemberBadges", member);
         }
         [HttpGet]
@@ -393,6 +400,28 @@ namespace CoderDojo.Views
             ViewBag.ShowBackButton = true;
             ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
             return View("MemberBelts", member);
+        }
+
+        [HttpPost]
+        public ActionResult BadgeApprove(Guid id, string message)
+        {
+            var memberBadge = db.MemberBadges.FirstOrDefault(mb => mb.Id == id);
+            memberBadge.Awarded = DateTime.UtcNow;
+            memberBadge.AwardedByAdultId = GetCurrentAdult().Id;
+            memberBadge.AwardedNotes = message;
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult BadgeReject(Guid id, string message)
+        {
+            var memberBadge = db.MemberBadges.FirstOrDefault(mb => mb.Id == id);
+            memberBadge.RejectedDate = DateTime.UtcNow;
+            memberBadge.RejectedByAdultId = GetCurrentAdult().Id;
+            memberBadge.RejectedNotes = message;
+            db.SaveChanges();
+            return Json("OK");
         }
 
         [HttpPost]

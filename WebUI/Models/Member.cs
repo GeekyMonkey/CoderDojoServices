@@ -29,7 +29,7 @@ namespace CoderDojo
             // Welcome message
             if (LoginDatePrevious == null)
             {
-                messages.Add("<h3>Welcome " + FirstName + ".</h3>");
+                messages.Add("<h3>Welcome " + FirstName + "</h3>");
             }
             else
             {
@@ -45,20 +45,42 @@ namespace CoderDojo
                            select mb;
             foreach (var mb in newBelts)
             {
-                string beltMessage = "<strong>You have been awareded the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt!</strong>";
+                string beltMessage = "<p><strong>You have been awareded the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt!</strong>";
                 if (!string.IsNullOrEmpty(mb.AwardedNotes))
                 {
                     beltMessage += "<br /><blockquote>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</blockquote>";
                 }
+                beltMessage += "</p>";
                 messages.Add(beltMessage);
             }
 
-            //ToDo: Find badges awarded
+            // Find badges awarded
+            var newBadges = from mb in this.MemberBadges
+                           where mb.Awarded >= (LoginDatePrevious ?? DateTime.Today.ToUniversalTime()).Date
+                           orderby mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
+                           select mb;
+            foreach (var mb in newBadges)
+            {
+                string beltMessage = "<p><strong>You have been awareded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge</strong>";
+                if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                {
+                    beltMessage += "<br /><blockquote>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</blockquote>";
+                }
+                beltMessage += "</p>";
+                messages.Add(beltMessage);
+            }
 
             string html = "";
             foreach (string message in messages)
             {
-                html += "<p>" + message + "</p>";
+                if (message.StartsWith("<"))
+                {
+                    html += message;
+                }
+                else
+                {
+                    html += "<p>" + message + "</p>";
+                }
             }
             return html;
         }

@@ -4,6 +4,7 @@
     ViewBag.Title = "Mentor: " + mentor.FirstName;
     ViewBag.MenuActive = "Index";
     List<MemberBelt> beltApplications = ViewBag.BeltApplications;
+    List<MemberBadge> badgeApplications = ViewBag.BadgeApplications;
 }
 
 
@@ -40,9 +41,18 @@ else
 
 
 <h2>Badge Applications</h2>
-<!-- ToDo -->
-<p>There are no pending badge applications.</p>
-
+@if (badgeApplications.Count() > 0)
+{
+    <ul data-role="listview" data-inset="true">
+    @foreach (var mb in badgeApplications) {
+        <li><a href="/Mentor/MemberBadges/@mb.MemberId.ToString("N")">@(mb.Member.MemberName) - @(mb.Badge.BadgeCategory.CategoryName) - @(mb.Badge.Achievement)</a></li>
+    }
+    </ul>
+}
+else
+{
+    <p>There are no pending badge applications.</p>
+}
 
 <script type="text/javascript">
     $(function () {

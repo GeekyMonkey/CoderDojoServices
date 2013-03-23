@@ -1,8 +1,22 @@
-﻿@model Member
+﻿@model List<CoderDojo.Badge>
 @{
-    Member member = Model;
-    ViewBag.Title = "Welcome " + member.FirstName;
+    Member member = ViewBag.CurrentMember;
+    List<CoderDojo.Badge> badges = Model;
+    ViewBag.Title = "Badges";
     ViewBag.MenuActive = "Badges";
+    List<MemberBadge> MemberBadges = member.MemberBadges
+        .Where(mb => mb.Awarded != null)
+        .OrderBy(mb => mb.Badge.BadgeCategory)
+        .ThenBy(mb => mb.Badge.Achievement)
+        .ToList();
+    List<MemberBadge> MemberBadgesPending = member.MemberBadges
+        .Where(mb => mb.Awarded == null && mb.RejectedDate == null)
+        .OrderBy(mb => mb.Badge.BadgeCategory)
+        .ThenBy(mb => mb.Badge.Achievement)
+        .ToList();
+    List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
+    List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
+    List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false).ToList();
 }
 
 @section HeaderLeft
@@ -22,4 +36,109 @@
     @Html.Partial("_MemberMenu")
 }
 
-<h2>Coming Soon: Badges</h2>
+<div data-role="collapsible-set" data-corners="true" data-inset="true">
+    <h3>Badges Earned</h3>
+    @if (MemberBadges.Count() == 0)
+    {
+        <p>You have not yet earned any badges.</p>
+    }
+    @foreach (var memberBadge in MemberBadges)
+    {
+        <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
+            <h3>@(memberBadge.Badge.BadgeCategory.CategoryName) - @(memberBadge.Badge.Achievement)</h3>
+            <div data-role="fieldcontain">
+                <p>@memberBadge.Badge.Description</p>
+                <blockquote>@memberBadge.ApplicationNotes</blockquote>
+                <p>Awarded on @memberBadge.Awarded.Value.ToString("yyyy MMM dd")</p>
+                <blockquote>@memberBadge.AwardedNotes - @memberBadge.AwardedByAdult.FullName</blockquote>
+            </div>
+        </div>
+    }
+</div>
+
+
+@if (BadgesNotEarned.Count() > 0)
+{
+    bool first = true;
+    <div data-role="collapsible-set" data-corners="true" data-inset="true">
+        <h3>Badges Not Earned</h3>
+        @foreach (var badge in BadgesNotEarned)
+        {
+            <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
+                <h3>@(badge.BadgeCategory.CategoryName) - @(badge.Achievement)</h3>
+                <div data-role="fieldcontain">
+                    <p>@badge.Description</p>
+                    @if (first)
+                    {
+                        first = false;
+
+                        @* Rejections *@
+                        foreach (var rejection in member.MemberBadges
+                            .Where(mb => (mb.BadgeId == badge.Id) && (mb.RejectedDate != null))
+                            .OrderBy(mb => mb.RejectedDate))
+                        {
+                            <div class="BadgeRejection">
+                                <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
+                                <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
+                            </div>
+                        }
+                        
+                        @* Application Pending *@
+                        if (BadgesPendingIds.Contains(badge.Id))
+                        {
+                            <p>Application for the @(badge.BadgeCategory.CategoryName) + @(badge.Achievement) badge was submitted on @(MemberBadgesPending.FirstOrDefault(mb => mb.BadgeId == badge.Id).ApplicationDate.Value.ToString("yyyy MMM dd")). Talk to a mentor to find out what's up.</p>
+                        }
+                        else
+                        {
+                            <div data-role="fieldcontain">
+                                <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
+                                <textarea id="BadgeApplicationMessage"></textarea>
+                            </div>
+                            <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" id="BadgeApplyButton" data-role="button" data-inline="false" data-icon="star" class="ui-disabled">Apply</a>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    var minMessageLength = 5;
+
+    $(function () {
+        $("#BadgeApplyButton").on("click", function (e) {
+            e.preventDefault();
+            var message = $("#BadgeApplicationMessage").val();
+            if (message.length >= minMessageLength) {
+                $.ajax($(this).attr("href"), {
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        message: message
+                    },
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            } else {
+                $("#BadgeApplicationMessage").focus();
+                $("#BadgeApplicationMessage").prev("label").css("color", "red");
+            }
+        });
+
+        $("#BadgeApplicationMessage").on("keyup change", function () {
+            setTimeout(function () {
+                var message = $("#BadgeApplicationMessage").val();
+                $('a#ApproveBadge').button();
+                if (message.length >= minMessageLength) {
+                    $('a#BadgeApplyButton').removeClass('ui-disabled');
+                } else {
+                    $('a#BadgeApplyButton').addClass('ui-disabled');
+                }
+            }, 5);
+        }
+        );
+
+    });
+</script>

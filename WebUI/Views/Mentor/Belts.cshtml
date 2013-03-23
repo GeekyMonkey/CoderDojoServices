@@ -27,7 +27,20 @@
 	<ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
     @foreach (Belt b in belts)
     {
-        <li><a href="Belt/@(b.Id.ToString("N"))">@b.Color</a></li>
+        <li class="BeltHeader" data-color="@b.HexCode"><a href="Belt/@(b.Id.ToString("N"))">@b.Color</a></li>
     }
     </ul>
 </div>
+
+<script type="text/javascript">
+    var minMessageLength = 5;
+
+    $(function () {
+        setTimeout(function () {
+            $(".BeltHeader").each(function (i, e) {
+                $(this).find(".ui-btn-inner").css("transition", "background-color 2s");
+                $(this).find(".ui-btn-inner").css("background-color", $(this).data("color"));
+            });
+        }, 1000);
+    });
+</script>

@@ -41,7 +41,11 @@ namespace CoderDojo.Views
         public ActionResult Badges()
         {
             Member member = GetCurrentMember();
-            return View("Badges", member);
+            var badges = from badge in db.Badges
+                         where badge.Deleted == false
+                         orderby badge.BadgeCategory.CategoryName, badge.Achievement
+                         select badge;
+            return View("Badges", badges.ToList());
         }
 
         [HttpGet]
@@ -73,6 +77,22 @@ namespace CoderDojo.Views
                 ApplicationNotes = message
             };
             db.MemberBelts.Add(application);
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult BadgeApplication(Guid id, string message)
+        {
+            Guid badgeId = id;
+            MemberBadge application = new MemberBadge
+            {
+                MemberId = GetCurrentMember().Id,
+                BadgeId = badgeId,
+                ApplicationDate = DateTime.UtcNow,
+                ApplicationNotes = message
+            };
+            db.MemberBadges.Add(application);
             db.SaveChanges();
             return Json("OK");
         }

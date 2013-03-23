@@ -74,14 +74,14 @@
 
         $("body").on("click", "a#ConfirmDelete", function (e) {
             var id = $("#Id").val();
-            $.ajax("/Mentor/BadgeCategoryDelete", {
+            $.ajax("/Mentor/BadgeDelete", {
                 type: "POST",
                 data: {
                     id: id
                 }
             })
             .then(function (response) {
-                window.location = "/Mentor/BadgeCategories";
+                window.location = "/Mentor/Badges";
             });
         });
     });

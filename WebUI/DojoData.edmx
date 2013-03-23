@@ -130,7 +130,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MemberId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BadgeId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Awarded" Type="datetime" Nullable="false" />
+          <Property Name="Awarded" Type="datetime" />
           <Property Name="AwardedByAdultId" Type="uniqueidentifier" />
           <Property Name="ApplicationNotes" Type="ntext" />
           <Property Name="ApplicationDate" Type="datetime" />
@@ -463,7 +463,7 @@
           <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MemberId" Type="Guid" Nullable="false" />
           <Property Name="BadgeId" Type="Guid" Nullable="false" />
-          <Property Name="Awarded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Awarded" Type="DateTime" Precision="3" />
           <Property Name="AwardedByAdultId" Type="Guid" />
           <NavigationProperty Name="AwardedByAdult" Relationship="CoderDojo.FK_MemberBadges_Adult" FromRole="MemberBadges" ToRole="Adults" />
           <NavigationProperty Name="Badge" Relationship="CoderDojo.FK_MemberBadges_Badge" FromRole="MemberBadges" ToRole="Badges" />

@@ -78,5 +78,19 @@
                 window.location = "/Mentor/Belts";
             });
         });
+
+        $("input#HexCode").on("change", function () {
+            updateHexColor();
+        });
     });
+
+    function updateHexColor() {
+        var color = $("input#HexCode").val();
+        $("input#HexCode").closest("div").css("transition", "background-color 1.5s");
+        $("input#HexCode").closest("div").css("background-color", color);
+    };
+
+    setTimeout(function () {
+        updateHexColor();
+    }, 1000);
 </script>

@@ -33,7 +33,7 @@
     <h3>Belts Earned</h3>
     @if (MemberBelts.Count() == 0)
     {
-        <p>You have not yet earned any belts.</p>
+        <p>@member.MemberName has not yet earned any belts.</p>
     }
     @foreach (var memberBelt in MemberBelts)
     {
@@ -84,7 +84,7 @@
                             <blockquote>@(beltApplication.ApplicationNotes) - @(beltApplication.Member.MemberName)</blockquote>
                         }
                         <div data-role="fieldcontain">
-                            <label for="ApproveRejectMessage">Approval/Rejection Message</label>
+                            <label for="ApproveRejectMessage">Approval / Rejection Message</label>
                             <textarea id="ApproveRejectMessage"></textarea>
                         </div>
                         <a href="/Mentor/BeltApprove/@beltApplication.Id.ToString("N")" id="ApproveBelt" data-role="button" data-icon="star" class="ui-disabled">Approve</a>

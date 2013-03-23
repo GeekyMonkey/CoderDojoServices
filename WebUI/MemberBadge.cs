@@ -17,7 +17,7 @@ namespace CoderDojo
         public System.Guid Id { get; set; }
         public System.Guid MemberId { get; set; }
         public System.Guid BadgeId { get; set; }
-        public System.DateTime Awarded { get; set; }
+        public Nullable<System.DateTime> Awarded { get; set; }
         public Nullable<System.Guid> AwardedByAdultId { get; set; }
         public string ApplicationNotes { get; set; }
         public Nullable<System.DateTime> ApplicationDate { get; set; }
