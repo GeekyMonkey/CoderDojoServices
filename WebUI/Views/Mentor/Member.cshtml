@@ -50,6 +50,11 @@
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
 
+        if (newMember)
+        {
+            <label>@Html.CheckBoxFor(m => m.AttendedToday) <span>Attended Today</span></label>
+        }
+    
         <fieldset role="controlgroup">
             <div data-role="collapsible-set" data-corners="true" data-inset="true">
                 <h3>Memberships</h3>

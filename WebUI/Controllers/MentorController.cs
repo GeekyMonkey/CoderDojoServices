@@ -104,9 +104,16 @@ namespace CoderDojo.Views
                 sessionDate = DateTime.Today;
             }
             Guid membergId = new Guid(memberId);
-            int sessionCount = db.AttendanceSet(membergId, present, sessionDate);
+            DoAttendanceChange(membergId, present, sessionDate);
+
+            return Json("OK");
+        }
+
+        private void DoAttendanceChange(Guid memberId, bool present, DateTime sessionDate)
+        {
+            int sessionCount = db.AttendanceSet(memberId, present, sessionDate);
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
-            Member member = db.Members.FirstOrDefault(m => m.Id == membergId);
+            Member member = db.Members.FirstOrDefault(m => m.Id == memberId);
 
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
@@ -115,11 +122,8 @@ namespace CoderDojo.Views
             {
                 memberMessage = member.GetLoginMessage();
             }
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), membergId.ToString("N"), member.MemberName, present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
-
-            return Json("OK");
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
         }
-
 
         [HttpGet]
         public ActionResult Adults(Guid? id = null)
@@ -302,7 +306,11 @@ namespace CoderDojo.Views
         public ActionResult MemberSignup(string previousPage = "")
         {
             ViewBag.PreviousPage = previousPage;
-            return View("Member", new Member());
+            Member newMember = new Member
+            {
+                AttendedToday = true
+            };
+            return View("Member", newMember);
         }
 
         [HttpGet]
@@ -347,8 +355,8 @@ namespace CoderDojo.Views
                 }
 
                 // Save changes
-                member.FirstName = TrimNullableString(memberChanges.FirstName);
-                member.LastName = TrimNullableString(memberChanges.LastName);
+                member.FirstName = TrimNullableString(memberChanges.FirstName).Trim();
+                member.LastName = TrimNullableString(memberChanges.LastName).Trim();
                 member.BirthYear = memberChanges.BirthYear;
                 member.Login = TrimNullableString(memberChanges.Login);
                 member.GithubLogin = TrimNullableString(memberChanges.GithubLogin);
@@ -360,7 +368,17 @@ namespace CoderDojo.Views
                 {
                     member.PasswordHash = db.GeneratePasswordHash(memberChanges.NewPassword);
                 }
+
+                // Save
                 db.SaveChanges();
+
+                // Did new member attend today
+                memberChanges.AttendedToday = (Request.Form["AttendedToday"] ?? "").ToLower().EndsWith("true"); // Problem with jquery mobile checkbox
+                if (memberChanges.AttendedToday)
+                {
+                    DoAttendanceChange(member.Id, true, DateTime.Today);
+                }
+
                 if (previousPage == "Attendance")
                 {
                     db.AttendanceSet(member.Id, true, DateTime.Today);
