@@ -11,7 +11,7 @@
         .ToList();
     List<MemberBadge> MemberBadgesPending = member.MemberBadges
         .Where(mb => mb.Awarded == null && mb.RejectedDate == null)
-        .OrderBy(mb => mb.Badge.BadgeCategory)
+        .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
     List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
