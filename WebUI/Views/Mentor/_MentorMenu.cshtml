@@ -27,6 +27,14 @@
         </ul>
     </div>
 
+    <div data-role="collapsible" data-content-theme="a">
+        <h3>Reports</h3>
+        <ul data-role="listview" data-inset="true">
+            <li>@Html.ActionLink("Parent Emails CSV", "ExportParentEmails", "Mentor", null, new { target="_blank", @class=(activePage == "ExportParentEmails" ? activeClass : inactiveClass)})</li>
+            <li>@Html.ActionLink("Mentor Email CSV", "ExportMentorEmails", "Mentor", null, new { target="_blank", @class=(activePage == "ExportMentorEmails" ? activeClass : inactiveClass)})</li>
+        </ul>
+    </div>
+
     <div data-role="controlgroup" data-type="vertical">
         @if (ViewBag.CurrentAdult.IsParent) {
                 @Html.ActionLink("Parent Mode", "Index", "Parent", null, new { data_role="button", data_icon="star" })
