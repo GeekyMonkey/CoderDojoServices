@@ -5,5 +5,9 @@ obj
 *.suo
 thumbs.db
 
+*.pubxml.user
+*.mdf
+*.ldf
+
 # mstest test results
 TestResults
