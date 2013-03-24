@@ -68,6 +68,19 @@ namespace CoderDojo.Views
         [HttpPost]
         public ActionResult BeltApplication(Guid id, string message)
         {
+            Guid currentMemberId = GetCurrentMember().Id;
+
+            // Check for an existing open application
+            bool alreadyApplied = db.MemberBelts.Any(
+                mb => mb.MemberId == currentMemberId
+                    && mb.BeltId == id
+                    && mb.Awarded == null
+                    && mb.RejectedDate == null);
+            if (alreadyApplied)
+            {
+                return Json("OK");
+            }
+
             Guid beltId = id;
             MemberBelt application = new MemberBelt
             {
@@ -84,10 +97,23 @@ namespace CoderDojo.Views
         [HttpPost]
         public ActionResult BadgeApplication(Guid id, string message)
         {
+            Guid currentMemberId = GetCurrentMember().Id;
+
+            // Check for an existing open application
+            bool alreadyApplied = db.MemberBadges.Any(
+                mb => mb.MemberId == currentMemberId
+                    && mb.BadgeId == id
+                    && mb.Awarded == null
+                    && mb.RejectedDate == null);
+            if (alreadyApplied)
+            {
+                return Json("OK");
+            }
+
             Guid badgeId = id;
             MemberBadge application = new MemberBadge
             {
-                MemberId = GetCurrentMember().Id,
+                MemberId = currentMemberId,
                 BadgeId = badgeId,
                 ApplicationDate = DateTime.UtcNow,
                 ApplicationNotes = message
