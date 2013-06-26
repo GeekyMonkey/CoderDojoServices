@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,13 +17,15 @@ namespace CoderDojo.Controllers.Api
         private CoderDojoData db = new CoderDojoData();
 
         // GET api/Adult
-        public IEnumerable<Adult> GetAdults()
+        public IEnumerable<ApiAdult> GetAdults()
         {
-            return db.Adults.AsEnumerable();
+            var adults = db.Adults.OrderBy(a => a.FirstName).ThenBy(a => a.LastName).ToList();
+            List<ApiAdult> apiAdults = Mapper.Map<List<Adult>, List<ApiAdult>>(adults);
+            return apiAdults.AsEnumerable();
         }
 
         // GET api/Adult/5
-        public Adult GetAdult(Guid id)
+        public ApiAdult GetAdult(Guid id)
         {
             Adult adult = db.Adults.Find(id);
             if (adult == null)
@@ -30,12 +33,13 @@ namespace CoderDojo.Controllers.Api
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
             }
 
-            return adult;
+            return Mapper.Map<ApiAdult>(adult);
         }
 
         // PUT api/Adult/5
-        public HttpResponseMessage PutAdult(Guid id, Adult adult)
+        public HttpResponseMessage PutAdult(Guid id, ApiAdult apiAdult)
         {
+            var adult = Mapper.Map<Adult>(apiAdult);
             if (ModelState.IsValid && id == adult.Id)
             {
                 db.Entry(adult).State = EntityState.Modified;
@@ -58,8 +62,9 @@ namespace CoderDojo.Controllers.Api
         }
 
         // POST api/Adult
-        public HttpResponseMessage PostAdult(Adult adult)
+        public HttpResponseMessage PostAdult(ApiAdult apiAdult)
         {
+            var adult = Mapper.Map<Adult>(apiAdult);
             if (ModelState.IsValid)
             {
                 db.Adults.Add(adult);

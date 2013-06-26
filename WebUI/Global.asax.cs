@@ -21,6 +21,7 @@ namespace CoderDojo
 
             RouteTable.Routes.MapHubs();
 
+            MapperConfig.ConfigMappers();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
