@@ -11,3 +11,6 @@ thumbs.db
 
 # mstest test results
 TestResults
+
+# Secret data
+WebUI/App_Data/Azure
