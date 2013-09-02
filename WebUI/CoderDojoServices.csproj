@@ -282,6 +282,7 @@
       <LastGenOutput>DojoData.cs</LastGenOutput>
     </Content>
     <Content Include="App_Data\connections.config" />
+    <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Images\Icons\github-18.png" />
