@@ -113,9 +113,9 @@ function initAttendancePage() {
             $("#MemberMessages").html(memberMessage);
             $("#WelcomeDetailsButton").attr("href", "/Mentor/Member/" + memberId + "?PreviousPage=Attendance");
             $("#MemberWelcomeDialog").popup("open"/*, { positionTo: "#P" + memberId }*/)
-            //$("#MemberWelcomeDialog").on("click", function () {
-            //    $("#MemberWelcomeDialog").popup("close");
-            //});
+            $("#MemberWelcomeDialog").on("click", ".CloseButton", function () {
+                $("#MemberWelcomeDialog").popup("close");
+            });
         }
     }
 }
