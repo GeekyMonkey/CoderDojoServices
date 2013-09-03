@@ -8,8 +8,11 @@ namespace CoderDojo
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/scriptlibraries").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.mobile-{version}.js",
+                        "~/Scripts/jquery.signalr-{version}.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
@@ -26,7 +29,10 @@ namespace CoderDojo
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/mobilecss").Include("~/Content/mobile.css"));
+            bundles.Add(new StyleBundle("~/Content/mobilecss").Include(
+                "~/Content/jquery.mobile-{version}.css",
+                "~/Content/Mobile.css"
+                ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
@@ -41,6 +47,10 @@ namespace CoderDojo
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+#if !DEBUG
+            BundleTable.EnableOptimizations = true;
+#endif
         }
     }
 }

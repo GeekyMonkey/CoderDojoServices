@@ -94,6 +94,7 @@ textarea {
     /* Show the panel */
     .ui-panel-closed {
         width: 17em;
+        visibility: visible;
     }
 
     .ui-responsive-panel.ui-page-panel-closed .ui-panel-content-fixed-toolbar-display-push.ui-panel-content-fixed-toolbar-position-left,
