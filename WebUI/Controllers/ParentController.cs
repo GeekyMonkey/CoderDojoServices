@@ -73,6 +73,117 @@ namespace CoderDojo.Views
             return RedirectClient("/Parent/MyAccount");
         }
 
+        [HttpGet]
+        public ActionResult MemberBadges(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.ShowBackButton = true;
+            ViewBag.Badges = db.Badges
+                .Include("BadgeCategory")
+                .Where(b => !b.Deleted)
+                .OrderBy(b => b.BadgeCategory.CategoryName)
+                .ThenBy(b => b.Achievement)
+                .ToList();
+            return View("MemberBadges", member);
+        }
+
+        [HttpGet]
+        public ActionResult MemberAttendance(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.ShowBackButton = true;
+            return View("MemberAttendance", member);
+        }
+
+        [HttpGet]
+        public ActionResult Member(Guid id, string previousPage = "")
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.PreviousPage = previousPage;
+            ViewBag.ShowBackButton = true;
+            return View("Member", member);
+        }
+
+        [HttpPost]
+        public ActionResult MemberSave(Member memberChanges, string previousPage)
+        {
+            Member member = null;
+
+            if (ModelState.IsValid)
+            {
+                if (memberChanges.Id != null)
+                {
+                    member = db.Members.Find(memberChanges.Id);
+                }
+                if (member == null)
+                {
+                    throw new Exception("Member not found");
+                }
+                if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+                {
+                    throw new Exception("Attempt to view child record not associated with parent");
+                }
+
+                // Save changes
+                //member.FirstName = TrimNullableString(memberChanges.FirstName).Trim();
+                //member.LastName = TrimNullableString(memberChanges.LastName).Trim();
+                member.BirthYear = memberChanges.BirthYear;
+                member.Login = TrimNullableString(memberChanges.Login);
+                member.GithubLogin = TrimNullableString(memberChanges.GithubLogin);
+                member.ScratchName = TrimNullableString(memberChanges.ScratchName);
+                member.XboxGamertag = TrimNullableString(memberChanges.XboxGamertag);
+
+                // Password change
+                if (string.IsNullOrEmpty(memberChanges.NewPassword) == false)
+                {
+                    member.PasswordHash = db.GeneratePasswordHash(memberChanges.NewPassword);
+                }
+
+                // Save
+                db.SaveChanges();
+
+                return RedirectClient("/Parent/Member/" + member.Id);
+            }
+            return Json("Validation error"); // todo
+        }
+
+        [HttpGet]
+        public ActionResult MemberParents(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.ShowBackButton = true;
+            return View("MemberParents", member);
+        }
+
+        [HttpGet]
+        public ActionResult MemberBelts(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.ShowBackButton = true;
+            ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
+            return View("MemberBelts", member);
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.CurrentAdult = this.GetCurrentAdult();

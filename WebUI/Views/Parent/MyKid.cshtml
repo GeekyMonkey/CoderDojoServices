@@ -23,6 +23,8 @@
     @Html.Partial("_ParentMenu")
 }
 
+@Html.Partial("_MemberMenu")
+
 <div data-role="content">
     <div data-role="fieldcontain">
         <label>Birth Year: @member.BirthYear</label>
@@ -47,6 +49,4 @@
             <img src="https://avatar-ssl.xboxlive.com/avatar/@(member.XboxGamertag)/avatarpic-l.png" style="vertical-align:middle;margin-left: 50px;" />
         </div>
     }
-
-    <p>More specific information will be appearing here in the future including links to @(member.FirstName)'s badges, belts, and other stuff.</p>
 </div>

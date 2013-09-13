@@ -477,6 +477,12 @@
     <Content Include="Views\Mentor\Belt.cshtml" />
     <Content Include="Views\Mentor\Badges.cshtml" />
     <Content Include="Views\Mentor\Badge.cshtml" />
+    <Content Include="Views\Parent\MemberBadges.cshtml" />
+    <Content Include="Views\Parent\_MemberMenu.cshtml" />
+    <Content Include="Views\Parent\MemberAttendance.cshtml" />
+    <Content Include="Views\Parent\Member.cshtml" />
+    <Content Include="Views\Parent\MemberParents.cshtml" />
+    <Content Include="Views\Parent\MemberBelts.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
