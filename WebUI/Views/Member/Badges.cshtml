@@ -112,6 +112,14 @@
                             <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
                         </div>
                     }
+
+                    @* Application *@
+                    <div data-role="fieldcontain">
+                        <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
+                        <textarea id="BadgeApplicationMessage" class="BadgeApplicationMessage"></textarea>
+                    </div>
+                    <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" data-role="button" data-inline="false" data-icon="star" class="BadgeApplyButton ui-disabled">Apply</a>
+
                 </div>
             </div>
         }
