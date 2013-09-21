@@ -20,7 +20,7 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
-        public ActionResult Profile()
+        new public ActionResult Profile()
         {
             Member member = GetCurrentMember();
             return View("Profile", member);

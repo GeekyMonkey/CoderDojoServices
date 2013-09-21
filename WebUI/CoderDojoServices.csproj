@@ -186,6 +186,8 @@
     <Compile Include="Belt.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Api\TeamController.cs" />
+    <Compile Include="Controllers\Data\TeamController.cs" />
     <Compile Include="Controllers\MentorController_Reports.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
@@ -207,6 +209,9 @@
     <Compile Include="Controllers\Data\MemberDataController.cs" />
     <Compile Include="Controllers\ViewSwitcherController.cs" />
     <Compile Include="Controllers\_BaseController.cs" />
+    <Compile Include="Dojo.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
     <Compile Include="DojoData.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -252,6 +257,9 @@
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\MentorController.cs" />
+    <Compile Include="Team.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\CoderDojoData.mdf" />
@@ -483,6 +491,13 @@
     <Content Include="Views\Parent\Member.cshtml" />
     <Content Include="Views\Parent\MemberParents.cshtml" />
     <Content Include="Views\Parent\MemberBelts.cshtml" />
+    <Content Include="Views\Mentor\Team.cshtml" />
+    <Content Include="Views\Mentor\Teams.cshtml" />
+    <Content Include="Views\Data\Team\Create.cshtml" />
+    <Content Include="Views\Data\Team\Delete.cshtml" />
+    <Content Include="Views\Data\Team\Details.cshtml" />
+    <Content Include="Views\Data\Team\Edit.cshtml" />
+    <Content Include="Views\Data\Team\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

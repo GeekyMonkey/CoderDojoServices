@@ -705,6 +705,63 @@ namespace CoderDojo.Views
             return RedirectClient("/Mentor/Badges");
         }
 
+        /// <summary>
+        /// Team Maintenance
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Teams()
+        {
+            var teams = db.Teams.Where(t => !t.Deleted).OrderBy(t => t.TeamName).ToList();
+            return View("Teams", teams);
+        }
+
+        public ActionResult TeamAdd()
+        {
+            Team newTeam = new Team();
+            newTeam.HexCode = "#000000";
+            return View("Team", newTeam);
+        }
+
+        public ActionResult Team(Guid id)
+        {
+            Team team = db.Teams.FirstOrDefault(b => b.Id == id);
+            return View("Team", team);
+        }
+
+        [HttpPost]
+        public ActionResult TeamSave(Team t)
+        {
+            Team team;
+            if (t.Id == null || t.Id == Guid.Empty)
+            {
+                team = new Team();
+                db.Teams.Add(team);
+            }
+            else
+            {
+                team = db.Teams.FirstOrDefault(x => x.Id == t.Id);
+            }
+            team.Goal = t.Goal;
+            team.HexCode = t.HexCode;
+            team.Notes = t.Notes;
+            team.TeamName = t.TeamName;
+            db.SaveChanges();
+            return RedirectClient("/Mentor/Teams");
+        }
+
+        [HttpPost]
+        public ActionResult TeamDelete(Guid id)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                Team team;
+                team = db.Teams.FirstOrDefault(x => x.Id == id);
+                team.Deleted = true;
+                db.SaveChanges();
+            }
+            return RedirectClient("/Mentor/Teams");
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.CurrentAdult = this.GetCurrentAdult();

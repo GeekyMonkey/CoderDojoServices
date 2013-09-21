@@ -35,10 +35,12 @@ namespace CoderDojo
         public bool Deleted { get; set; }
         public Nullable<System.DateTime> LoginDate { get; set; }
         public Nullable<System.DateTime> LoginDatePrevious { get; set; }
+        public Nullable<System.Guid> TeamId { get; set; }
     
         public virtual ICollection<MemberAttendance> MemberAttendances { get; set; }
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }
         public virtual ICollection<MemberBelt> MemberBelts { get; set; }
         public virtual ICollection<MemberParent> MemberParents { get; set; }
+        public virtual Team Team { get; set; }
     }
 }

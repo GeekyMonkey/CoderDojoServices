@@ -6,10 +6,10 @@
     <edmx:Diagrams>
       <Diagram DiagramId="4d587fad64344b48ad08fa7838ce66a7" Name="Diagram1">
         <EntityTypeShape EntityType="CoderDojo.Adult" Width="1.5" PointX="8.625" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CoderDojo.Badge" Width="1.5" PointX="0.5" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoderDojo.Badge" Width="1.5" PointX="0.5" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="CoderDojo.Belt" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CoderDojo.MemberAttendance" Width="1.75" PointX="6.5" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CoderDojo.MemberBadge" Width="1.5" PointX="2.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoderDojo.MemberBadge" Width="1.5" PointX="2.5" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CoderDojo.MemberBelt" Width="1.5" PointX="2.5" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CoderDojo.Member" Width="1.5" PointX="4.5" PointY="2.25" IsExpanded="true" />
         <AssociationConnector Association="CoderDojo.FK_MemberBadges_Adult" ManuallyRouted="false" />
@@ -24,8 +24,11 @@
         <AssociationConnector Association="CoderDojo.FK_MemberParent_Member" />
         <AssociationConnector Association="CoderDojo.FK_MemberBelts_AdultRejected" />
         <AssociationConnector Association="CoderDojo.FK_MemberBadges_AdultRejected" />
-        <EntityTypeShape EntityType="CoderDojo.BadgeCategory" Width="1.75" PointX="0.5" PointY="7.375" />
+        <EntityTypeShape EntityType="CoderDojo.BadgeCategory" Width="1.75" PointX="0.5" PointY="8.875" />
         <AssociationConnector Association="CoderDojo.FK_Badges_BadgeCategories" />
+        <EntityTypeShape EntityType="CoderDojo.Dojo" Width="1.5" PointX="4.625" PointY="7.875" />
+        <EntityTypeShape EntityType="CoderDojo.Team" Width="1.5" PointX="0.5" PointY="3.25" />
+        <AssociationConnector Association="CoderDojo.FK_Members_Team" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,73 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CoderDojo.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="CoderDojoStoreContainer">
-          <EntitySet Name="Adults" EntityType="CoderDojo.Store.Adults" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BadgeCategories" EntityType="CoderDojo.Store.BadgeCategories" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Badges" EntityType="CoderDojo.Store.Badges" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Belts" EntityType="CoderDojo.Store.Belts" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MemberAttendance" EntityType="CoderDojo.Store.MemberAttendance" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MemberBadges" EntityType="CoderDojo.Store.MemberBadges" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MemberBelts" EntityType="CoderDojo.Store.MemberBelts" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MemberParent" EntityType="CoderDojo.Store.MemberParent" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Members" EntityType="CoderDojo.Store.Members" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_Badges_BadgeCategories" Association="CoderDojo.Store.FK_Badges_BadgeCategories">
-            <End Role="BadgeCategories" EntitySet="BadgeCategories" />
-            <End Role="Badges" EntitySet="Badges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberAttendance_Membe" Association="CoderDojo.Store.FK_MemberAttendance_Membe">
-            <End Role="Members" EntitySet="Members" />
-            <End Role="MemberAttendance" EntitySet="MemberAttendance" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBadges_AdultAwarded" Association="CoderDojo.Store.FK_MemberBadges_AdultAwarded">
-            <End Role="Adults" EntitySet="Adults" />
-            <End Role="MemberBadges" EntitySet="MemberBadges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBadges_AdultRejected" Association="CoderDojo.Store.FK_MemberBadges_AdultRejected">
-            <End Role="Adults" EntitySet="Adults" />
-            <End Role="MemberBadges" EntitySet="MemberBadges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBadges_Badge" Association="CoderDojo.Store.FK_MemberBadges_Badge">
-            <End Role="Badges" EntitySet="Badges" />
-            <End Role="MemberBadges" EntitySet="MemberBadges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBadges_Member" Association="CoderDojo.Store.FK_MemberBadges_Member">
-            <End Role="Members" EntitySet="Members" />
-            <End Role="MemberBadges" EntitySet="MemberBadges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBelts_AdultAwarded" Association="CoderDojo.Store.FK_MemberBelts_AdultAwarded">
-            <End Role="Adults" EntitySet="Adults" />
-            <End Role="MemberBelts" EntitySet="MemberBelts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBelts_AdultRejected" Association="CoderDojo.Store.FK_MemberBelts_AdultRejected">
-            <End Role="Adults" EntitySet="Adults" />
-            <End Role="MemberBelts" EntitySet="MemberBelts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBelts_Belt" Association="CoderDojo.Store.FK_MemberBelts_Belt">
-            <End Role="Belts" EntitySet="Belts" />
-            <End Role="MemberBelts" EntitySet="MemberBelts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberBelts_Member" Association="CoderDojo.Store.FK_MemberBelts_Member">
-            <End Role="Members" EntitySet="Members" />
-            <End Role="MemberBelts" EntitySet="MemberBelts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberParent_Adult" Association="CoderDojo.Store.FK_MemberParent_Adult">
-            <End Role="Adults" EntitySet="Adults" />
-            <End Role="MemberParent" EntitySet="MemberParent" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MemberParent_Member" Association="CoderDojo.Store.FK_MemberParent_Member">
-            <End Role="Members" EntitySet="Members" />
-            <End Role="MemberParent" EntitySet="MemberParent" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="CoderDojo.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Adults">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsParent" Type="bit" Nullable="false" />
           <Property Name="IsMentor" Type="bit" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
@@ -99,7 +40,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Achievement" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Achievement" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BadgeCategoryId" Type="uniqueidentifier" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="Description" Type="ntext" />
@@ -109,11 +50,18 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Color" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Color" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="ntext" />
           <Property Name="HexCode" Type="nvarchar" MaxLength="10" />
           <Property Name="SortOrder" Type="int" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dojos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DojoName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="MemberAttendance">
           <Key>
@@ -168,8 +116,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BirthYear" Type="int" />
           <Property Name="ScratchName" Type="nvarchar" MaxLength="50" />
           <Property Name="XboxGamertag" Type="nvarchar" MaxLength="50" />
@@ -179,10 +127,22 @@
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
+          <Property Name="TeamId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HexCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Goal" Type="ntext" />
+          <Property Name="Notes" Type="ntext" />
         </EntityType>
         <Association Name="FK_Badges_BadgeCategories">
-          <End Role="BadgeCategories" Type="CoderDojo.Store.BadgeCategories" Multiplicity="0..1" />
-          <End Role="Badges" Type="CoderDojo.Store.Badges" Multiplicity="*" />
+          <End Role="BadgeCategories" Type="Self.BadgeCategories" Multiplicity="0..1" />
+          <End Role="Badges" Type="Self.Badges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BadgeCategories">
               <PropertyRef Name="Id" />
@@ -193,10 +153,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberAttendance_Membe">
-          <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
+          <End Role="Members" Type="Self.Members" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberAttendance" Type="CoderDojo.Store.MemberAttendance" Multiplicity="*" />
+          <End Role="MemberAttendance" Type="Self.MemberAttendance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Members">
               <PropertyRef Name="Id" />
@@ -207,8 +167,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBadges_AdultAwarded">
-          <End Role="Adults" Type="CoderDojo.Store.Adults" Multiplicity="0..1" />
-          <End Role="MemberBadges" Type="CoderDojo.Store.MemberBadges" Multiplicity="*" />
+          <End Role="Adults" Type="Self.Adults" Multiplicity="0..1" />
+          <End Role="MemberBadges" Type="Self.MemberBadges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adults">
               <PropertyRef Name="Id" />
@@ -219,8 +179,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBadges_AdultRejected">
-          <End Role="Adults" Type="CoderDojo.Store.Adults" Multiplicity="0..1" />
-          <End Role="MemberBadges" Type="CoderDojo.Store.MemberBadges" Multiplicity="*" />
+          <End Role="Adults" Type="Self.Adults" Multiplicity="0..1" />
+          <End Role="MemberBadges" Type="Self.MemberBadges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adults">
               <PropertyRef Name="Id" />
@@ -231,10 +191,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBadges_Badge">
-          <End Role="Badges" Type="CoderDojo.Store.Badges" Multiplicity="1">
+          <End Role="Badges" Type="Self.Badges" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberBadges" Type="CoderDojo.Store.MemberBadges" Multiplicity="*" />
+          <End Role="MemberBadges" Type="Self.MemberBadges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Badges">
               <PropertyRef Name="Id" />
@@ -245,10 +205,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBadges_Member">
-          <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
+          <End Role="Members" Type="Self.Members" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberBadges" Type="CoderDojo.Store.MemberBadges" Multiplicity="*" />
+          <End Role="MemberBadges" Type="Self.MemberBadges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Members">
               <PropertyRef Name="Id" />
@@ -259,8 +219,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBelts_AdultAwarded">
-          <End Role="Adults" Type="CoderDojo.Store.Adults" Multiplicity="0..1" />
-          <End Role="MemberBelts" Type="CoderDojo.Store.MemberBelts" Multiplicity="*" />
+          <End Role="Adults" Type="Self.Adults" Multiplicity="0..1" />
+          <End Role="MemberBelts" Type="Self.MemberBelts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adults">
               <PropertyRef Name="Id" />
@@ -271,8 +231,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBelts_AdultRejected">
-          <End Role="Adults" Type="CoderDojo.Store.Adults" Multiplicity="0..1" />
-          <End Role="MemberBelts" Type="CoderDojo.Store.MemberBelts" Multiplicity="*" />
+          <End Role="Adults" Type="Self.Adults" Multiplicity="0..1" />
+          <End Role="MemberBelts" Type="Self.MemberBelts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adults">
               <PropertyRef Name="Id" />
@@ -283,10 +243,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBelts_Belt">
-          <End Role="Belts" Type="CoderDojo.Store.Belts" Multiplicity="1">
+          <End Role="Belts" Type="Self.Belts" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberBelts" Type="CoderDojo.Store.MemberBelts" Multiplicity="*" />
+          <End Role="MemberBelts" Type="Self.MemberBelts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Belts">
               <PropertyRef Name="Id" />
@@ -297,10 +257,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberBelts_Member">
-          <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
+          <End Role="Members" Type="Self.Members" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberBelts" Type="CoderDojo.Store.MemberBelts" Multiplicity="*" />
+          <End Role="MemberBelts" Type="Self.MemberBelts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Members">
               <PropertyRef Name="Id" />
@@ -311,10 +271,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberParent_Adult">
-          <End Role="Adults" Type="CoderDojo.Store.Adults" Multiplicity="1">
+          <End Role="Adults" Type="Self.Adults" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberParent" Type="CoderDojo.Store.MemberParent" Multiplicity="*" />
+          <End Role="MemberParent" Type="Self.MemberParent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Adults">
               <PropertyRef Name="Id" />
@@ -325,10 +285,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MemberParent_Member">
-          <End Role="Members" Type="CoderDojo.Store.Members" Multiplicity="1">
+          <End Role="Members" Type="Self.Members" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MemberParent" Type="CoderDojo.Store.MemberParent" Multiplicity="*" />
+          <End Role="MemberParent" Type="Self.MemberParent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Members">
               <PropertyRef Name="Id" />
@@ -338,6 +298,83 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Members_Team">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="0..1" />
+          <End Role="Members" Type="Self.Members" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Members">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CoderDojoStoreContainer">
+          <EntitySet Name="Adults" EntityType="Self.Adults" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BadgeCategories" EntityType="Self.BadgeCategories" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Badges" EntityType="Self.Badges" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Belts" EntityType="Self.Belts" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Dojos" EntityType="Self.Dojos" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MemberAttendance" EntityType="Self.MemberAttendance" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MemberBadges" EntityType="Self.MemberBadges" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MemberBelts" EntityType="Self.MemberBelts" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MemberParent" EntityType="Self.MemberParent" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <AssociationSet Name="FK_Badges_BadgeCategories" Association="Self.FK_Badges_BadgeCategories">
+            <End Role="BadgeCategories" EntitySet="BadgeCategories" />
+            <End Role="Badges" EntitySet="Badges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberAttendance_Membe" Association="Self.FK_MemberAttendance_Membe">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="MemberAttendance" EntitySet="MemberAttendance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBadges_AdultAwarded" Association="Self.FK_MemberBadges_AdultAwarded">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="MemberBadges" EntitySet="MemberBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBadges_AdultRejected" Association="Self.FK_MemberBadges_AdultRejected">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="MemberBadges" EntitySet="MemberBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBadges_Badge" Association="Self.FK_MemberBadges_Badge">
+            <End Role="Badges" EntitySet="Badges" />
+            <End Role="MemberBadges" EntitySet="MemberBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBadges_Member" Association="Self.FK_MemberBadges_Member">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="MemberBadges" EntitySet="MemberBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBelts_AdultAwarded" Association="Self.FK_MemberBelts_AdultAwarded">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="MemberBelts" EntitySet="MemberBelts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBelts_AdultRejected" Association="Self.FK_MemberBelts_AdultRejected">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="MemberBelts" EntitySet="MemberBelts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBelts_Belt" Association="Self.FK_MemberBelts_Belt">
+            <End Role="Belts" EntitySet="Belts" />
+            <End Role="MemberBelts" EntitySet="MemberBelts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberBelts_Member" Association="Self.FK_MemberBelts_Member">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="MemberBelts" EntitySet="MemberBelts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberParent_Adult" Association="Self.FK_MemberParent_Adult">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="MemberParent" EntitySet="MemberParent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MemberParent_Member" Association="Self.FK_MemberParent_Member">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="MemberParent" EntitySet="MemberParent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Members_Team" Association="Self.FK_Members_Team">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Members" EntitySet="Members" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -399,6 +436,12 @@
           <AssociationSet Name="FK_Badges_BadgeCategories" Association="CoderDojo.FK_Badges_BadgeCategories">
             <End Role="BadgeCategory" EntitySet="BadgeCategories" />
             <End Role="Badge" EntitySet="Badges" />
+          </AssociationSet>
+          <EntitySet Name="Dojos" EntityType="CoderDojo.Dojo" />
+          <EntitySet Name="Teams" EntityType="CoderDojo.Team" />
+          <AssociationSet Name="FK_Members_Team" Association="CoderDojo.FK_Members_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Member" EntitySet="Members" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adult">
@@ -516,6 +559,8 @@
           <Property Type="Boolean" Name="Deleted" Nullable="false" DefaultValue="false" />
           <Property Type="DateTime" Name="LoginDate" Precision="3" />
           <Property Type="DateTime" Name="LoginDatePrevious" Precision="3" />
+          <Property Type="Guid" Name="TeamId" />
+          <NavigationProperty Name="Team" Relationship="CoderDojo.FK_Members_Team" FromRole="Member" ToRole="Team" />
         </EntityType>
         <Association Name="FK_MemberBadges_Adult">
           <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="0..1" />
@@ -695,6 +740,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Dojo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="DojoName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="TeamName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HexCode" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+          <Property Type="String" Name="Goal" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Members" Relationship="CoderDojo.FK_Members_Team" FromRole="Team" ToRole="Member" />
+        </EntityType>
+        <Association Name="FK_Members_Team">
+          <End Type="CoderDojo.Team" Role="Team" Multiplicity="0..1" />
+          <End Type="CoderDojo.Member" Role="Member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Member">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -792,6 +868,7 @@
           <EntitySetMapping Name="Members">
             <EntityTypeMapping TypeName="CoderDojo.Member">
               <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
                 <ScalarProperty Name="LoginDatePrevious" ColumnName="LoginDatePrevious" />
                 <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -822,6 +899,26 @@
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dojos">
+            <EntityTypeMapping TypeName="CoderDojo.Dojo">
+              <MappingFragment StoreEntitySet="Dojos">
+                <ScalarProperty Name="DojoName" ColumnName="DojoName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="CoderDojo.Team">
+              <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Goal" ColumnName="Goal" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="HexCode" ColumnName="HexCode" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
