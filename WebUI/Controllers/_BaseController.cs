@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +17,7 @@ namespace CoderDojo
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 Guid currentUserId = HttpContext.User.Identity.GetUserId();
-                return db.Members.FirstOrDefault(m => m.Id == currentUserId);
+                return db.Members.Include(m => m.Team).FirstOrDefault(m => m.Id == currentUserId);
             }
             else
             {

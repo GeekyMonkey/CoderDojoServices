@@ -63,7 +63,8 @@ namespace CoderDojo.Controllers
 
         public ActionResult Edit(Guid id)
         {
-            Team team = db.Teams.Find(id);
+            var teams = db.Teams.Include(t => t.Members);
+            Team team = teams.FirstOrDefault(t => t.Id == id);
             if (team == null)
             {
                 return HttpNotFound();

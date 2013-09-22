@@ -331,6 +331,7 @@ namespace CoderDojo.Views
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.PreviousPage = previousPage;
             ViewBag.ShowBackButton = true;
+            ViewBag.Teams = db.Teams.Where(t => t.Deleted == false).OrderBy(t => t.TeamName).ToList();
             return View("Member", member);
         }
 
@@ -362,6 +363,7 @@ namespace CoderDojo.Views
                 member.GithubLogin = TrimNullableString(memberChanges.GithubLogin);
                 member.ScratchName = TrimNullableString(memberChanges.ScratchName);
                 member.XboxGamertag = TrimNullableString(memberChanges.XboxGamertag);
+                member.TeamId = memberChanges.TeamId;
 
                 // Password change
                 if (string.IsNullOrEmpty(memberChanges.NewPassword) == false)
