@@ -40,6 +40,21 @@ namespace CoderDojo
             else
             {
                 messages.Add("<h3>Welcome back " + FirstName + ".</h3>");
+            }
+
+            // Team 
+            if (Team != null)
+            {
+                messages.Add("Your team is: " + Team.TeamName);
+            }
+            else
+            {
+                messages.Add("Contact a mentor to be assigned to a team.");
+            }
+
+            // Attendance
+            if (LoginDatePrevious != null)
+            {
                 messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("yyyy-MM-dd HH:mm"));
             }
             messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " Coder Dojo session.");

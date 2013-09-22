@@ -14,6 +14,12 @@
     {
         ViewBag.Title = member.MemberName;
     }
+
+    List<Member> otherTeamMembers = null;
+    if (member.Team != null)
+    {
+        otherTeamMembers = member.Team.Members.Where(tm => tm.Id != member.Id).OrderBy(m => m.FirstName).ToList();
+    }
 }
 
 @section HeaderLeft {
@@ -46,6 +52,24 @@
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
 
+        @if (member.Team != null) {
+            <div data-role="collapsible" data-content-theme="a" class="TeamHeader" data-color="@member.Team.HexCode">
+                <h3>Team - @member.Team.TeamName</h3>
+                <div data-role="fieldcontain">
+                    <p>Goal: @member.Team.Goal</p>
+                    <p>Team Members:</p>
+                    <ul>
+                        @foreach (var teamMember in otherTeamMembers)
+                        {
+                            <li>@teamMember.FirstName @teamMember.LastName</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        } else {
+            <h3>Contact a mentor to have @member.FirstName assigned to a team.</h3>
+        }
+        
         <fieldset role="controlgroup">
             <div data-role="collapsible-set" data-corners="true" data-inset="true">
                 <h3>Memberships</h3>

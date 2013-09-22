@@ -3,6 +3,8 @@
     CoderDojo.Member member = Model;
     int defaultYear = 2000;
     var years = Enumerable.Range(DateTime.Today.Year - 20, 18).Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString(), Selected = (y == defaultYear) });
+    var teams = ((List<Team>)ViewBag.Teams).Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.TeamName, Selected = (t.Id == member.TeamId) }).ToList();
+    teams.Insert(0, new SelectListItem { Value = "", Text = "(no team)" });
     ViewBag.MenuActive = "Members";
     ViewBag.MemberMenuActive = "Details";
     string previousPage = ViewBag.PreviousPage;
@@ -49,6 +51,9 @@
 
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
+
+        <label>Team</label>
+        @Html.DropDownListFor(m => m.TeamId, teams, new { data_inline = "true" })
 
         if (newMember)
         {

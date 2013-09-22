@@ -3,6 +3,10 @@
     Member member = Model;
     ViewBag.Title = "Welcome " + member.FirstName;
     ViewBag.MenuActive = "Profile";
+    List<Member> otherTeamMembers = null;
+    if (member.Team != null) {
+        otherTeamMembers = member.Team.Members.Where(tm => tm.Id != member.Id).OrderBy(m => m.FirstName).ToList();
+    }
 }
 
 @section HeaderLeft
@@ -26,6 +30,25 @@
 <div data-role="content">
 <h3>Name: @(member.MemberName)</h3>
 <h3>Birth Year: @member.BirthYear</h3>
+
+@if (member.Team != null) {
+    <div data-role="collapsible" data-content-theme="a" class="TeamHeader" data-color="@member.Team.HexCode">
+        <h3>Team - @member.Team.TeamName</h3>
+        <div data-role="fieldcontain">
+            <p>Goal: @member.Team.Goal</p>
+            <p>Team Members:</p>
+            <ul>
+                @foreach (var teamMember in otherTeamMembers)
+                {
+                    @*<li><a href="/Member/TeamMember/@teamMember.Id.ToString()">@teamMember.FirstName @teamMember.LastName</a></li>*@
+                    <li>@teamMember.FirstName @teamMember.LastName</li>
+                }
+            </ul>
+        </div>
+    </div>
+} else {
+    <h3>Contact a mentor to be assigned to a team!</h3>
+}
 
 <form role="controlgroup" action="ProfileSave" method="post">
     <div data-role="collapsible-set" data-corners="true" data-inset="true">
@@ -78,6 +101,15 @@
 
 <script type="text/javascript">
     $(function () {
+
+        setTimeout(function () {
+            $(".TeamHeader").each(function (i, e) {
+                $(this).find("h3 .ui-btn-inner").css("transition", "background-color 2s");
+                $(this).find("h3 .ui-btn-inner").css("background-color", $(this).data("color"));
+                $(this).find(".TeamColorText").css("color", $(this).data("color"));
+            });
+        }, 1000);
+
         $(".Controller_Member.Action_Profile #ScratchButton").off().on("click", function (e) {
             e.preventDefault();
             openNewWindow("http://scratch.mit.edu/users/" + $(".Controller_Member.Action_Profile #ScratchName").val());
