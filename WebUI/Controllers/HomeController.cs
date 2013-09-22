@@ -124,6 +124,7 @@ namespace CoderDojo.Controllers
             DateTime sessionDate = DateTime.Today;
             ViewBag.SignedInMembers = GetSignedInMembers();
             ViewBag.SessionDate = sessionDate;
+            ViewBag.Teams = db.Teams.OrderBy(t => t.TeamName).ToList();
             return View("SignIn", new LoginModel());
         }
 
@@ -157,7 +158,7 @@ namespace CoderDojo.Controllers
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), member.Id.ToString("N"), member.MemberName, true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "");
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "");
             string message = member.GetLoginMessage();
 
             return Json(new {

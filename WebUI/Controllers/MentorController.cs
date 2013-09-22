@@ -122,7 +122,7 @@ namespace CoderDojo.Views
             {
                 memberMessage = member.GetLoginMessage();
             }
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
         }
 
         [HttpGet]
@@ -379,6 +379,10 @@ namespace CoderDojo.Views
                 if (memberChanges.AttendedToday)
                 {
                     DoAttendanceChange(member.Id, true, DateTime.Today);
+                }
+                else
+                {
+                    DoAttendanceChange(member.Id, member.MemberAttendances.Where(ma => ma.Date == DateTime.Today).Any(), DateTime.Today);
                 }
 
                 if (previousPage == "Attendance")

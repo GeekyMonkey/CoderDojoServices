@@ -6,6 +6,8 @@
     ViewBag.BodyTheme = "a";
     DateTime sessionDate = ViewBag.SessionDate;
     IEnumerable<MemberAttendance> signedInMembers = ViewBag.SignedInMembers;
+    List<Team> teams = ViewBag.Teams;
+    teams.Add(new Team { TeamName = "No Team", Id = Guid.Empty });
 }
 
 @section HeaderLeft
@@ -28,12 +30,18 @@
 
 <div data-role="content" style="margin-top: 20px;">
     <h3>Members Signed In: <span id="DojoAttendanceCount">@(signedInMembers.Count())</span></h3>
-    <ul data-role="listview" data-autodividers="false">
-        @foreach (var ma in signedInMembers)
+        @foreach (Team team in teams)
         {
-            <li id="m_@ma.MemberId.ToString("N")">@ma.Member.MemberName</li>
+        <div data-role="collapsible" data-collapsed="false" data-content-theme="a" class="TeamHeader" data-color="@team.HexCode">
+            <h3>Team: @team.TeamName</h3>
+            <ul data-role="listview" data-autodividers="false" id="Team@(team.Id.ToString("N"))">
+                @foreach (var ma in signedInMembers.Where(ma => ma.Member.TeamId == team.Id || (ma.Member.TeamId == null && team.Id == Guid.Empty)))
+                {
+                    <li id="m_@ma.MemberId.ToString("N")">@ma.Member.MemberName</li>
+                }
+            </ul>
+        </div>
         }
-    </ul>
 </div>
 
 
@@ -57,6 +65,14 @@
                 $("#SignInButton").trigger("click");
             }
         });
+
+        setTimeout(function () {
+            $(".TeamHeader").each(function (i, e) {
+                $(this).find("h3 .ui-btn-inner").css("transition", "background-color 2s");
+                $(this).find("h3 .ui-btn-inner").css("background-color", $(this).data("color"));
+                $(this).find(".TeamColorText").css("color", $(this).data("color"));
+            });
+        }, 1000);
 
         $("#SignInButton").on("click", function (e) {
             e.preventDefault();
@@ -89,22 +105,18 @@
         });
 
         // Receive a notification that someone altered attendance
-        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, present, sessionCount, dojoAttendanceCount, memberMessage) {
+        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, teamId, present, sessionCount, dojoAttendanceCount, memberMessage) {
             if ($("#SessionDate").val() == attendanceDate) {
+
                 // Update the list
+                $("li#m_" + memberId).remove();
                 $("#DojoAttendanceCount").html(dojoAttendanceCount);
-                var ul = $("ul");
+                var ul = $("ul#Team" + teamId);
                 if (present == "true") {
-                    if ($("li#m_" + memberId).length == 0) {
-                        ul.prepend("<li id='m_" + memberId + "'>" + memberName + "</li>");
-                        ul.listview("refresh");
-                        ul.trigger("updatelayout");
-                    }
-                } else {
-                    $("li#m_" + memberId).remove();
+                    ul.prepend("<li id='m_" + memberId + "'>" + memberName + "</li>");
                     ul.listview("refresh");
-                    ul.trigger("updatelayout");
                 }
+                ul.trigger("updatelayout");
             }
         };
 
