@@ -123,6 +123,12 @@ namespace CoderDojo.Views
             return Json("OK");
         }
 
+        public ActionResult TeamMember(Guid id)
+        {
+            Member otherMember = db.Members.FirstOrDefault(m => m.Id == id);
+            return View("TeamMember", otherMember);
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.CurrentMember = this.GetCurrentMember();

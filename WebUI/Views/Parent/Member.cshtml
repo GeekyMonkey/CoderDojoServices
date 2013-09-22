@@ -52,7 +52,7 @@
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
 
-        @if (member.Team != null) {
+        if (member.Team != null) {
             <div data-role="collapsible" data-content-theme="a" class="TeamHeader" data-color="@member.Team.HexCode">
                 <h3>Team - @member.Team.TeamName</h3>
                 <div data-role="fieldcontain">
@@ -61,7 +61,7 @@
                     <ul>
                         @foreach (var teamMember in otherTeamMembers)
                         {
-                            <li>@teamMember.FirstName @teamMember.LastName</li>
+                            <li><a data-role="button" href="/Parent/TeamMember/@teamMember.Id.ToString("N")">@teamMember.FirstName @teamMember.LastName</a></li>
                         }
                     </ul>
                 </div>

@@ -498,6 +498,8 @@
     <Content Include="Views\Data\Team\Details.cshtml" />
     <Content Include="Views\Data\Team\Edit.cshtml" />
     <Content Include="Views\Data\Team\Index.cshtml" />
+    <Content Include="Views\Member\TeamMember.cshtml" />
+    <Content Include="Views\Parent\TeamMember.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

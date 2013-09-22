@@ -45,6 +45,15 @@
 
         <label for="Notes">Notes</label>
         @Html.TextAreaFor(b => b.Notes)
+
+        @if (team.Members.Count > 0) {
+            <h3>Members:</h3>
+            <ul>
+                @foreach(var member in team.Members.OrderBy(m => m.FirstName)) {
+                    <li><a data-role="button" href="/Mentor/Member/@(member.Id.ToString())">@member.FirstName @member.LastName</a></li>
+                }
+            </ul>
+        }
     </fieldset>
 }
 

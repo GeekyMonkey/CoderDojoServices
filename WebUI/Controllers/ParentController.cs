@@ -184,6 +184,12 @@ namespace CoderDojo.Views
             return View("MemberBelts", member);
         }
 
+        public ActionResult TeamMember(Guid id)
+        {
+            Member otherMember = db.Members.FirstOrDefault(m => m.Id == id);
+            return View("TeamMember", otherMember);
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             ViewBag.CurrentAdult = this.GetCurrentAdult();
