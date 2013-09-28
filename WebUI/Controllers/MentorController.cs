@@ -310,6 +310,7 @@ namespace CoderDojo.Views
             {
                 AttendedToday = true
             };
+            ViewBag.Teams = db.Teams.Where(t => t.Deleted == false).OrderBy(t => t.TeamName).ToList();
             return View("Member", newMember);
         }
 
