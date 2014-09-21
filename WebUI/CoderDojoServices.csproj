@@ -363,6 +363,7 @@
     <Content Include="App_Data\connections.config" />
     <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
+    <Content Include="Scripts\Analytics.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
     <Content Include="Images\Icons\github-18.png" />
