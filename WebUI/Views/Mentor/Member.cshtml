@@ -2,7 +2,7 @@
 @{
     CoderDojo.Member member = Model;
     int defaultYear = 2000;
-    var years = Enumerable.Range(DateTime.Today.Year - 20, 18).Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString(), Selected = (y == defaultYear) });
+    var years = Enumerable.Range(DateTime.Today.Year - 40, 18).Select(y => new SelectListItem { Value = y.ToString(), Text = y.ToString(), Selected = (y == defaultYear) });
     var teams = ((List<Team>)ViewBag.Teams).Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.TeamName, Selected = (t.Id == member.TeamId) }).ToList();
     teams.Insert(0, new SelectListItem { Value = "", Text = "(no team)" });
     ViewBag.MenuActive = "Members";
