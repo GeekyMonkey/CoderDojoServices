@@ -3,6 +3,7 @@
     ViewBag.Title = "Data Cleanup";
     int membersDeleted = ViewBag.MembersDeleted;
     int parentsDeleted = ViewBag.ParentsDeleted;
+    Exception ex = ViewBag.Exception;
 }
 
 @section HeaderLeft
@@ -34,4 +35,9 @@
             <td>@parentsDeleted</td>
         </tr>
     </table>
+    @if (ex != null)
+    {
+        <p>Error: @ex.Message</p>
+        <p>Error: @ex.StackTrace</p>
+    }
 </div>

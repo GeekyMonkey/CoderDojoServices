@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -41,28 +43,35 @@ namespace CoderDojo.Views
             int membersDeleted = 0;
             int parentsDeleted = 0;
 
-            // Delete parents who haven't attended in a year
-            foreach (var member in db.Members.Where(m => m.Deleted == false))
+            try
             {
-                DateTime lastAttendance = member.LastAttendance;
-                if (lastAttendance < oneYearAgo)
+                // Delete parents who haven't attended in a year 
+                foreach (var member in db.Members.Include(m => m.MemberAttendances).Where(m => m.Deleted == false).ToList())
                 {
-                    member.Deleted = true;
-                    membersDeleted++;
+                    DateTime lastAttendance = member.LastAttendance;
+                    if (lastAttendance < oneYearAgo)
+                    {
+                        member.Deleted = true;
+                        membersDeleted++;
+                    }
                 }
-            }
+                db.SaveChanges();
 
-            // Delete parents who are not mentors and have no active children
-            foreach (var parent in db.Adults.Where(a => a.Deleted == false && a.IsParent == true && a.IsMentor == false).ToList())
+                // Delete parents who are not mentors and have no active children
+                foreach (var parent in db.Adults.Include(p => p.MemberParents).Where(a => a.Deleted == false && a.IsParent == true && a.IsMentor == false).ToList())
+                {
+                    if (!parent.MemberParents.Any(mp => mp.Member != null && mp.Member.Deleted == false))
+                    {
+                        parent.Deleted = true;
+                        parentsDeleted++;
+                    }
+                }
+                db.SaveChanges();
+            }
+            catch (Exception ex)
             {
-                if (!parent.MemberParents.Any(mp => mp.Member.Deleted == false))
-                {
-                    parent.Deleted = true;
-                    parentsDeleted++;
-                }
+                ViewBag.Exception = ex;
             }
-
-            db.SaveChanges();
 
             ViewBag.MembersDeleted = membersDeleted;
             ViewBag.ParentsDeleted = parentsDeleted;

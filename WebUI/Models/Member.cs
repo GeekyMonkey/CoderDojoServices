@@ -31,13 +31,18 @@ namespace CoderDojo
         {
             get
             {
-                var lastAttendance = this.MemberAttendances.OrderByDescending(ma => ma.Date).FirstOrDefault();
-                if (lastAttendance == null)
+                DateTime lastAttendanceDate = new DateTime(2000, 1, 1);
+
+                if (this.MemberAttendances.Any())
                 {
-                    return new DateTime(2000, 1, 1);
+                    var lastAttendance = this.MemberAttendances.OrderByDescending(ma => ma.Date).FirstOrDefault();
+                    if (lastAttendance != null)
+                    {
+                        lastAttendanceDate = lastAttendance.Date;
+                    }
                 }
 
-                return lastAttendance.Date;
+                return lastAttendanceDate;
             }
         }
 
