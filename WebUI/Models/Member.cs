@@ -27,6 +27,20 @@ namespace CoderDojo
             set;
         }
 
+        public DateTime LastAttendance
+        {
+            get
+            {
+                var lastAttendance = this.MemberAttendances.OrderByDescending(ma => ma.Date).FirstOrDefault();
+                if (lastAttendance == null)
+                {
+                    return new DateTime(2000, 1, 1);
+                }
+
+                return lastAttendance.Date;
+            }
+        }
+
         public string GetLoginMessage()
         {
             List<string> messages = new List<string>();

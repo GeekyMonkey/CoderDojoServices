@@ -35,6 +35,40 @@ namespace CoderDojo.Views
             return View("Index", mentor);
         }
 
+        public ActionResult DataCleanup()
+        {
+            DateTime oneYearAgo = DateTime.Today.AddYears(-1);
+            int membersDeleted = 0;
+            int parentsDeleted = 0;
+
+            // Delete parents who haven't attended in a year
+            foreach (var member in db.Members.Where(m => m.Deleted == false))
+            {
+                DateTime lastAttendance = member.LastAttendance;
+                if (lastAttendance < oneYearAgo)
+                {
+                    member.Deleted = true;
+                    membersDeleted++;
+                }
+            }
+
+            // Delete parents who are not mentors and have no active children
+            foreach (var parent in db.Adults.Where(a => a.Deleted == false && a.IsParent == true && a.IsMentor == false).ToList())
+            {
+                if (!parent.MemberParents.Any(mp => mp.Member.Deleted == false))
+                {
+                    parent.Deleted = true;
+                    parentsDeleted++;
+                }
+            }
+
+            db.SaveChanges();
+
+            ViewBag.MembersDeleted = membersDeleted;
+            ViewBag.ParentsDeleted = parentsDeleted;
+            return View("DataCleanup");
+        }
+
         /// <summary>
         /// Attendance View
         /// </summary>
@@ -274,8 +308,8 @@ namespace CoderDojo.Views
         public ActionResult SearchMembersByName(string name)
         {
             var members = (from m in db.Members
-                          where m.FirstName.StartsWith(name) || m.LastName.StartsWith(name)
-                          || ((m.FirstName + " " + m.LastName).StartsWith(name))
+                          where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name)
+                          || ((m.FirstName + " " + m.LastName).StartsWith(name)))
                           orderby m.FirstName, m.LastName
                           select new {
                             m.FirstName, m.LastName, m.Id

@@ -395,6 +395,9 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="SQL\Deleted Members.sql" />
+    <Content Include="SQL\Member Last Attendance Date.sql" />
+    <Content Include="SQL\Members Attended On Date.sql" />
     <Content Include="SQL\Sort Members By Attendance.sql" />
     <Content Include="Views\Mentor\BadgeCategories.cshtml" />
     <Content Include="Views\Mentor\BadgeCategory.cshtml">
@@ -501,6 +504,7 @@
     <Content Include="Views\Data\Team\Index.cshtml" />
     <Content Include="Views\Member\TeamMember.cshtml" />
     <Content Include="Views\Parent\TeamMember.cshtml" />
+    <Content Include="Views\Mentor\DataCleanup.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.MenuActive = "DataCleanup";
+    ViewBag.Title = "Data Cleanup";
+    int membersDeleted = ViewBag.MembersDeleted;
+    int parentsDeleted = ViewBag.ParentsDeleted;
+}
+
+@section HeaderLeft
+{
+}
+
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
+<div class="content-primary">
+
+    <table>
+        <tr>
+            <td>Members deleted who have not attended any sessions in over a year.</td>
+            <td>@membersDeleted</td>
+        </tr>
+        <tr>
+            <td>Parents deleted who do not have any non deleted children.</td>
+            <td>@parentsDeleted</td>
+        </tr>
+    </table>
+</div>
