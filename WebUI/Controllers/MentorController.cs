@@ -55,7 +55,6 @@ namespace CoderDojo.Views
                         membersDeleted++;
                     }
                 }
-                db.SaveChanges();
 
                 // Delete parents who are not mentors and have no active children
                 foreach (var parent in db.Adults.Include(p => p.MemberParents).Where(a => a.Deleted == false && a.IsParent == true && a.IsMentor == false).ToList())
@@ -66,6 +65,7 @@ namespace CoderDojo.Views
                         parentsDeleted++;
                     }
                 }
+
                 db.SaveChanges();
             }
             catch (Exception ex)
