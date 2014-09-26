@@ -507,6 +507,7 @@
     <Content Include="Views\Parent\TeamMember.cshtml" />
     <Content Include="Views\Mentor\DataCleanup.cshtml" />
     <Content Include="Views\Mentor\AdultMerge.cshtml" />
+    <Content Include="Views\Mentor\MemberMerge.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

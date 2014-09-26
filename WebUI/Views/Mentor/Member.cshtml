@@ -20,6 +20,10 @@
 }
 
 @section HeaderLeft {
+    @if (!newMember)
+    {
+        <a href="/Mentor/MemberMerge?id=@member.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
+    }
 }
 
 @section HeaderRight {

@@ -233,6 +233,15 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
+        public ActionResult MemberMerge(Guid id)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            ViewBag.ShowBackButton = true;
+
+            return View("MemberMerge", member);
+        }
+
+        [HttpGet]
         public ActionResult ParentKids(Guid id)
         {
             Adult adult = db.Adults.FirstOrDefault(m => m.Id == id);
@@ -327,8 +336,8 @@ namespace CoderDojo.Views
         public ActionResult SearchMembersByName(string name)
         {
             var members = (from m in db.Members
-                          where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name)
-                          || ((m.FirstName + " " + m.LastName).StartsWith(name)))
+                          where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name) || ((m.FirstName + " " + m.LastName).StartsWith(name)))
+                          && m.Deleted == false
                           orderby m.FirstName, m.LastName
                           select new {
                             m.FirstName, m.LastName, m.Id
@@ -341,8 +350,8 @@ namespace CoderDojo.Views
         public ActionResult SearchParentsByName(string name)
         {
             var members = (from a in db.Adults
-                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) ||
-                           ((a.FirstName + " " + a.LastName).StartsWith(name)))
+                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) || ((a.FirstName + " " + a.LastName).StartsWith(name)))
+                           && (a.Deleted == false)
                            && (a.IsParent == true)
                            orderby a.FirstName, a.LastName
                            select new
@@ -359,9 +368,9 @@ namespace CoderDojo.Views
         public ActionResult SearchAdultMergeByName(string name, Guid adultId)
         {
             var members = (from a in db.Adults
-                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) ||
-                           ((a.FirstName + " " + a.LastName).StartsWith(name)))
+                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) || ((a.FirstName + " " + a.LastName).StartsWith(name)))
                            && (a.Id != adultId)
+                           // Allow merging of deleted accounts  && a.Deleted == false
                            orderby a.FirstName, a.LastName
                            select new
                            {
@@ -372,6 +381,26 @@ namespace CoderDojo.Views
                                a.Id
                            }).ToList()
                           .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N"), Email = x.Email, Phone = x.Phone });
+            return Json(members, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SearchMemberMergeByName(string name, Guid memberId)
+        {
+            var members = (from m in db.Members
+                           where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name) || ((m.FirstName + " " + m.LastName).StartsWith(name)))
+                           && (m.Id != memberId)
+                           // Allow merging of deleted accounts  && (m.Deleted == false)
+                           orderby m.FirstName, m.LastName, m.BirthYear
+                           select new
+                           {
+                               m.FirstName,
+                               m.LastName,
+                               m.BirthYear,
+                               m.ScratchName,
+                               m.Id
+                           }).ToList()
+                          .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N"), BirthYear = x.BirthYear, ScratchName = x.ScratchName });
             return Json(members, JsonRequestBehavior.AllowGet);
         }
 
@@ -409,6 +438,87 @@ namespace CoderDojo.Views
             }
 
             db.Adults.Remove(a2);
+
+            db.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public ActionResult MergeMembers(Guid memberId, Guid mergeId, int newBirthYear, int newScratchName)
+        {
+            var m1 = db.Members.FirstOrDefault(m => m.Id == memberId);
+            var m2 = db.Members.FirstOrDefault(m => m.Id == mergeId);
+
+            if (newBirthYear == 1)
+            {
+                m1.BirthYear = m2.BirthYear;
+            }
+
+            if (newScratchName == 1)
+            {
+                m1.ScratchName = m2.ScratchName;
+            }
+
+            if (m1.Team == null)
+            {
+                m1.Team = m2.Team;
+            }
+
+            m1.GithubLogin = MergeValues(m1.GithubLogin, m2.GithubLogin);
+            m1.XboxGamertag = MergeValues(m1.XboxGamertag, m2.XboxGamertag);
+            m1.Login = MergeValues(m1.Login, m2.Login);
+
+            // Move linked parents
+            foreach (var relationship2 in m2.MemberParents.ToList())
+            {
+                if (m1.MemberParents.FirstOrDefault(mp => mp.AdultId == relationship2.AdultId) == null)
+                {
+                    db.MemberParents.Add(new MemberParent { Member = m1, Adult = relationship2.Adult });
+                }
+                db.MemberParents.Remove(relationship2);
+            }
+
+            // Merge badges
+            foreach (var badge in m2.MemberBadges.Where(mb => mb.Awarded != null).ToList())
+            {
+                if (m1.MemberBadges.FirstOrDefault(mb => mb.BadgeId == badge.BadgeId && mb.Awarded != null) == null)
+                {
+                    badge.Member = m1;
+                }
+                else
+                {
+                    db.MemberBadges.Remove(badge);
+                }
+            }
+
+            // Merge belts
+            foreach (var belt in m2.MemberBelts.Where(mb => mb.Awarded != null).ToList())
+            {
+                if (m1.MemberBelts.FirstOrDefault(mb => mb.BeltId == belt.BeltId && mb.Awarded != null) == null)
+                {
+                    belt.Member = m1;
+                }
+                else
+                {
+                    db.MemberBelts.Remove(belt);
+                }
+            }
+
+            // Merge Attendance
+            foreach (var att in m2.MemberAttendances.ToList())
+            {
+                if (m1.MemberAttendances.FirstOrDefault(a => a.Date == att.Date) == null)
+                {
+                    att.Member = m1;
+                }
+                else
+                {
+                    db.MemberAttendances.Remove(att);
+                }
+            }
+
+            db.Members.Remove(m2);
 
             db.SaveChanges();
 
