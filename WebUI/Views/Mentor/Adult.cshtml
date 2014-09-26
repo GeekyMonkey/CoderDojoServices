@@ -13,6 +13,10 @@
 
 @section HeaderLeft
 {
+    @if (!newAdult)
+    {
+        <a href="/Mentor/AdultMerge?AdultMode=@(adultMode)&id=@adult.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
+    }
 }
 
 @section HeaderRight

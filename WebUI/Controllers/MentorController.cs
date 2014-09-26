@@ -223,6 +223,16 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
+        public ActionResult AdultMerge(string adultMode, Guid id)
+        {
+            Adult adult = db.Adults.FirstOrDefault(m => m.Id == id);
+            ViewBag.ShowBackButton = true;
+            ViewBag.AdultMode = adultMode;
+
+            return View("AdultMerge", adult);
+        }
+
+        [HttpGet]
         public ActionResult ParentKids(Guid id)
         {
             Adult adult = db.Adults.FirstOrDefault(m => m.Id == id);
@@ -343,6 +353,66 @@ namespace CoderDojo.Views
                            }).ToList()
                           .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N") });
             return Json(members, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult SearchAdultMergeByName(string name, Guid adultId)
+        {
+            var members = (from a in db.Adults
+                           where (a.FirstName.StartsWith(name) || a.LastName.StartsWith(name) ||
+                           ((a.FirstName + " " + a.LastName).StartsWith(name)))
+                           && (a.Id != adultId)
+                           orderby a.FirstName, a.LastName
+                           select new
+                           {
+                               a.FirstName,
+                               a.LastName,
+                               a.Phone,
+                               a.Email,
+                               a.Id
+                           }).ToList()
+                          .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N"), Email = x.Email, Phone = x.Phone });
+            return Json(members, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult MergeAdults(Guid adultId, Guid mergeId, int newPhone, int newEmail)
+        {
+            var a1 = db.Adults.FirstOrDefault(a => a.Id == adultId);
+            var a2 = db.Adults.FirstOrDefault(a => a.Id == mergeId);
+
+            if (newPhone == 1)
+            {
+                a1.Phone = a2.Phone;
+            }
+
+            if (newEmail == 1)
+            {
+                a1.Email = a2.Email;
+            }
+
+            a1.GardaVetted = MergeValues(a1.GardaVetted, a2.GardaVetted);
+            a1.GithubLogin = MergeValues(a1.GithubLogin, a2.GithubLogin);
+            a1.IsMentor = MergeValues(a1.IsMentor, a2.IsMentor);
+            a1.IsParent = MergeValues(a1.IsParent, a2.IsParent);
+            a1.XboxGamertag = MergeValues(a1.XboxGamertag, a2.XboxGamertag);
+            a1.ScratchName = MergeValues(a1.ScratchName, a2.ScratchName);
+            
+            // Move linked children
+            foreach (var relationship2 in a2.MemberParents.ToList())
+            {
+                if (a1.MemberParents.FirstOrDefault(mp => mp.MemberId == relationship2.MemberId) == null)
+                {
+                    db.MemberParents.Add(new MemberParent { Member = relationship2.Member, Adult = a1 });
+                }
+                db.MemberParents.Remove(relationship2);
+            }
+
+            db.Adults.Remove(a2);
+
+            db.SaveChanges();
+
+            return Json(new { success = true });
         }
 
         [HttpGet]

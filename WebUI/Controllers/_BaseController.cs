@@ -72,5 +72,30 @@ namespace CoderDojo
             }
             return val;
         }
+
+        /// <summary>
+        /// Merge values from entity 2 into entity 1, if that value in entity 1 is blank
+        /// </summary>
+        /// <typeparam name="T">Type of value</typeparam>
+        /// <param name="Entity1Value">Value from entity 1</param>
+        /// <param name="Entity2Value">Value from entity 2</param>
+        /// <returns>Best value</returns>
+        public T MergeValues<T>(T Entity1Value, T Entity2Value)
+        {
+            if (Entity1Value == null)
+            {
+                return Entity2Value;
+            }
+
+            switch ((Entity1Value.ToString() ?? "").Trim())
+            {
+                case "":
+                case "0":
+                case "False":
+                    return Entity2Value;
+                default:
+                    return Entity1Value;
+            }
+        }
     }
 }
