@@ -395,6 +395,8 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\QRGenerator\jquery.qrcode.js" />
+    <Content Include="Scripts\QRGenerator\qrcode.js" />
     <Content Include="Scripts\QR\index.html" />
     <Content Include="Scripts\QR\js\alignpat.js" />
     <Content Include="Scripts\QR\js\app_installer.js" />
@@ -647,6 +649,7 @@
     <Content Include="Scripts\QR\style\font-awesome\font\fontawesome-webfont.woff" />
     <Content Include="Scripts\QR\style\font-awesome\font\FontAwesome.otf" />
     <Content Include="Views\Home\SignInQR.cshtml" />
+    <Content Include="Views\Home\Passport.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

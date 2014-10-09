@@ -117,6 +117,18 @@ namespace CoderDojo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult Passport(string Id)
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+
+            Guid gid = new Guid(Id);
+            Member member = db.Members.FirstOrDefault(m => m.Id == gid);
+
+            return View("Passport", member);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         [SignInModeFilter]
         public ActionResult SignIn()
         {

@@ -26,6 +26,12 @@ namespace CoderDojo
             );
 
             routes.MapRoute(
+                name: "Passport",
+                url: "Passport/{id}",
+                defaults: new { controller = "Home", action = "Passport", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

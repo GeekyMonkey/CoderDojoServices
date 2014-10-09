@@ -23,6 +23,7 @@
     @if (!newMember)
     {
         <a href="/Mentor/MemberMerge?id=@member.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
+        <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
     }
 }
 
@@ -147,6 +148,10 @@
                 }
                 form.submit();
             }
+        });
+        $("#PrintButton").on("click", function (e) {
+            e.preventDefault();
+            window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
         });
     });
 </script>

@@ -161,5 +161,22 @@ namespace CoderDojo
             }
             return html;
         }
+
+        public string BeltColorHex
+        {
+            get
+            {
+                string hex = "#ffffff";
+                if (this.MemberBelts.Any())
+                {
+                    var belt =this.MemberBelts.Where(mb => mb.Awarded != null).OrderByDescending(mb => mb.Awarded).FirstOrDefault();
+                    if (belt != null)
+                    {
+                        hex = belt.Belt.HexCode;
+                    }
+                }
+                return hex;
+            }
+        }
     }
 }
