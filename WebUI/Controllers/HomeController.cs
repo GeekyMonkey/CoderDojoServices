@@ -128,12 +128,50 @@ namespace CoderDojo.Controllers
             return View("SignIn", new LoginModel());
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [SignInModeFilter]
+        public ActionResult SignInQR()
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+            DateTime sessionDate = DateTime.Today;
+            ViewBag.SignedInMembers = GetSignedInMembers();
+            ViewBag.SessionDate = sessionDate;
+            ViewBag.Teams = db.Teams.OrderBy(t => t.TeamName).ToList();
+            return View("SignInQR", new LoginModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult SignInQR(string Id)
+        {
+            Member member = null;
+            try
+            {
+                Guid gid = new Guid(Id);
+                member = db.Members.FirstOrDefault(m => m.Id == gid);
+            }
+            catch
+            {
+                member = null;
+            }
+
+            if (member == null)
+            {
+                return Json(new
+                {
+                    ValidationMessage = "Unknown QR Code: " + Id
+                });
+            }
+
+            return SignInMember(member);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult SignIn(LoginModel loginModel)
         {
             Member member = null;
-            DateTime sessionDate = DateTime.Today;
             if (!string.IsNullOrEmpty(loginModel.Password))
             {
                 string passwordHash = db.GeneratePasswordHash(loginModel.Password);
@@ -151,9 +189,15 @@ namespace CoderDojo.Controllers
                 });
             }
 
+            return SignInMember(member);
+        }
+
+        private ActionResult SignInMember(Member member)
+        {
             member.SetLoginDate();
             db.SaveChanges();
 
+            DateTime sessionDate = DateTime.Today;
             int sessionCount = db.AttendanceSet(member.Id, true, sessionDate);
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
             // Notify other members looking at this screen
