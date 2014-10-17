@@ -1,9 +1,14 @@
 ﻿@model CoderDojo.Member
 @{
+    Team team = ViewBag.Team;
     ViewBag.Title = "ID Printout";
     ViewBag.HideMenuButton = true;
     this.Layout = null;
     Member member = Model;
+    double widthCm = 10.7;
+    double heightCm = 7.7;
+    double pageWidthCm = 21.0;
+    double pageHeightCm = 29.7;
 }
 
 
@@ -12,76 +17,106 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Invoice</title>
+    <title>Member IDs</title>
     <style>
-     /* reset */
-
 *
 {
-	border: 0;
-	box-sizing: content-box;
-	color: inherit;
-	font-family: inherit;
-	font-size: inherit;
-	font-style: inherit;
-	font-weight: inherit;
-	line-height: inherit;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	text-decoration: none;
-	vertical-align: top;
+    border: 0;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-/* page */
+html
+{
+    font: 16px/1 'Open Sans', sans-serif;
+    overflow: auto;
+    padding: 0;
+    background: #999;
+    cursor: default;
+    padding: 2cm;
+}
 
-html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; padding: 0.5in; }
-html { background: #999; cursor: default; }
-
-body {
-    box-sizing: border-box;
-    width: 4in;
-    height: 2in;
+body
+{
+    /* width: @(pageWidthCm)cm; */
     margin: 0 auto;
     overflow: hidden;
-    padding: 0.2in;
+    padding: 1cm;
     position: relative;
-        }
-body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
-
-@@media print {
-	* { -webkit-print-color-adjust: exact; }
-	html { background: none; padding: 0; }
-	body { box-shadow: none; margin: 0; }
-	span:empty { display: none; }
-	.add, .cut { display: none; }
+    background: #FFF;
 }
 
-@@page { margin: 0; }
+@@media print
+{
+    * {
+        -webkit-print-color-adjust: exact;
+    }
+    html {
+        background: none;
+        padding: 0;
+    }
+    body {
+        /* height: @(pageHeightCm)cm;  */
+        margin: 0;
+    }
+}
 
-        #qrcode {
-            float: right;
-        }
+@@page {
+    margin: 0;
+}
 
-        body
-        {
-        border: dashed 1px black;
-        }
+.Card
+{
+    width: @(widthCm)cm;
+    height: @(heightCm)cm;
+    border: dashed 1px black;
+    margin: 0 auto;
+    padding: 0.4cm;
+    position: relative;
+    page-break-inside: avoid;
+    font-size: 20px;
+}
 
-        #Belt {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background-color: @(member.BeltColorHex);
-        }
+.Card:nth-child(4n+4)
+{
+    page-break-before:always;
+}
 
-        h1
-        {
-            font-size: 20px;
-            font-weight: bold;
-        }
+.Card .qrcode
+{
+    float: right;
+}
+
+.Card .Belt
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: .5cm;
+    border: dashed 1px #888;
+}
+
+.Card h1
+{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.Card h2
+{
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+
     </style>
 
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
@@ -89,21 +124,41 @@ body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0,
     <script src="~/Scripts/QRGenerator/jquery.qrcode.js"></script>
     <script type="text/javascript">
         $(function () {
-            var qrSize = 100;
-            $('#qrcode').qrcode({
-                width: qrSize,
-                height: qrSize,
-                typeNumber: 0, // Auto
-                text: "@(member.Id.ToString("N"))"
+            var qrSize = 33*4;
+            $('.qrcode').each(function () {
+                element = $(this);
+                element.qrcode({
+                    width: qrSize,
+                    height: qrSize,
+                    typeNumber: 0, // Auto
+                    text: element.data("id")
+                });
             });
         });
     </script>
 </head>
 <body>
-    <div id="qrcode"></div>
-    <h1>@member.MemberName</h1>
-    @*<h2>Team: @member.Team.TeamName</h2>*@
-
-    <div id="Belt"></div>
+    @if (team != null)
+    {
+        foreach (var m in team.Members)
+        {
+            @Card(m)
+        }
+    }
+    else
+    {
+        @Card(member)
+    }
 </body>
 </html>
+
+@helper Card(Member m)
+{
+    <div class="Card">
+        <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
+        <h1>@m.MemberName</h1>
+        <h2>Team: @m.Team.TeamName</h2>
+
+        <div class="Belt" style="background-color: @(m.BeltColorHex);"></div>
+    </div>
+}
