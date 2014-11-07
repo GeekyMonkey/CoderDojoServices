@@ -25,6 +25,8 @@
 
 @Html.Partial("_MemberMenu")
 
+@Html.Partial("_ImageEditable", "Member_" + member.Id.ToString("N"))
+
 <div data-role="content">
     <div data-role="fieldcontain">
         <label>Birth Year: @member.BirthYear</label>

@@ -12,7 +12,7 @@
     #holder {
         border: 10px dashed #ccc;
         width: 300px;
-        min-height: 300px;
+        min-height: 100px;
         margin: 20px auto;
         position: relative;
     }
@@ -26,6 +26,8 @@
         }
 
         #holder img {
+            position: relative;
+            z-index: 2;
             display: block;
             margin: 1px;
             width: 100%;
@@ -38,6 +40,7 @@
 
         #ImageInstructions {
             position: absolute;
+            z-index: 1;
             top: 50%;
             margin-top: -10px;
             text-align: center;
@@ -79,10 +82,10 @@
 
 <div id="EntityImage">
     <div id="holder">
-        <img src="@(ImageUrl)@(fileName).jpg" />
         <div id="ImageInstructions">
             <span>Drop an image here.</span>
         </div>
+        <img src="@(ImageUrl)@(fileName).jpg" />
     </div>
     @*<p id="upload" class="hidden"><label>Upload Image:<br><input type="file"></label></p>*@
     <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>

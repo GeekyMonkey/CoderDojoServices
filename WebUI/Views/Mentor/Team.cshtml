@@ -28,6 +28,7 @@
     @Html.Partial("_MentorMenu")
 }
 
+@Html.Partial("_ImageEditable", "Team_" + team.Id.ToString("N"))
 
 @using (Html.BeginForm("TeamSave", "Mentor"))
 {

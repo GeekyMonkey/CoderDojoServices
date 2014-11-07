@@ -27,6 +27,7 @@
     @Html.Partial("_MentorMenu")
 }
 
+@Html.Partial("_ImageEditable", "BadgeCategory_" + badgeCategory.Id.ToString("N"))
 
 @using (Html.BeginForm("BadgeCategorySave", "Mentor"))
 {

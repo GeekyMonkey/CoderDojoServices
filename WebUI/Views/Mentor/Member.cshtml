@@ -44,6 +44,7 @@
     @Html.Partial("_MemberMenu")
 }
 
+@Html.Partial("_ImageEditable", "Member_" + member.Id.ToString("N"))
 
 @using (Html.BeginForm("MemberSave", "Mentor", new RouteValueDictionary(new { PreviousPage = previousPage }), FormMethod.Post))
 {
