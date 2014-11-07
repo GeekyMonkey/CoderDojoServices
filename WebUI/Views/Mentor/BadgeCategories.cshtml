@@ -24,10 +24,15 @@
 }
 
 <div class="content-primary">
-	<ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
-    @foreach (BadgeCategory b in badgeCategories)
-    {
-        <li><a href="BadgeCategory/@(b.Id.ToString("N"))">@b.CategoryName</a></li>
-    }
+    <ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
+        @foreach (BadgeCategory b in badgeCategories)
+        {
+            <li>
+                <a href="BadgeCategory/@(b.Id.ToString("N"))">
+                    <img data-src="@b.ImageUrl" />
+                    <span>@b.CategoryName</span>
+                </a>
+            </li>
+        }
     </ul>
 </div>

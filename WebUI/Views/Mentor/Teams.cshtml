@@ -24,11 +24,16 @@
 }
 
 <div class="content-primary">
-	<ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
-    @foreach (Team t in teams)
-    {
-        <li class="TeamHeader" data-color="@t.HexCode"><a href="Team/@(t.Id.ToString("N"))">@t.TeamName</a></li>
-    }
+    <ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
+        @foreach (Team t in teams)
+        {
+            <li class="TeamHeader" data-color="@t.HexCode">
+                <a href="Team/@(t.Id.ToString("N"))">
+                    <img data-src="@t.ImageUrl" />
+                    <span>@t.TeamName</span>
+                </a>
+            </li>
+        }
     </ul>
 </div>
 

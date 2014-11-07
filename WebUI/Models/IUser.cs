@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace CoderDojo
 {
+    public interface IId
+    {
+        Guid Id { get; set; }
+    }
+
     public interface IUser
     {
         string FirstName { get; set; }

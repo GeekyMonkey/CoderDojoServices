@@ -78,7 +78,7 @@ body
     height: @(heightCm)cm;
     border: dashed 1px black;
     margin: 0 auto;
-    padding: 0.4cm;
+    padding: 0.25cm;
     position: relative;
     page-break-inside: avoid;
     font-size: 20px;
@@ -93,6 +93,22 @@ body
 .Card .qrcode
 {
     float: right;
+    width: 2.8cm;
+}
+
+.Card .qrcode canvas
+{
+    width: 100%;
+}
+
+.Card .Avatar
+{
+    float: right;
+    max-width: 2.2cm;
+    max-height: 2.2cm;
+    width: auto;
+    height: auto;
+    margin-right: .25cm;
 }
 
 .Card .Belt
@@ -125,7 +141,7 @@ body
     <script src="~/Scripts/QRGenerator/jquery.qrcode.js"></script>
     <script type="text/javascript">
         $(function () {
-            var qrSize = 33*4;
+            var qrSize = 33 * 4;
             $('.qrcode').each(function () {
                 element = $(this);
                 element.qrcode({
@@ -157,6 +173,7 @@ body
 {
     <div class="Card">
         <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
+        <img class="Avatar" src="@m.ImageUrl" />
         <h1>@m.MemberName</h1>
         <h2>Team: @m.Team.TeamName</h2>
 

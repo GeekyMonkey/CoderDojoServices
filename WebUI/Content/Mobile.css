@@ -122,3 +122,17 @@ textarea {
         display: none;
     }
 }
+
+
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-has-thumb.ui-li-static {
+    min-height: 0;
+    padding-left: 50px;
+}
+
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit img, .ui-li-static.ui-li-has-thumb img {
+    max-width: 40px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+}
+

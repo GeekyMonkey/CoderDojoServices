@@ -19,6 +19,15 @@ var onPageShow = function()
     setTimeout(function () {
         $('form :input.AutoFocus:visible').first().focus();
     }, 10);
+
+    // Hide missing images
+    $("img[data-src]").each(function () {
+        $(this).error(function () {
+            $(this).hide();
+        });
+        $(this).attr("src", $(this).data("src"));
+        $(this).attr("data-src", null);
+    });
 }
 
 /* jQuery Startup */

@@ -24,12 +24,17 @@
 
 <div data-role="content">
 	<div class="content-primary">
-		<ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search members..." data-filter-theme="a">
-        @foreach (CoderDojo.Member m in members)
-        {
-            string memId = m.Id.ToString("N");
-            <li><a href="Member/@(memId)">@m.MemberName</a></li>
-        }
+        <ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search members..." data-filter-theme="a">
+            @foreach (CoderDojo.Member m in members)
+            {
+                string memId = m.Id.ToString("N");
+                <li>
+                    <a href="Member/@(memId)">
+                        <img data-src="@m.ImageUrl" />
+                        <span>@m.MemberName</span>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 </div>

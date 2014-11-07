@@ -24,11 +24,16 @@
 }
 
 <div class="content-primary">
-	<ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search..." data-filter-theme="a">
-    @foreach (CoderDojo.Adult m in adults)
-    {
-        string memId = m.Id.ToString("N");
-        <li><a href="Adult/@(memId)">@m.FullName</a></li>
-    }
+    <ul data-role="listview" data-autodividers="true" id="myFilter" data-filter="true" data-filter-placeholder="Search..." data-filter-theme="a">
+        @foreach (CoderDojo.Adult m in adults)
+        {
+            string memId = m.Id.ToString("N");
+            <li>
+                <a href="Adult/@(memId)" class="ThumbListItem">
+                    <img data-src="@m.ImageUrl" />
+                    <span>@m.FullName</span>
+                </a>
+            </li>
+        }
     </ul>
 </div>

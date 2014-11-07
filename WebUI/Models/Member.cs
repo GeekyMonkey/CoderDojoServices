@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CoderDojo
 {
-    public partial class Member : BaseEntity, IUser
+    public partial class Member : BaseEntity, IUser, IId
     {
         public string MemberName
         {

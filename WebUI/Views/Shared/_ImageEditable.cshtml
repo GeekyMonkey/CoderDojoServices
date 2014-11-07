@@ -118,7 +118,7 @@
         if (tests.filereader === true && acceptedTypes[file.type] === true) {
             var reader = new FileReader();
             reader.onload = function (event) {
-                $("#holder img").attr("src", event.target.result);
+                $("#holder img").show().attr("src", event.target.result);
             };
 
             reader.readAsDataURL(file);

@@ -55,6 +55,7 @@ namespace CoderDojo
         {
             // Set defaults
             ViewBag.HideMenuButton = false;
+            ViewBag.ImageUrl = System.Configuration.ConfigurationManager.AppSettings["ImageUrl"];
 
             base.OnActionExecuting(filterContext);
         }
