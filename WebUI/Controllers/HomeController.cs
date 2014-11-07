@@ -8,6 +8,10 @@ using System.Security.Cryptography;
 using System.Web.Security;
 using System.Web.WebPages;
 using Microsoft.AspNet.SignalR;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using System.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace CoderDojo.Controllers
 {
@@ -240,6 +244,40 @@ namespace CoderDojo.Controllers
                                       where ma.Date == DateTime.Today
                                       orderby ma.Member.FirstName, ma.Member.LastName
                                       select ma;
+        }
+
+        [HttpPost]
+        public ActionResult ImageUpload(HttpPostedFileBase file, string filename)
+        {
+            if (file != null)
+            {
+                try
+                {
+                    string originalFileName = System.IO.Path.GetFileName(file.FileName);
+
+                    var storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString);
+                    var blobStorage = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobStorage.GetContainerReference("coderdojomember");
+                    if (container.CreateIfNotExists())
+                    {
+                        // configure container for public access
+                        var permissions = container.GetPermissions();
+                        permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+                        container.SetPermissions(permissions);
+                    }
+                    string uniqueBlobName = filename + ".jpg";
+                    var blob = container.GetBlockBlobReference(uniqueBlobName);
+                    blob.Properties.ContentType = file.ContentType;
+                    blob.UploadFromStream(file.InputStream);
+
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { error = ex.Message });
+                }
+            }
+
+            return Json(new { success = true });
         }
     }
 }

@@ -673,6 +673,7 @@
     <Content Include="Scripts\QR\style\font-awesome\font\FontAwesome.otf" />
     <Content Include="Views\Home\SignInQR.cshtml" />
     <Content Include="Views\Home\Passport.cshtml" />
+    <Content Include="Views\Shared\_ImageEditable.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

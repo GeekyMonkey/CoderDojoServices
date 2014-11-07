@@ -10,5 +10,14 @@ namespace CoderDojo
         public BaseEntity()
         {
         }
+
+        /*
+        public bool HasImage()
+        {
+
+        }
+
+
+        public string ImagePath*/
     }
 }

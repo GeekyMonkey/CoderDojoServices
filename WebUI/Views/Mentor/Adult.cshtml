@@ -39,6 +39,8 @@
     </text>
 }
 
+@Html.Partial("_ImageEditable", "Adult_" + adult.Id.ToString("N"))
+
 @using (Html.BeginForm(adultMode + "Save", "Mentor"))
 {
     <fieldset data-role="controlgroup">
