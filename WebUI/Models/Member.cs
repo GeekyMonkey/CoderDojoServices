@@ -178,5 +178,14 @@ namespace CoderDojo
                 return hex;
             }
         }
+
+        public List<MemberBadgeCategory> GetBadgeCategories()
+        {
+            var mbcs = this.MemberBadges.Where(b => b.Awarded != null).GroupBy(b => b.Badge.BadgeCategory)
+                      .Select(g => new MemberBadgeCategory { BadgeCategory = g.Key, BadgeCount = g.Count() })
+                      .OrderByDescending(b => b.BadgeCount)
+                      .ToList();
+            return mbcs;
+        }
     }
 }

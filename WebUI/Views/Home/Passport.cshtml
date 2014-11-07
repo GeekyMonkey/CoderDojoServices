@@ -104,11 +104,32 @@ body
 .Card .Avatar
 {
     float: right;
-    max-width: 2.2cm;
-    max-height: 2.2cm;
+    max-width: 2.3cm;
+    max-height: 2.8cm;
     width: auto;
     height: auto;
-    margin-right: .25cm;
+    margin-right: .2cm;
+}
+
+.Card .Badges
+{
+        width: 100%;
+        table-layout: fixed;
+        left: 0;
+        text-align: center;
+        position: absolute;
+        bottom: .4cm;
+        max-height: 4cm;
+}
+
+.Card .Badges img
+{
+        width: 80%;
+}
+
+.Card .Badges span
+{
+        display: block;
 }
 
 .Card .Belt
@@ -177,6 +198,17 @@ body
         <h1>@m.MemberName</h1>
         <h2>Team: @m.Team.TeamName</h2>
 
+        <table class="Badges">
+            <tr>
+                @foreach (var mbc in m.GetBadgeCategories())
+                {
+                    <td>
+                        <img src="@mbc.BadgeCategory.ImageUrl" />
+                        <span>@mbc.BadgeCount</span>
+                    </td>
+                }
+            </tr>
+        </table>
         <div class="Belt" style="background-color: @(m.BeltColorHex);"></div>
     </div>
 }
