@@ -16,7 +16,11 @@ namespace CoderDojo
         {
             get
             {
-                string typeName = this.GetType().Name.Substring(0, this.GetType().Name.IndexOf("_"));
+                string typeName = this.GetType().Name;
+                if (typeName.Contains('_'))
+                {
+                    typeName = typeName.Substring(0, this.GetType().Name.IndexOf("_"));
+                }
                 return ConfigurationManager.AppSettings["ImageUrl"] + typeName + "_" + (this as IId).Id.ToString("N") + ".jpg"; 
             }
         }

@@ -136,3 +136,11 @@ textarea {
     height: auto;
 }
 
+.ui-btn-text img
+{
+    max-width: 40px;
+    max-height: 24px;
+    width: auto;
+    height: auto;
+    vertical-align: middle;
+}

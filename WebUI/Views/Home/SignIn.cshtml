@@ -34,16 +34,22 @@
 </div>
 
     <div class="ui-grid-a">
-        @foreach (Team team in teams)
-        {
-            col = (col == 'a') ? 'b' : 'a';
+    @foreach (Team team in teams.Where(t => t.Deleted == false))
+    {
+        col = (col == 'a') ? 'b' : 'a';
         <div data-role="ui-block-@(col)" style="float:left;">
             <div data-role="collapsible" data-collapsed="false" data-content-theme="a" class="TeamHeader" data-color="@team.HexCode">
-                <h3>Team: @team.TeamName</h3>
+                <h3>
+                    <img data-src="@team.ImageUrl" />
+                    Team: @team.TeamName
+                </h3>
                 <ul data-role="listview" data-autodividers="false" id="Team@(team.Id.ToString("N"))">
                     @foreach (var ma in signedInMembers.Where(ma => ma.Member.TeamId == team.Id || (ma.Member.TeamId == null && team.Id == Guid.Empty)))
                     {
-                        <li id="m_@ma.MemberId.ToString("N")">@ma.Member.MemberName</li>
+                        <li id="m_@ma.MemberId.ToString("N")">
+                            <img data-src="@ma.Member.ImageUrl" />
+                            @ma.Member.MemberName
+                        </li>
                     }
                 </ul>
             </div>

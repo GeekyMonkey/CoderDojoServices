@@ -42,7 +42,9 @@
             <ul>
                 @foreach (var teamMember in otherTeamMembers)
                 {
-                    <li><a data-role="button" href="/Member/TeamMember/@teamMember.Id.ToString()">@teamMember.FirstName @teamMember.LastName</a></li>
+                    <li>
+                        <a data-role="button" href="/Member/TeamMember/@teamMember.Id.ToString()">@teamMember.FirstName @teamMember.LastName</a>
+                    </li>
                 }
             </ul>
         </div>
