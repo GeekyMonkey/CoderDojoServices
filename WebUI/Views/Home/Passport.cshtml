@@ -240,7 +240,7 @@ body
         </table>
         <div class="Belt" style="background-color: @(m.BeltColorHex);">
             <span class="CoderDojo">Coder Dojo</span>
-            <span class="BadgeTotal">@m.MemberBadges.Count()</span>
+            <span class="BadgeTotal">@m.MemberBadges.Where(mb => mb.Awarded != null).Count()</span>
             <span class="Location">Ennis</span>
         </div>
     </div>

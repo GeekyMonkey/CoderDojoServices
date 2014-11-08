@@ -144,3 +144,5 @@ textarea {
     height: auto;
     vertical-align: middle;
 }
+
+ul#TeamMembers li {list-style-type: none;}

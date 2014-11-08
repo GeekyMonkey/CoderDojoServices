@@ -8,10 +8,12 @@
 
 @section HeaderLeft
 {
+<a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
 }
 
 @section HeaderRight
 {
+    <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
 }
 
 @section Footer
@@ -52,3 +54,15 @@
         </div>
     }
 </div>
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#PrintButton").on("click", function (e) {
+            e.preventDefault();
+            window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
+        });
+
+    });
+</script>

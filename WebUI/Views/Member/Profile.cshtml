@@ -11,6 +11,7 @@
 
 @section HeaderLeft
 {
+    <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
 }
 
 @section HeaderRight
@@ -35,15 +36,21 @@
 
 @if (member.Team != null) {
     <div data-role="collapsible" data-content-theme="a" class="TeamHeader" data-color="@member.Team.HexCode">
-        <h3>Team - @member.Team.TeamName</h3>
+        <h3>
+            Team - @member.Team.TeamName
+            <img src="@member.Team.ImageUrl" />
+        </h3>
         <div data-role="fieldcontain">
             <p>Goal: @member.Team.Goal</p>
             <p>Team Members:</p>
-            <ul>
+            <ul id="TeamMembers">
                 @foreach (var teamMember in otherTeamMembers)
                 {
                     <li>
-                        <a data-role="button" href="/Member/TeamMember/@teamMember.Id.ToString()">@teamMember.FirstName @teamMember.LastName</a>
+                        <a data-role="button" href="/Member/TeamMember/@teamMember.Id.ToString()">
+                            <img src="@teamMember.ImageUrl" />
+                            @teamMember.FirstName @teamMember.LastName
+                        </a>
                     </li>
                 }
             </ul>
@@ -125,5 +132,11 @@
             e.preventDefault();
             openNewWindow("https://github.com/" + $(".Controller_Member.Action_Profile #GithubLogin").val() + "/");
         });
+
+        $("#PrintButton").on("click", function (e) {
+            e.preventDefault();
+            window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
+        });
+
     });
 </script>
