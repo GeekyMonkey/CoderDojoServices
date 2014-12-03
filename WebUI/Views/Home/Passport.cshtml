@@ -221,11 +221,12 @@ body
 
 @helper Card(Member m)
 {
+        string teamName = m.Team != null ? ("Team: " + m.Team.TeamName) : string.Empty;
     <div class="Card">
         <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
         <img class="Avatar" src="@m.ImageUrl" />
         <h1>@m.MemberName</h1>
-        <h2>Team: @m.Team.TeamName</h2>
+        <h2>@teamName</h2>
 
         <table class="Badges">
             <tr>
