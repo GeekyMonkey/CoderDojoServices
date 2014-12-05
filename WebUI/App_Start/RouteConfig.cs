@@ -32,6 +32,12 @@ namespace CoderDojo
             );
 
             routes.MapRoute(
+                name: "BeltCertificate",
+                url: "BeltCertificate/{id}",
+                defaults: new { controller = "Home", action = "BeltCertificate", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

@@ -292,6 +292,10 @@
     <Content Include="App_Data\CoderDojoData_log.ldf">
       <DependentUpon>CoderDojoData.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\font\ocraext-webfont.svg" />
+    <Content Include="Content\font\ocr.css" />
+    <Content Include="Content\font\oldeenglish-webfont.svg" />
+    <Content Include="Content\font\oldenglish.css" />
     <Content Include="Content\images\ajax-loader.gif" />
     <Content Include="Content\images\ajax-loader.png" />
     <Content Include="Content\images\icons-18-black.png" />
@@ -387,8 +391,24 @@
       <LastGenOutput>DojoData.cs</LastGenOutput>
     </Content>
     <Content Include="App_Data\connections.config" />
+    <Content Include="Content\font\fontawesome-webfont.eot" />
+    <Content Include="Content\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\font\fontawesome-webfont.woff" />
+    <Content Include="Content\font\FontAwesome.otf" />
+    <Content Include="Content\font\ocraext-webfont.eot" />
+    <Content Include="Content\font\ocraext-webfont.ttf" />
+    <Content Include="Content\font\ocraext-webfont.woff" />
+    <Content Include="Content\font\ocraext-webfont.woff2" />
+    <Content Include="Content\font\oldeenglish-webfont.eot" />
+    <Content Include="Content\font\oldeenglish-webfont.ttf" />
+    <Content Include="Content\font\oldeenglish-webfont.woff" />
+    <Content Include="Content\font\oldeenglish-webfont.woff2" />
     <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
+    <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Blue.png" />
+    <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Green.png" />
+    <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Red.png" />
+    <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Yellow.png" />
     <Content Include="Scripts\Analytics.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
@@ -677,6 +697,7 @@
     <Content Include="Views\Home\SignInQR.cshtml" />
     <Content Include="Views\Home\Passport.cshtml" />
     <Content Include="Views\Shared\_ImageEditable.cshtml" />
+    <Content Include="Views\Home\BeltCertificate.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

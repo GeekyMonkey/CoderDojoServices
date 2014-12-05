@@ -142,6 +142,20 @@ namespace CoderDojo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult BeltCertificate(string Id)
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+
+            Guid gid = new Guid(Id);
+
+            // Is this a member, or a team
+            Member member = db.Members.FirstOrDefault(m => m.Id == gid);
+
+            return View("BeltCertificate", member);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         [SignInModeFilter]
         public ActionResult SignIn()
         {

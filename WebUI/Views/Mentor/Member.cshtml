@@ -24,6 +24,7 @@
     {
         <a href="/Mentor/MemberMerge?id=@member.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
         <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
+        <a data-role="button" data-icon="tag" id="BeltCertificate">Print Belt Cert</a>
     }
 }
 
@@ -153,6 +154,10 @@
         $("#PrintButton").on("click", function (e) {
             e.preventDefault();
             window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
+        });
+        $("#BeltCertificate").on("click", function (e) {
+            e.preventDefault();
+            window.openNewWindow("/BeltCertificate/@(member.Id.ToString("N"))");
         });
     });
 </script>
