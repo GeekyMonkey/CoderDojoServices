@@ -90,7 +90,7 @@ function initAttendancePage() {
     });
 
     // Receive a notification that someone altered attendance
-    $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, teamId, present, sessionCount, dojoAttendanceCount, memberMessage) {
+    $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, teamId, present, sessionCount, dojoAttendanceCount, memberMessage, memberImageUrl) {
         if ($("#AttendanceDateSelect").length) {
             if ($("#AttendanceDateSelect").val() == attendanceDate) {
                 var checkbox = $("#P" + memberId);

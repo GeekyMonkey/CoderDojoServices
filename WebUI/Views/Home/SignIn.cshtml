@@ -118,7 +118,7 @@
         });
 
         // Receive a notification that someone altered attendance
-        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, teamId, present, sessionCount, dojoAttendanceCount, memberMessage) {
+        $.connection.attendanceHub.client.onAttendanceChange = function (attendanceDate, memberId, memberName, teamId, present, sessionCount, dojoAttendanceCount, memberMessage, memberImageUrl) {
             if ($("#SessionDate").val() == attendanceDate) {
 
                 // Update the list
@@ -126,7 +126,7 @@
                 $("#DojoAttendanceCount").html(dojoAttendanceCount);
                 var ul = $("ul#Team" + teamId);
                 if (present == "true") {
-                    ul.prepend("<li id='m_" + memberId + "'>" + memberName + "</li>");
+                    ul.prepend("<li id='m_" + memberId + "'><img src='" + memberImageUrl + "' />" + memberName + "</li>");
                     ul.listview("refresh");
                 }
                 ul.trigger("updatelayout");
