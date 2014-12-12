@@ -166,7 +166,7 @@ namespace CoderDojo
         {
             get
             {
-                string hex = "#ffffff";
+                string hex = "transparent";
                 if (this.MemberBelts.Any())
                 {
                     var belt =this.MemberBelts.Where(mb => mb.Awarded != null).OrderByDescending(mb => mb.Awarded).FirstOrDefault();
