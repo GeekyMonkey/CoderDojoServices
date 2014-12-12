@@ -118,14 +118,19 @@ namespace CoderDojo.Views
                 .OrderBy(a => a.MemberId)
                 .Select(a => a.MemberId)
                 .ToList();
-            List<AttendanceModel> attendance = (from m in db.Members
-                                                where m.Deleted == false
-                                                orderby m.FirstName, m.LastName
+
+            var members = (from m in db.Members
+                          where m.Deleted == false
+                          orderby m.FirstName, m.LastName
+                          select m).ToList();
+
+            List<AttendanceModel> attendance = (from m in members
                                                 select new AttendanceModel
                                                 {
                                                     MemberId = m.Id,
                                                     MemberName = m.FirstName + " " + m.LastName,
-                                                    Present = presentMemberIds.Contains(m.Id)
+                                                    Present = presentMemberIds.Contains(m.Id),
+                                                    MemberBeltColorHex = m.BeltColorHex
                                                 }).ToList();
             ViewBag.ShowBackButton = true;
             ViewBag.SelectedMemberId = memberId; //todo - scroll here
@@ -165,7 +170,7 @@ namespace CoderDojo.Views
             {
                 memberMessage = member.GetLoginMessage();
             }
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage);
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
         }
 
         [HttpGet]

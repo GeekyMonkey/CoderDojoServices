@@ -10,5 +10,7 @@ namespace CoderDojo
         public Guid MemberId { get; set; }
         public string MemberName { get; set; }
         public bool Present { get; set; }
+
+        public string MemberBeltColorHex { get; set; }
     }
 }

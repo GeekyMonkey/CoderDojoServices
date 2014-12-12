@@ -123,7 +123,6 @@ textarea {
     }
 }
 
-
 .ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-has-thumb.ui-li-static {
     min-height: 0;
     padding-left: 50px;
@@ -138,6 +137,7 @@ textarea {
 
 .ui-btn-text img
 {
+    margin-left: 6px;
     max-width: 40px;
     max-height: 24px;
     width: auto;
@@ -146,3 +146,16 @@ textarea {
 }
 
 ul#TeamMembers li {list-style-type: none;}
+
+
+
+.BeltStripe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    width: 6px;
+    z-index: 2;
+}
+

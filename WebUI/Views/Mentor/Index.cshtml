@@ -29,9 +29,15 @@
 @if (beltApplications.Count() > 0)
 {
     <ul data-role="listview" data-inset="true">
-    @foreach (var mb in beltApplications) {
-        <li data-beltcolor="@mb.Belt.HexCode"><a href="/Mentor/MemberBelts/@mb.MemberId.ToString("N")">@mb.Member.MemberName</a></li>
-    }
+        @foreach (var mb in beltApplications)
+        {
+            <li data-beltcolor="@mb.Belt.HexCode">
+                <a href="/Mentor/MemberBelts/@mb.MemberId.ToString("N")">
+                    <img data-src="@mb.Member.ImageUrl" />
+                    <span>@mb.Member.MemberName</span>
+                </a>
+            </li>
+        }
     </ul>
 }
 else
@@ -44,9 +50,16 @@ else
 @if (badgeApplications.Count() > 0)
 {
     <ul data-role="listview" data-inset="true">
-    @foreach (var mb in badgeApplications) {
-        <li><a href="/Mentor/MemberBadges/@mb.MemberId.ToString("N")">@(mb.Member.MemberName) - @(mb.Badge.BadgeCategory.CategoryName) - @(mb.Badge.Achievement)</a></li>
-    }
+        @foreach (var mb in badgeApplications)
+        {
+            <li>
+                <a href="/Mentor/MemberBadges/@mb.MemberId.ToString("N")">
+                    <img data-src="@mb.Member.ImageUrl" />
+                    <div class="BeltStripe" style="background-color:@(mb.Member.BeltColorHex)"></div>
+                    <span>@(mb.Member.MemberName) - @(mb.Badge.BadgeCategory.CategoryName) - @(mb.Badge.Achievement)</span>
+                </a>
+            </li>
+        }
     </ul>
 }
 else
