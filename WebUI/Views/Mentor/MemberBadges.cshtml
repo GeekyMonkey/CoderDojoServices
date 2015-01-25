@@ -65,6 +65,10 @@
                         <div class="BadgeRejection">
                             <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
                             <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
+                            @if (rejection.RejectedByAdultId == mentor.Id)
+                            {
+                                <a href="/Mentor/BadgeUndo/@rejection.Id.ToString("N")" data-role="button" data-icon="delete" class="UndoBadge">Undo Rejection</a>
+                            }
                         </div>
                     }
 
@@ -107,6 +111,10 @@
                 <blockquote>@memberBadge.ApplicationNotes</blockquote>
                 <p>Awarded on @memberBadge.Awarded.Value.ToString("yyyy MMM dd")</p>
                 <blockquote>@memberBadge.AwardedNotes - @memberBadge.AwardedByAdult.FullName</blockquote>
+                @if (memberBadge.AwardedByAdultId == mentor.Id)
+                {
+                    <a href="/Mentor/BadgeUndo/@memberBadge.Id.ToString("N")" data-role="button" data-icon="delete" class="UndoBadge">Undo Approval</a>
+                }
             </div>
         </div>
     }
@@ -165,6 +173,19 @@
                     }
                 });
             }
+        });
+
+        $(".UndoBadge").on("click", function (e) {
+            e.preventDefault();
+            $.ajax($(this).attr("href"), {
+                type: "POST",
+                dataType: "json",
+                data: {
+                },
+                success: function (data) {
+                    location.reload();
+                }
+            });
         });
 
         $(".ApproveRejectMessage").on("keyup change", function () {

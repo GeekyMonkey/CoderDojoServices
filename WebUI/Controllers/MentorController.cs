@@ -674,6 +674,20 @@ namespace CoderDojo.Views
         }
 
         [HttpPost]
+        public ActionResult BadgeUndo(Guid id)
+        {
+            var memberBadge = db.MemberBadges.FirstOrDefault(mb => mb.Id == id);
+            memberBadge.Awarded = null;
+            memberBadge.AwardedByAdultId = null;
+            memberBadge.AwardedNotes = null;
+            memberBadge.RejectedDate = null;
+            memberBadge.RejectedByAdultId = null;
+            memberBadge.RejectedNotes = null;
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
         public ActionResult BadgeReject(Guid id, string message)
         {
             var memberBadge = db.MemberBadges.FirstOrDefault(mb => mb.Id == id);
@@ -702,6 +716,20 @@ namespace CoderDojo.Views
             memberBelt.RejectedDate = DateTime.UtcNow;
             memberBelt.RejectedByAdultId = GetCurrentAdult().Id;
             memberBelt.RejectedNotes = message;
+            db.SaveChanges();
+            return Json("OK");
+        }
+
+        [HttpPost]
+        public ActionResult BeltUndo(Guid id)
+        {
+            var memberBelt = db.MemberBelts.FirstOrDefault(mb => mb.Id == id);
+            memberBelt.Awarded = null;
+            memberBelt.AwardedByAdultId = null;
+            memberBelt.AwardedNotes = null;
+            memberBelt.RejectedDate = null;
+            memberBelt.RejectedByAdultId = null;
+            memberBelt.RejectedNotes = null;
             db.SaveChanges();
             return Json("OK");
         }

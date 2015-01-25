@@ -46,6 +46,10 @@
                 <blockquote>@memberBelt.ApplicationNotes</blockquote>
                 <p>Awarded on @memberBelt.Awarded.Value.ToString("yyyy MMM dd")</p>
                 <blockquote>@memberBelt.AwardedNotes - @memberBelt.AwardedByAdult.FullName</blockquote>
+                @if (memberBelt.AwardedByAdultId == mentor.Id)
+                {
+                    <a href="/Mentor/BeltUndo/@memberBelt.Id.ToString("N")" data-role="button" data-icon="delete" class="UndoBelt">Undo Approval</a>
+                }
             </div>
         </div>
     }
@@ -76,6 +80,10 @@
                         <div class="BeltRejection">
                             <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
                             <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
+                            @if (rejection.RejectedByAdultId == mentor.Id)
+                            {
+                                <a href="/Mentor/BeltUndo/@rejection.Id.ToString("N")" data-role="button" data-icon="delete" class="UndoBelt">Undo Rejection</a>
+                            }
                         </div>
                     }
 
@@ -130,6 +138,19 @@
                     }
                 });
             }
+        });
+
+        $(".UndoBelt").on("click", function (e) {
+            e.preventDefault();
+            $.ajax($(this).attr("href"), {
+                type: "POST",
+                dataType: "json",
+                data: {
+                },
+                success: function (data) {
+                    location.reload();
+                }
+            });
         });
 
         $("#ApproveRejectMessage").on("keyup change", function () {
