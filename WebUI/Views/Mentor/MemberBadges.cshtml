@@ -19,6 +19,8 @@
     List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
     List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false && BadgesPendingIds.Contains(b.Id) == false).ToList();
     List<Badge> BadgesApplied = badges.Where(b => BadgesPendingIds.Contains(b.Id) == true).ToList();
+    Adult mentor = ViewBag.Mentor;
+    bool IsMentorsChild = member.MemberParents.Any(mp => mp.AdultId == mentor.Id);
 }
 
 @section HeaderLeft {
@@ -74,12 +76,14 @@
                         {
                             <blockquote>@(badgeApplication.ApplicationNotes) - @(badgeApplication.Member.MemberName)</blockquote>
                         }
-                        <div data-role="fieldcontain">
-                            <label for="ApproveRejectMessage">Approval / Rejection Message</label>
-                            <textarea id="ApproveRejectMessage" class="ApproveRejectMessage"></textarea>
-                        </div>
-                        <a href="/Mentor/BadgeApprove/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="star" class="ui-disabled ApproveBadge">Approve</a>
-                        <a href="/Mentor/BadgeReject/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="delete" class="ui-disabled RejectBadge">Reject</a>
+                        if (!IsMentorsChild) {
+                            <div data-role="fieldcontain">
+                                <label for="ApproveRejectMessage">Approval / Rejection Message</label>
+                                <textarea id="ApproveRejectMessage" class="ApproveRejectMessage"></textarea>
+                            </div>
+                            <a href="/Mentor/BadgeApprove/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="star" class="ui-disabled ApproveBadge">Approve</a>
+                            <a href="/Mentor/BadgeReject/@badgeApplication.Id.ToString("N")" data-role="button" data-icon="delete" class="ui-disabled RejectBadge">Reject</a>
+                        }
                     }
                 </div>
             </div>

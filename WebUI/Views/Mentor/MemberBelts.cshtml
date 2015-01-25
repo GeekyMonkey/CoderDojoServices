@@ -10,6 +10,8 @@
     List<Guid> BeltsEarnedIds = MemberBelts.Select(mb => mb.BeltId).ToList();
     List<Guid> BeltsPendingIds = MemberBeltsPending.Select(mb => mb.BeltId).ToList();
     List<Belt> BeltsNotEarned = belts.Where(b => BeltsEarnedIds.Contains(b.Id) == false).ToList();
+    Adult mentor = ViewBag.Mentor;
+    bool IsMentorsChild = member.MemberParents.Any(mp => mp.AdultId == mentor.Id);
 }
 
 @section HeaderLeft {
@@ -83,12 +85,15 @@
                         if (!string.IsNullOrEmpty(beltApplication.ApplicationNotes)) {
                             <blockquote>@(beltApplication.ApplicationNotes) - @(beltApplication.Member.MemberName)</blockquote>
                         }
-                        <div data-role="fieldcontain">
-                            <label for="ApproveRejectMessage">Approval / Rejection Message</label>
-                            <textarea id="ApproveRejectMessage"></textarea>
-                        </div>
-                        <a href="/Mentor/BeltApprove/@beltApplication.Id.ToString("N")" id="ApproveBelt" data-role="button" data-icon="star" class="ui-disabled">Approve</a>
-                        <a href="/Mentor/BeltReject/@beltApplication.Id.ToString("N")" id="RejectBelt" data-role="button" data-icon="delete" class="ui-disabled">Reject</a>
+                        
+                        if (!IsMentorsChild) {
+                            <div data-role="fieldcontain">
+                                <label for="ApproveRejectMessage">Approval / Rejection Message</label>
+                                <textarea id="ApproveRejectMessage"></textarea>
+                            </div>
+                            <a href="/Mentor/BeltApprove/@beltApplication.Id.ToString("N")" id="ApproveBelt" data-role="button" data-icon="star" class="ui-disabled">Approve</a>
+                            <a href="/Mentor/BeltReject/@beltApplication.Id.ToString("N")" id="RejectBelt" data-role="button" data-icon="delete" class="ui-disabled">Reject</a>
+                        }
                     }
                 </div>
             </div>

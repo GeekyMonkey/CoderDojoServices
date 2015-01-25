@@ -649,6 +649,7 @@ namespace CoderDojo.Views
                 .OrderBy(b => b.BadgeCategory.CategoryName)
                 .ThenBy(b => b.Achievement)
                 .ToList();
+            ViewBag.Mentor = GetCurrentAdult();
             return View("MemberBadges", member);
         }
         [HttpGet]
@@ -657,6 +658,7 @@ namespace CoderDojo.Views
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
             ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
+            ViewBag.Mentor = GetCurrentAdult();
             return View("MemberBelts", member);
         }
 
