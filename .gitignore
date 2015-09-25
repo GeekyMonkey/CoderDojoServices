@@ -16,3 +16,4 @@ TestResults
 # Secret data
 WebUI/App_Data/Azure
 WebUI/Properties/PublishProfiles
+Backup/

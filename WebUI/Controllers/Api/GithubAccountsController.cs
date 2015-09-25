@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CoderDojo.Controllers.Api
 {
@@ -29,8 +30,10 @@ namespace CoderDojo.Controllers.Api
         private CoderDojoData db = new CoderDojoData();
 
         // GET api/GithubAccounts
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
         public GithubUsersCollection GetMemberAttendances()
         {
+
             GithubUsersCollection githubUsers = new GithubUsersCollection
             {
                 Members = (from m in db.Members
