@@ -81,11 +81,17 @@ namespace CoderDojo.Controllers
 
             Guid userId;
             UserRoles role;
+            string userName;
+            string firstName;
+            string lastName;
 
             if (adult != null)
             {
                 adult.SetLoginDate();
                 userId = adult.Id;
+                userName = adult.Login;
+                firstName = adult.FirstName;
+                lastName = adult.LastName;
                 if (adult.IsMentor)
                 {
                     role = UserRoles.Mentor;
@@ -100,6 +106,9 @@ namespace CoderDojo.Controllers
                 member.SetLoginDate();
                 userId = member.Id;
                 role = UserRoles.Member;
+                userName = member.Login;
+                firstName = member.FirstName;
+                lastName = member.LastName;
             }
             db.SaveChanges();
 
@@ -107,6 +116,21 @@ namespace CoderDojo.Controllers
             cookie.Path = "/";
             Response.Cookies.Add(cookie);
 
+            // create a user info cookie
+            HttpCookie memberCookie = new HttpCookie("coderdojomember");
+            memberCookie.Domain = ".coderdojoennis.com";
+            memberCookie.Values.Add("userid", userId.ToString());
+            memberCookie.Values.Add("role", role.ToString());
+            memberCookie.Values.Add("username", userName);
+            memberCookie.Values.Add("firstname", firstName);
+            memberCookie.Values.Add("lastname", lastName);
+            memberCookie.Expires = DateTime.Now.AddHours(12);
+            Response.Cookies.Add(memberCookie);
+
+            if (!string.IsNullOrEmpty(loginModel.ReturnUrl))
+            {
+                return View("RedirectExternal", model: loginModel.ReturnUrl);
+            }
             return View("Redirect", model: "/" + role.ToString() + "/Index");
         }
 

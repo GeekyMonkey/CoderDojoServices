@@ -718,6 +718,7 @@
     <Content Include="Views\Home\Passport.cshtml" />
     <Content Include="Views\Shared\_ImageEditable.cshtml" />
     <Content Include="Views\Home\BeltCertificate.cshtml" />
+    <Content Include="Views\Shared\RedirectExternal.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
