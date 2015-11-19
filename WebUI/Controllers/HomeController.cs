@@ -44,7 +44,10 @@ namespace CoderDojo.Controllers
         {
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
             LoginModel loginModel = new LoginModel();
-            return View("Login", loginModel);
+
+			Response.Cookies.Remove("coderdojomember");
+
+			return View("Login", loginModel);
         }
 
         [HttpPost]
