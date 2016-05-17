@@ -45,7 +45,10 @@ namespace CoderDojo.Controllers
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
             LoginModel loginModel = new LoginModel();
 
-			Response.Cookies.Remove("coderdojomember");
+			HttpCookie memberCookie = new HttpCookie("coderdojomember");
+			memberCookie.Domain = ".coderdojoennis.com";
+			memberCookie.Expires = DateTime.Now.AddHours(-1);
+			Response.Cookies.Add(memberCookie);
 
 			return View("Login", loginModel);
         }
@@ -143,7 +146,13 @@ namespace CoderDojo.Controllers
         {
             FormsAuthentication.SetAuthCookie(null, false);
             FormsAuthentication.SignOut();
-            return View("Redirect", model: "/Home/Login");
+
+			HttpCookie memberCookie = new HttpCookie("coderdojomember");
+			memberCookie.Domain = ".coderdojoennis.com";
+			memberCookie.Expires = DateTime.Now.AddHours(-1);
+			Response.Cookies.Add(memberCookie);
+
+			return View("Redirect", model: "/Home/Login");
         }
 
         [HttpGet]
