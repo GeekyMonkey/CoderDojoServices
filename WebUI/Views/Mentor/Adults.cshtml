@@ -30,7 +30,7 @@
             string memId = m.Id.ToString("N");
             <li>
                 <a href="Adult/@(memId)" class="ThumbListItem">
-                    <img data-src="@m.ImageUrl" />
+                    <img data-src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                     <span>@m.FullName</span>
                 </a>
             </li>

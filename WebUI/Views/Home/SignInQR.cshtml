@@ -52,7 +52,7 @@
                     @foreach (var ma in signedInMembers.Where(ma => ma.Member.TeamId == team.Id || (ma.Member.TeamId == null && team.Id == Guid.Empty)))
                     {
                         <li id="m_@ma.MemberId.ToString("N")">
-                            <img data-src="@ma.Member.ImageUrl" />
+                            <img data-src="@ma.Member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';"  />
                             @ma.Member.MemberName
                         </li>
                     }

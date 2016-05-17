@@ -224,7 +224,7 @@ body
         string teamName = m.Team != null ? ("Team: " + m.Team.TeamName) : string.Empty;
     <div class="Card">
         <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
-        <img class="Avatar" src="@m.ImageUrl" />
+        <img class="Avatar" src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
         <h1>@m.MemberName</h1>
         <h2>@teamName</h2>
 

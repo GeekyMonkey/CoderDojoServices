@@ -34,6 +34,15 @@ namespace CoderDojo.Views
                                         orderby mb.Member.FirstName, mb.Member.LastName, mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
                                         select mb).ToList();
 
+            List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
+            DateTime sessionDate = sessionDates[0];
+
+            ViewBag.PresentMemberIds = db.MemberAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.MemberId)
+                .Select(a => a.MemberId)
+                .ToList();
+
             return View("Index", mentor);
         }
 
@@ -549,6 +558,15 @@ namespace CoderDojo.Views
                                     where m.Deleted == false
                                     orderby m.FirstName, m.LastName
                                     select m).ToList();
+
+            List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
+            DateTime sessionDate = sessionDates[0];
+            ViewBag.PresentMemberIds = db.MemberAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.MemberId)
+                .Select(a => a.MemberId)
+                .ToList();
+
             ViewBag.SelectedMemberId = id; //todo - scroll here
             ViewBag.ShowBackButton = true;
             return View("Members", members);

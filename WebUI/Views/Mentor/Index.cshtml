@@ -5,6 +5,7 @@
     ViewBag.MenuActive = "Index";
     List<MemberBelt> beltApplications = ViewBag.BeltApplications;
     List<MemberBadge> badgeApplications = ViewBag.BadgeApplications;
+    List<Guid> presentMemberIds = ViewBag.PresentMemberIds;
 }
 
 
@@ -31,9 +32,11 @@
     <ul data-role="listview" data-inset="true">
         @foreach (var mb in beltApplications)
         {
-            <li data-beltcolor="@mb.Belt.HexCode">
+            bool present = presentMemberIds.Contains(mb.MemberId);
+            <li data-beltcolor="@mb.Belt.HexCode" class="@(present ? "Present" : "" )">
                 <a href="/Mentor/MemberBelts/@mb.MemberId.ToString("N")">
-                    <img data-src="@mb.Member.ImageUrl" />
+                    <img data-src="@mb.Member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
+                    <div class="BeltStripe" style="background-color:@(mb.Member.BeltColorHex)"></div>
                     <span>@mb.Member.MemberName</span>
                 </a>
             </li>
@@ -52,9 +55,10 @@ else
     <ul data-role="listview" data-inset="true">
         @foreach (var mb in badgeApplications)
         {
-            <li>
+            bool present = presentMemberIds.Contains(mb.MemberId);
+            <li class="@(present ? "Present" : "" )">
                 <a href="/Mentor/MemberBadges/@mb.MemberId.ToString("N")">
-                    <img data-src="@mb.Member.ImageUrl" />
+                    <img data-src="@mb.Member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                     <div class="BeltStripe" style="background-color:@(mb.Member.BeltColorHex)"></div>
                     <span>@(mb.Member.MemberName) - @(mb.Badge.BadgeCategory.CategoryName) - @(mb.Badge.Achievement)</span>
                 </a>

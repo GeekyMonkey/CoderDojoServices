@@ -51,7 +51,7 @@
                     {
                         <li>
                             <a data-role="button" href="/Parent/TeamMember/@teamMember.Id.ToString()">
-                                <img src="@teamMember.ImageUrl" />
+                                <img src="@teamMember.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                                 @teamMember.FirstName @teamMember.LastName
                             </a>
                         </li>

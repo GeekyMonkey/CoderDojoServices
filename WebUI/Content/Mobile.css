@@ -151,11 +151,24 @@ ul#TeamMembers li {list-style-type: none;}
 
 .BeltStripe {
     position: absolute;
-    left: 0;
+    left: 0px;
     top: 0;
     bottom: 0;
     display: block;
-    width: 6px;
+    width: 10px;
     z-index: 2;
+}
+
+.Present .BeltStripe:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-radius: 5px;
+    border: solid 1px black;
+    background-color: lime;        
 }
 

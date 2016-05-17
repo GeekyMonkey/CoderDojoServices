@@ -3,6 +3,7 @@
     ViewBag.Title = "Members ";
     ViewBag.MenuActive = "Members";
     List<CoderDojo.Member> members = Model;
+    List<Guid> presentMemberIds = ViewBag.PresentMemberIds;
 }
 
 @section HeaderLeft {
@@ -28,9 +29,10 @@
             @foreach (CoderDojo.Member m in members)
             {
                 string memId = m.Id.ToString("N");
-                <li>
+                bool present = presentMemberIds.Contains(m.Id);
+                <li class="@(present ? "Present" : "" )">
                     <a href="Member/@(memId)">
-                        <img data-src="@m.ImageUrl" />
+                        <img data-src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                         <div class="BeltStripe" style="background-color:@(m.BeltColorHex)"></div>
                         <span>@m.MemberName</span>
                     </a>

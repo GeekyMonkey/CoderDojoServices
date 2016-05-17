@@ -423,6 +423,7 @@
     <Content Include="Content\font\oldeenglish-webfont.ttf" />
     <Content Include="Content\font\oldeenglish-webfont.woff" />
     <Content Include="Content\font\oldeenglish-webfont.woff2" />
+    <None Include="Properties\PublishProfiles\CoderDojoMember %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
     <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Blue.png" />
