@@ -424,12 +424,14 @@
     <Content Include="Content\font\oldeenglish-webfont.woff" />
     <Content Include="Content\font\oldeenglish-webfont.woff2" />
     <None Include="Properties\PublishProfiles\CoderDojoMember %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\CoderDojoMember - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />
     <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Blue.png" />
     <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Green.png" />
     <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Red.png" />
     <Content Include="Images\BeltCertificates\CoderDojoBeltCertificate-Yellow.png" />
+    <Content Include="Images\user.png" />
     <Content Include="Scripts\Analytics.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
