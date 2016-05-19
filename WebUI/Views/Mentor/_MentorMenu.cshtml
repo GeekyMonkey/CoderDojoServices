@@ -35,6 +35,7 @@
         <ul data-role="listview" data-inset="true">
             <li>@Html.ActionLink("Parent Emails CSV", "ExportParentEmails", "Mentor", null, new { target="_blank", @class=(activePage == "ExportParentEmails" ? activeClass : inactiveClass)})</li>
             <li>@Html.ActionLink("Mentor Email CSV", "ExportMentorEmails", "Mentor", null, new { target="_blank", @class=(activePage == "ExportMentorEmails" ? activeClass : inactiveClass)})</li>
+            <li>@Html.ActionLink("Recent Belts", "RecentBelts", "Mentor", null, new { @class = (activePage == "RecentBelts" ? activeClass : inactiveClass) })</li>
         </ul>
     </div>
 

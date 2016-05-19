@@ -47,5 +47,31 @@ namespace CoderDojo.Views
         {
             return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", fileName + ".csv");
         }
+
+        [HttpGet]
+        public ActionResult RecentBelts(DateTime? since = null)
+        {
+            if (since == null)
+            {
+                since = DateTime.Today.AddMonths(-11);
+            }
+
+            List<MemberBelt> memberBelts = (from b in db.MemberBelts
+                                    where b.Awarded != null && b.Awarded >= since.Value
+                                    orderby b.Awarded.Value descending
+                                    select b).ToList();
+
+            List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
+            DateTime sessionDate = sessionDates[0];
+            ViewBag.PresentMemberIds = db.MemberAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.MemberId)
+                .Select(a => a.MemberId)
+                .ToList();
+
+            ViewBag.SelectedMemberId = null;
+            ViewBag.ShowBackButton = true;
+            return View("RecentBelts", memberBelts);
+        }
     }
 }

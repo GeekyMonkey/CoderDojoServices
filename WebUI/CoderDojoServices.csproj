@@ -722,6 +722,7 @@
     <Content Include="Views\Shared\_ImageEditable.cshtml" />
     <Content Include="Views\Home\BeltCertificate.cshtml" />
     <Content Include="Views\Shared\RedirectExternal.cshtml" />
+    <Content Include="Views\Mentor\RecentBelts.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
