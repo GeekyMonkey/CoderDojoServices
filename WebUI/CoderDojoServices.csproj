@@ -307,10 +307,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\CoderDojoData.mdf" />
-    <Content Include="App_Data\CoderDojoData_log.ldf">
-      <DependentUpon>CoderDojoData.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\font\ocraext-webfont.svg" />
     <Content Include="Content\font\ocr.css" />
     <Content Include="Content\font\oldeenglish-webfont.svg" />
