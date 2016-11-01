@@ -9,6 +9,7 @@
 @section HeaderLeft
 {
     <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
+    <a data-role="button" data-icon="tag" id="PrintTeamCardButton">Print Team Card</a>
 }
 
 @section HeaderRight
@@ -110,4 +111,8 @@
         window.openNewWindow("/Passport/@(team.Id.ToString("N"))");
     });
 
+    $("#PrintTeamCardButton").on("click", function (e) {
+        e.preventDefault();
+        window.openNewWindow("/Home/TeamCard/@(team.Id.ToString("N"))");
+    });
 </script>

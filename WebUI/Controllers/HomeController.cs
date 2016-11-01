@@ -192,6 +192,20 @@ namespace CoderDojo.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public ActionResult TeamCard(string Id)
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+
+            Guid gid = new Guid(Id);
+
+            // Is this a member, or a team
+            Team team = db.Teams.FirstOrDefault(t => t.Id == gid);
+
+            return View("TeamCard", team);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         [SignInModeFilter]
         public ActionResult SignIn()
         {

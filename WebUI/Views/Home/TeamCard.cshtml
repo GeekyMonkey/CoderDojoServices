@@ -1,0 +1,143 @@
+﻿@model CoderDojo.Team
+@{
+    ViewBag.Title = "Team Card Printout";
+    ViewBag.HideMenuButton = true;
+    this.Layout = null;
+    Team team = Model;
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Team Card</title>
+
+  <link rel="stylesheet" href="/content/Paper.css">
+
+  <style>
+      @@page { size: A5 landscape }
+
+      * {
+          box-sizing: border-box;
+          border: 0;
+          margin: 0;
+          padding: 0;
+      }
+      html {
+          font: 16px/1 'Open Sans', sans-serif;
+      }
+
+      table {
+          width: 100%;
+      }
+
+      tr {
+          width: 100%;
+      }
+
+      .HeadStripe {
+          padding-top: 5mm;
+          padding-bottom: 5mm;
+          border: solid 1px black;
+      }
+
+      .TeamAvatar {
+          float: left;
+          max-width: 50mm;
+          max-height: 50mm;
+          width: auto;
+          height: auto;
+          border: none;
+      }
+
+          .TeamAvatar.MissingImage {
+              display: none;
+          }
+
+      .TeamTitle {
+          font-size: 52px;
+          font-weight: bold;
+          text-align: center;
+      }
+          .TeamTitle table {
+              padding-top: 5mm;
+              padding-bottom: 5mm;
+          }
+
+      .TeamMembers {
+          color: #2C3539;
+          font-size: 32px;
+          font-weight: bold;
+          text-align: left;
+          vertical-align: bottom;
+      }
+      .TeamMember {
+          padding: 2mm;
+          width: 50%;
+          float: left;
+      }
+
+      .MemberAvatar {
+          display: inline-block;
+          vertical-align: bottom;
+          width: 10mm;
+          height: 10mm;
+          margin-right: 3mm;
+      }
+
+          .MemberAvatar img {
+              max-width: 100%;
+              max-height: 100%;
+              text-align: center;
+              border: 0;
+          }
+
+          .MemberAvatar.MissingImage {
+              visibility: hidden;
+          }
+
+      .MemberName {
+      }
+
+  </style>
+
+
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+</head>
+
+<body class="A5 landscape">
+                                                    
+  <section class="sheet padding-10mm">
+
+    @* Team Color *@
+    <div class="HeadStripe" style="background-color:@team.HexCode">&nbsp;</div>
+   
+   @* Team avatar and name *@ 
+   <div class="TeamTitle">
+      <table>
+        <tr>
+          <td><img class="TeamAvatar" src="@team.ImageUrl" onerror="$(this).addClass('MissingImage')"></td>
+          <td>@team.TeamName</td>
+        </tr>
+      </table>      
+    </div>
+
+      @* Members *@
+    <div class="TeamMembers">
+        @foreach (var member in team.Members)
+        {
+        <div class="TeamMember">
+            <span class="MemberAvatar"><img src="@member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';"/></span>
+            <span class="MemberName">@member.FirstName @member.LastName</span>
+        </div>
+        }   
+    </div>
+
+  </section>
+
+</body>
+
+</html>
