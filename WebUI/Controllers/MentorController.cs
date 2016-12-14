@@ -23,16 +23,16 @@ namespace CoderDojo.Views
             Adult mentor = GetCurrentAdult();
 
             ViewBag.BeltApplications = (from mb in db.MemberBelts.Include("Member")
-                                       where mb.Awarded == null
-                                       && mb.RejectedDate == null
-                                       orderby mb.Belt.SortOrder, mb.Member.FirstName, mb.Member.LastName
-                                       select mb).ToList();
-
-            ViewBag.BadgeApplications = (from mb in db.MemberBadges.Include("Member").Include("Badge.BadgeCategory")
                                         where mb.Awarded == null
                                         && mb.RejectedDate == null
-                                        orderby mb.Member.FirstName, mb.Member.LastName, mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
+                                        orderby mb.Belt.SortOrder, mb.Member.FirstName, mb.Member.LastName
                                         select mb).ToList();
+
+            ViewBag.BadgeApplications = (from mb in db.MemberBadges.Include("Member").Include("Badge.BadgeCategory")
+                                         where mb.Awarded == null
+                                         && mb.RejectedDate == null
+                                         orderby mb.Member.FirstName, mb.Member.LastName, mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
+                                         select mb).ToList();
 
             List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
             DateTime sessionDate = sessionDates[0];
@@ -129,9 +129,9 @@ namespace CoderDojo.Views
                 .ToList();
 
             var members = (from m in db.Members
-                          where m.Deleted == false
-                          orderby m.FirstName, m.LastName
-                          select m).ToList();
+                           where m.Deleted == false
+                           orderby m.FirstName, m.LastName
+                           select m).ToList();
 
             List<AttendanceModel> attendance = (from m in members
                                                 select new AttendanceModel
@@ -350,12 +350,15 @@ namespace CoderDojo.Views
         public ActionResult SearchMembersByName(string name)
         {
             var members = (from m in db.Members
-                          where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name) || ((m.FirstName + " " + m.LastName).StartsWith(name)))
-                          && m.Deleted == false
-                          orderby m.FirstName, m.LastName
-                          select new {
-                            m.FirstName, m.LastName, m.Id
-                          }).ToList()
+                           where (m.FirstName.StartsWith(name) || m.LastName.StartsWith(name) || ((m.FirstName + " " + m.LastName).StartsWith(name)))
+                           && m.Deleted == false
+                           orderby m.FirstName, m.LastName
+                           select new
+                           {
+                               m.FirstName,
+                               m.LastName,
+                               m.Id
+                           }).ToList()
                           .Select(x => new { FirstName = x.FirstName, LastName = x.LastName, Id = x.Id.ToString("N") });
             return Json(members, JsonRequestBehavior.AllowGet);
         }
@@ -440,7 +443,7 @@ namespace CoderDojo.Views
             a1.IsParent = MergeValues(a1.IsParent, a2.IsParent);
             a1.XboxGamertag = MergeValues(a1.XboxGamertag, a2.XboxGamertag);
             a1.ScratchName = MergeValues(a1.ScratchName, a2.ScratchName);
-            
+
             // Move linked children
             foreach (var relationship2 in a2.MemberParents.ToList())
             {
@@ -611,6 +614,7 @@ namespace CoderDojo.Views
                 member.ScratchName = TrimNullableString(memberChanges.ScratchName);
                 member.XboxGamertag = TrimNullableString(memberChanges.XboxGamertag);
                 member.TeamId = memberChanges.TeamId;
+                member.FingerprintId = memberChanges.FingerprintId;
 
                 // Password change
                 if (string.IsNullOrEmpty(memberChanges.NewPassword) == false)
@@ -775,7 +779,8 @@ namespace CoderDojo.Views
             relationship = (from mp in db.MemberParents.Include("Adult").Include("Member")
                             where mp.Id == relationship.Id
                             select mp).FirstOrDefault();
-            return Json(new {
+            return Json(new
+            {
                 relationshipId = relationship.Id.ToString("N"),
                 memberId = relationship.MemberId.ToString("N"),
                 adultId = relationship.AdultId.ToString("N"),
@@ -838,7 +843,9 @@ namespace CoderDojo.Views
             {
                 belt = new Belt();
                 db.Belts.Add(belt);
-            } else {
+            }
+            else
+            {
                 belt = db.Belts.FirstOrDefault(x => x.Id == b.Id);
             }
             belt.Color = b.Color;

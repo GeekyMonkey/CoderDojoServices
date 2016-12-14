@@ -101,6 +101,7 @@ namespace CoderDojo.Controllers.Api
         }
 
         // POST api/MemberAttendance/Fingerprint?id=3&testing=false
+        [HttpGet, ActionName("Fingerprint")]
         public HttpResponseMessage GetFingerprint(int id, bool testing = false)
         {
             var member = db.Members.FirstOrDefault(m => m.FingerprintId == id);
