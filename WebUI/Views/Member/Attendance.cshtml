@@ -27,6 +27,6 @@
 <h2>Dates</h2>
 <ul>
     @foreach(var ma in member.MemberAttendances.OrderByDescending(ma => ma.Date)) {
-        <li>@ma.Date.ToString("dd MMM yyyy")</li>
+        <li>@ma.Date.ToString("dd-MMM-yyyy")</li>
     }
 </ul>

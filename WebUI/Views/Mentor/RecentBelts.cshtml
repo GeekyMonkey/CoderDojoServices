@@ -34,7 +34,7 @@
                     <a href="Member/@(memId)">
                         <img data-src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                         <div class="BeltStripe" style="background-color:@(mb.Belt.HexCode)"></div>
-                        <span>@m.MemberName - Awarded @mb.Awarded.Value.ToShortDateString()</span>
+                        <span>@m.MemberName - Awarded @mb.Awarded.Value.ToString("dd-MMM-yyyy")</span>
                     </a>
                 </li>
             }

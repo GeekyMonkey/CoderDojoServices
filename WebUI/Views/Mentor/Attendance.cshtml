@@ -1,7 +1,7 @@
 ﻿@model List<CoderDojo.AttendanceModel>
 @{
     DateTime attendanceDate = ViewBag.AttendanceDate;
-    string attendanceDateFormatted = attendanceDate.ToString("yyyy-MM-dd");
+    string attendanceDateFormatted = attendanceDate.ToString("dd-MMM-yyyy");
     ViewBag.Title = "Attendance " + attendanceDateFormatted;
     ViewBag.MenuActive = "Attendance";
     List<CoderDojo.AttendanceModel> attendance = Model;
@@ -16,7 +16,7 @@
         <label style="float:left;padding-top: 7px;">Attendance&nbsp;</label>
         <select data-inline="true" id="AttendanceDateSelect">
             @foreach(DateTime dt in ViewBag.SessionDates) {
-                string dateFormatted = dt.ToString("yyyy-MM-dd");
+                string dateFormatted = dt.ToString("dd-MMM-yyyy");
                 <option @if (dateFormatted == attendanceDateFormatted) { <text>selected='selected'</text>}>@dateFormatted</option>
             }
         </select>

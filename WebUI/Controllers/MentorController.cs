@@ -98,7 +98,7 @@ namespace CoderDojo.Views
             DateTime? sessionDate = null;
             if (attendanceDate != null)
             {
-                sessionDate = DateTime.ParseExact(attendanceDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                sessionDate = DateTime.ParseExact(attendanceDate, "dd-MMM-yyyy", CultureInfo.InvariantCulture);
             }
 
             /*
@@ -154,7 +154,7 @@ namespace CoderDojo.Views
             DateTime sessionDate;
             if (attendanceDate != null)
             {
-                sessionDate = DateTime.ParseExact(attendanceDate, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+                sessionDate = DateTime.ParseExact(attendanceDate, "dd-MMM-yyyy", CultureInfo.InvariantCulture).Date;
             }
             else
             {
@@ -179,7 +179,7 @@ namespace CoderDojo.Views
             {
                 memberMessage = member.GetLoginMessage();
             }
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
         }
 
         [HttpGet]
@@ -802,7 +802,7 @@ namespace CoderDojo.Views
         {
             FormsAuthentication.SetAuthCookie(null, false);
             FormsAuthentication.SignOut();
-            Response.SetCookie(new HttpCookie("SignInCookie", DateTime.Today.ToString("yyyy-MM-dd")));
+            Response.SetCookie(new HttpCookie("SignInCookie", DateTime.Today.ToString("dd-MMM-yyyy")));
             return RedirectClient("/SignIn");
         }
 

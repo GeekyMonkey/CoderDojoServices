@@ -41,7 +41,7 @@
             <div data-role="fieldcontain">
                 <p>@memberBelt.Belt.Description</p>
                 <blockquote>@memberBelt.ApplicationNotes</blockquote>
-                <p>Awarded on @memberBelt.Awarded.Value.ToString("yyyy MMM dd")</p>
+                <p>Awarded on @memberBelt.Awarded.Value.ToString("dd-MMM-yyyy")</p>
                 <blockquote>@memberBelt.AwardedNotes - @memberBelt.AwardedByAdult.FullName</blockquote>
             </div>
         </div>
@@ -70,7 +70,7 @@
                             .OrderBy(mb => mb.RejectedDate))
                         {
                             <div class="BeltRejection">
-                                <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
+                                <p>Rejected on @(rejection.RejectedDate.Value.ToString("dd-MMM-yyyy"))</p>
                                 <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
                             </div>
                         }
@@ -78,7 +78,7 @@
                         @* Application Pending *@
                         if (BeltsPendingIds.Contains(belt.Id))
                         {
-                            <p>Application for the <span class="BeltColorText">@(belt.Color.ToLower()) belt</span> was submitted on @(MemberBeltsPending.FirstOrDefault(mb => mb.BeltId == belt.Id).ApplicationDate.Value.ToString("yyyy MMM dd")). Talk to a mentor to find out what's up.</p>
+                            <p>Application for the <span class="BeltColorText">@(belt.Color.ToLower()) belt</span> was submitted on @(MemberBeltsPending.FirstOrDefault(mb => mb.BeltId == belt.Id).ApplicationDate.Value.ToString("dd-MMM-yyyy")). Talk to a mentor to find out what's up.</p>
                         }
                         else
                         {

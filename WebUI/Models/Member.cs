@@ -74,7 +74,7 @@ namespace CoderDojo
             // Attendance
             if (LoginDatePrevious != null)
             {
-                messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("yyyy-MM-dd HH:mm"));
+                messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("dd-MMM-yyyy HH:mm"));
             }
             messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " Coder Dojo session.");
 

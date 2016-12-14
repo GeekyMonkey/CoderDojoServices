@@ -14,7 +14,7 @@ namespace CoderDojo
             var signInCookie = filterContext.RequestContext.HttpContext.Request.Cookies["SignInCookie"];
             if (signInCookie != null)
             {
-                if (signInCookie.Value == DateTime.Today.ToString("yyyy-MM-dd"))
+                if (signInCookie.Value == DateTime.Today.ToString("dd-MMM-yyyy"))
                 {
                     haveValidCooke = true;
                 }

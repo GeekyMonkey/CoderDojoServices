@@ -61,7 +61,7 @@
                                     .OrderBy(mb => mb.RejectedDate))
                     {
                         <div class="BadgeRejection">
-                            <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
+                            <p>Rejected on @(rejection.RejectedDate.Value.ToString("dd-MMM-yyyy"))</p>
                             <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
                         </div>
                     }
@@ -69,7 +69,7 @@
                     @* Pending Application *@
                     @if (badgeApplication != null)
                     {
-                        <p>Application for the @(badge.BadgeCategory.CategoryName) - @(badge.Achievement) badge was submitted on @(badgeApplication.ApplicationDate.Value.ToString("yyyy MMM dd")).</p>
+                        <p>Application for the @(badge.BadgeCategory.CategoryName) - @(badge.Achievement) badge was submitted on @(badgeApplication.ApplicationDate.Value.ToString("dd-MMM-yyyy")).</p>
                         if (!string.IsNullOrEmpty(badgeApplication.ApplicationNotes))
                         {
                             <blockquote>@(badgeApplication.ApplicationNotes) - @(badgeApplication.Member.MemberName)</blockquote>
@@ -95,7 +95,7 @@
             <div data-role="fieldcontain">
                 <p>@memberBadge.Badge.Description</p>
                 <blockquote>@memberBadge.ApplicationNotes</blockquote>
-                <p>Awarded on @memberBadge.Awarded.Value.ToString("yyyy MMM dd")</p>
+                <p>Awarded on @memberBadge.Awarded.Value.ToString("dd-MMM-yyyy")</p>
                 <blockquote>@memberBadge.AwardedNotes - @memberBadge.AwardedByAdult.FullName</blockquote>
             </div>
         </div>
@@ -122,7 +122,7 @@
                                     .OrderBy(mb => mb.RejectedDate))
                     {
                         <div class="BadgeRejection">
-                            <p>Rejected on @(rejection.RejectedDate.Value.ToString("yyyy-MM-dd"))</p>
+                            <p>Rejected on @(rejection.RejectedDate.Value.ToString("dd-MMM-yyyy"))</p>
                             <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
                         </div>
                     }

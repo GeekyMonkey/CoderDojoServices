@@ -291,7 +291,7 @@ namespace CoderDojo.Controllers
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
-            context.Clients.All.OnAttendanceChange(sessionDate.ToString("yyyy-MM-dd"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
             string message = member.GetLoginMessage();
 
             return Json(new {
