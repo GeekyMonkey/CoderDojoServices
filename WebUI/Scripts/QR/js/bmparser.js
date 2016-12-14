@@ -200,4 +200,5 @@ function BitMatrixParser(bitMatrix)
 			}
 			return result;
 		}
+
 }
