@@ -13,4 +13,13 @@ namespace CoderDojo
 
         public string MemberBeltColorHex { get; set; }
     }
+
+    // Sign-in response object
+    public class SignInResponse
+    {
+        public string memberId { get; set; }
+        public string memberName { get; set; }
+        public int memberSessionCount { get; set; }
+        public string memberMessage { get; set; }
+    }
 }

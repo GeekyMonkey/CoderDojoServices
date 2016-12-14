@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -99,6 +100,54 @@ namespace CoderDojo.Controllers.Api
             return Request.CreateResponse(HttpStatusCode.OK, memberattendance);
         }
 
+        // POST api/MemberAttendance/Fingerprint?id=3&testing=false
+        public HttpResponseMessage GetFingerprint(int id, bool testing = false)
+        {
+            var member = db.Members.FirstOrDefault(m => m.FingerprintId == id);
+            if (member != null)
+            {
+                member.SetLoginDate();
+                db.SaveChanges();
+
+                DateTime sessionDate = DateTime.Today;
+                int sessionCount;
+                if (testing)
+                {
+                    // Testing fingerprint feature only - don't do actual sign-in
+                    sessionCount = db.MemberAttendances.Count(ma => ma.MemberId == member.Id);
+                }
+                else
+                {
+                    // Do a real sign-in
+                    sessionCount = db.AttendanceSet(member.Id, true, sessionDate);
+                    int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
+                    // Notify other members looking at this screen
+                    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+                    context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
+                }
+                string message = member.GetLoginMessage();
+
+                var responseObject = new SignInResponse
+                {
+                    memberId = member.Id.ToString("N"),
+                    memberName = member.MemberName,
+                    memberSessionCount = sessionCount,
+                    memberMessage = message
+                };
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
+                return response;
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        /// <summary>
+        /// Clean up
+        /// </summary>
+        /// <param name="disposing">Is Disposing</param>
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

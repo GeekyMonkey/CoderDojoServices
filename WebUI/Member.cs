@@ -37,6 +37,8 @@ namespace CoderDojo
         public Nullable<System.DateTime> LoginDatePrevious { get; set; }
         public Nullable<System.Guid> TeamId { get; set; }
     
+        public Nullable<int> FingerprintId { get; set; }
+
         public virtual ICollection<MemberAttendance> MemberAttendances { get; set; }
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }
         public virtual ICollection<MemberBelt> MemberBelts { get; set; }

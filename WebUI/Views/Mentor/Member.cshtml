@@ -57,6 +57,9 @@
         <label for="LastName">Last Name</label>
         @Html.TextBoxFor(m => m.LastName)
 
+        <label for="FingerprintId">Fingerprint Number</label>
+        @Html.TextBoxFor(m => m.FingerprintId)
+
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
 
