@@ -1,1 +1,0 @@
-﻿select * from Members where [Deleted] = 1
