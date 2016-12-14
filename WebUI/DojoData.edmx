@@ -128,6 +128,7 @@
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
           <Property Name="TeamId" Type="uniqueidentifier" />
+          <Property Name="FingerprintId" Type="int" />
         </EntityType>
         <EntityType Name="Teams">
           <Key>
@@ -561,6 +562,7 @@
           <Property Type="DateTime" Name="LoginDatePrevious" Precision="3" />
           <Property Type="Guid" Name="TeamId" />
           <NavigationProperty Name="Team" Relationship="CoderDojo.FK_Members_Team" FromRole="Member" ToRole="Team" />
+          <Property Name="FingerprintId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="FK_MemberBadges_Adult">
           <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="0..1" />
@@ -881,6 +883,7 @@
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="GithubLogin" ColumnName="GithubLogin" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
+                <ScalarProperty Name="FingerprintId" ColumnName="FingerprintId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
