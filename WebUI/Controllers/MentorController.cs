@@ -87,6 +87,37 @@ namespace CoderDojo.Views
             return View("DataCleanup");
         }
 
+        [HttpGet]
+        public ActionResult AttendanceRandom()
+        {
+            DateTime firstSessionDate = new DateTime(2012, 3, 24);
+            DateTime? sessionDate = null;
+
+            List<DateTime> sessionDates = db.GetSessionDates(DateTime.Today).ToList();
+
+            if (sessionDate == null)
+            {
+                sessionDate = sessionDates[0];
+            }
+
+            var count = db.MemberAttendances
+                .Where(a => a.Date == sessionDate).Count();
+            var presentMemberIds = db.MemberAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.MemberId)
+                .Select(a => a.MemberId)
+                .ToList();
+
+            var memberId = presentMemberIds[new Random().Next(0, count - 1)];
+
+            var member = db.Members.FirstOrDefault<Member>(m => m.Id == memberId);
+
+            ViewBag.PreviousPage = "";
+            ViewBag.ShowBackButton = true;
+            ViewBag.Teams = db.Teams.Where(t => t.Deleted == false).OrderBy(t => t.TeamName).ToList();
+            return View("Member", member);
+        }
+
         /// <summary>
         /// Attendance View
         /// </summary>

@@ -720,6 +720,7 @@
     <Content Include="Views\Shared\RedirectExternal.cshtml" />
     <Content Include="Views\Mentor\RecentBelts.cshtml" />
     <Content Include="Views\Home\TeamCard.cshtml" />
+    <Content Include="Views\Mentor\AttendanceRandom.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
