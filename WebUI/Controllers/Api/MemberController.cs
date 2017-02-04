@@ -26,9 +26,8 @@ namespace CoderDojo.Controllers.Api
 
             var responseObject = new NextFingerprintResponse
             {
-                memberId = highestFingerprintMember.Id.ToString("N"),
-                memberName = highestFingerprintMember.MemberName,
-                fingerprintId = highestFingerprintMember.FingerprintId.Value
+                fingerprintId = highestFingerprintMember.FingerprintId.Value,
+                memberName = highestFingerprintMember.MemberName
             };
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
