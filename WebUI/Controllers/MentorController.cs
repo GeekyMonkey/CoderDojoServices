@@ -617,6 +617,26 @@ namespace CoderDojo.Views
         }
 
         [HttpPost]
+        public ActionResult MemberGenerateFingerprintId(Guid memberId)
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == memberId);
+
+            var highestFingerprintMember = db.Members
+                .Where(m => m.FingerprintId != null)
+                .OrderByDescending(m => m.FingerprintId)
+                .FirstOrDefault();
+
+            member.FingerprintId = highestFingerprintMember.FingerprintId.Value + 1;
+
+            db.SaveChanges();
+
+            return Json(new
+            {
+                fingerprintId = member.FingerprintId.ToString()
+            });
+        }
+
+        [HttpPost]
         public ActionResult MemberSave(Member memberChanges, string previousPage)
         {
             Member member = null;

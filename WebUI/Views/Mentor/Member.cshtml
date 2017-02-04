@@ -59,6 +59,7 @@
 
         <label for="FingerprintId">Fingerprint Number</label>
         @Html.TextBoxFor(m => m.FingerprintId)
+        <a data-role="button" data-icon="check" id="GenerateFingerprintIdButton">Generate Fingerprint ID</a>
 
         <label>Birth Year</label>
         @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
@@ -141,6 +142,19 @@
         $(".Controller_Mentor.Action_Member #GithubButton").off().on("click", function (e) {
             e.preventDefault();
             openNewWindow("https://github.com/" + $(".Controller_Mentor.Action_Member #GithubLogin").val() + "/");
+        });
+        $("#GenerateFingerprintIdButton").on("click", function (e) {
+            e.preventDefault();
+            $.ajax("/Mentor/MemberGenerateFingerprintId", {
+                type: "POST",
+                dataType: "json",
+                data: {
+                    MemberId: '@member.Id.ToString("N")'
+                },
+                success: function (data) {
+                    $("[name='FingerprintId']").val(data.fingerprintId);
+                }
+            });
         });
         $("#SaveButton").on("click", function (e) {
             e.preventDefault();

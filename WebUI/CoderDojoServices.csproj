@@ -291,6 +291,7 @@
     <Compile Include="Models\Api\BaseApiEntity.cs" />
     <Compile Include="Models\AttendanceModel.cs" />
     <Compile Include="Models\MemberBadgeCategory.cs" />
+    <Compile Include="Models\NextFingerprintResponse.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\CoderDojoData.cs" />

@@ -15,6 +15,26 @@ namespace CoderDojo.Controllers.Api
     {
         private CoderDojoData db = new CoderDojoData();
 
+        [ActionName("getnextfingerprintid")]
+        [HttpGet]
+        public HttpResponseMessage GetNextFingerprintIt()
+        {
+            var highestFingerprintMember = db.Members
+                .Where(m => m.FingerprintId != null)
+                .OrderByDescending(m => m.FingerprintId)
+                .FirstOrDefault();
+
+            var responseObject = new NextFingerprintResponse
+            {
+                memberId = highestFingerprintMember.Id.ToString("N"),
+                memberName = highestFingerprintMember.MemberName,
+                fingerprintId = highestFingerprintMember.FingerprintId.Value
+            };
+
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
+            return response;
+        }
+
         // GET api/Member
         public IEnumerable<Member> GetMembers()
         {
