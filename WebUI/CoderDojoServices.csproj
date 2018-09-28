@@ -27,6 +27,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -204,6 +206,9 @@
     <Compile Include="Adult.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
+    <Compile Include="AdultAttendance.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
     <Compile Include="AppCode\Extensions.cs" />
     <Compile Include="AppCode\SignInModeFilter.cs" />
     <Compile Include="App_Start\AuthorizeUser.cs" />
@@ -228,7 +233,9 @@
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\Api\GithubAccountsController.cs" />
+    <Compile Include="Controllers\Api\AdultAttendanceController.cs" />
     <Compile Include="Controllers\Api\TeamController.cs" />
+    <Compile Include="Controllers\Data\AdultAttendanceController.cs" />
     <Compile Include="Controllers\Data\TeamController.cs" />
     <Compile Include="Controllers\MentorController_Reports.cs" />
     <Compile Include="Controllers\MemberController.cs" />
@@ -401,6 +408,7 @@
     </Content>
     <Content Include="DojoData.edmx.diagram">
       <DependentUpon>DojoData.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="DojoData.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -421,6 +429,7 @@
     <Content Include="Content\font\oldeenglish-webfont.woff" />
     <Content Include="Content\font\oldeenglish-webfont.woff2" />
     <None Include="Properties\PublishProfiles\CoderDojoMember %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\CoderDojoMember - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember.pubxml" />
     <None Include="Properties\PublishProfiles\GeekyMonkey.com-CoderDojoEnnisMember.pubxml" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
 
 namespace CoderDojo
 {
@@ -41,7 +40,7 @@ namespace CoderDojo
             return dates;
         }
 
-        public int AttendanceSet(Guid memberId, bool present, DateTime sessionDate)
+        public int MemberAttendanceSet(Guid memberId, bool present, DateTime sessionDate)
         {
             MemberAttendance attendance = this.MemberAttendances
                 .Where(ma => ma.MemberId == memberId && ma.Date == sessionDate)
@@ -64,6 +63,31 @@ namespace CoderDojo
                 this.SaveChanges();
             }
             return this.MemberAttendances.Count(ma => ma.MemberId == memberId);
+        }
+
+        public int AdultAttendanceSet(Guid adultId, bool present, DateTime sessionDate)
+        {
+            AdultAttendance attendance = this.AdultAttendances
+                .Where(aa => aa.AdultId == adultId && aa.Date == sessionDate)
+                .FirstOrDefault();
+            bool hasAttendance = (attendance != null);
+            if (present == true && hasAttendance == false)
+            {
+                attendance = new AdultAttendance
+                {
+                    Id = Guid.NewGuid(),
+                    AdultId = adultId,
+                    Date = sessionDate
+                };
+                this.AdultAttendances.Add(attendance);
+                this.SaveChanges();
+            }
+            else if (present == false && hasAttendance == true)
+            {
+                this.AdultAttendances.Remove(attendance);
+                this.SaveChanges();
+            }
+            return this.AdultAttendances.Count(aa => aa.AdultId == adultId);
         }
 
     }

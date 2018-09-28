@@ -36,5 +36,6 @@ namespace CoderDojo
         public DbSet<BadgeCategory> BadgeCategories { get; set; }
         public DbSet<Dojo> Dojos { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<AdultAttendance> AdultAttendances { get; set; }
     }
 }

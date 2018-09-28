@@ -29,6 +29,9 @@
         <EntityTypeShape EntityType="CoderDojo.Dojo" Width="1.5" PointX="4.625" PointY="7.875" />
         <EntityTypeShape EntityType="CoderDojo.Team" Width="1.5" PointX="0.5" PointY="3.25" />
         <AssociationConnector Association="CoderDojo.FK_Members_Team" />
+        <EntityTypeShape EntityType="CoderDojo.AdultAttendance" Width="1.5" PointX="10.625" PointY="2.25" />
+        <AssociationConnector Association="CoderDojo.FK_AdultAdultAttendance" />
+        <AssociationConnector Association="CoderDojo.AdultAdultAttendance" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

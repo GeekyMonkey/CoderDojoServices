@@ -121,7 +121,7 @@ namespace CoderDojo.Controllers.Api
                 else
                 {
                     // Do a real sign-in
-                    sessionCount = db.AttendanceSet(member.Id, true, sessionDate);
+                    sessionCount = db.MemberAttendanceSet(member.Id, true, sessionDate);
                     int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
                     // Notify other members looking at this screen
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();

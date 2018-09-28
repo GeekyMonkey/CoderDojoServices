@@ -18,6 +18,7 @@ namespace CoderDojo
         {
             this.Deleted = false;
             this.MemberParents = new HashSet<MemberParent>();
+            this.AdultAttendances = new HashSet<AdultAttendance>();
         }
     
         public System.Guid Id { get; set; }
@@ -38,5 +39,6 @@ namespace CoderDojo
         public Nullable<System.DateTime> LoginDatePrevious { get; set; }
     
         public virtual ICollection<MemberParent> MemberParents { get; set; }
+        public virtual ICollection<AdultAttendance> AdultAttendances { get; set; }
     }
 }

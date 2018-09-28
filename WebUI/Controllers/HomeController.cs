@@ -45,12 +45,12 @@ namespace CoderDojo.Controllers
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
             LoginModel loginModel = new LoginModel();
 
-			HttpCookie memberCookie = new HttpCookie("coderdojomember");
-			memberCookie.Domain = ".coderdojoennis.com";
-			memberCookie.Expires = DateTime.Now.AddHours(-1);
-			Response.Cookies.Add(memberCookie);
+            HttpCookie memberCookie = new HttpCookie("coderdojomember");
+            memberCookie.Domain = ".coderdojoennis.com";
+            memberCookie.Expires = DateTime.Now.AddHours(-1);
+            Response.Cookies.Add(memberCookie);
 
-			return View("Login", loginModel);
+            return View("Login", loginModel);
         }
 
         [HttpPost]
@@ -147,12 +147,12 @@ namespace CoderDojo.Controllers
             FormsAuthentication.SetAuthCookie(null, false);
             FormsAuthentication.SignOut();
 
-			HttpCookie memberCookie = new HttpCookie("coderdojomember");
-			memberCookie.Domain = ".coderdojoennis.com";
-			memberCookie.Expires = DateTime.Now.AddHours(-1);
-			Response.Cookies.Add(memberCookie);
+            HttpCookie memberCookie = new HttpCookie("coderdojomember");
+            memberCookie.Domain = ".coderdojoennis.com";
+            memberCookie.Expires = DateTime.Now.AddHours(-1);
+            Response.Cookies.Add(memberCookie);
 
-			return View("Redirect", model: "/Home/Login");
+            return View("Redirect", model: "/Home/Login");
         }
 
         [HttpGet]
@@ -212,6 +212,7 @@ namespace CoderDojo.Controllers
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
             DateTime sessionDate = DateTime.Today;
             ViewBag.SignedInMembers = GetSignedInMembers();
+            ViewBag.SignedInAdults = GetSignedInAdults();
             ViewBag.SessionDate = sessionDate;
             ViewBag.Teams = db.Teams.OrderBy(t => t.TeamName).ToList();
             return View("SignIn", new LoginModel());
@@ -225,6 +226,7 @@ namespace CoderDojo.Controllers
             HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
             DateTime sessionDate = DateTime.Today;
             ViewBag.SignedInMembers = GetSignedInMembers();
+            ViewBag.SignedInAdults = GetSignedInAdults();
             ViewBag.SessionDate = sessionDate;
             ViewBag.Teams = db.Teams.OrderBy(t => t.TeamName).ToList();
             return View("SignInQR", new LoginModel());
@@ -247,6 +249,22 @@ namespace CoderDojo.Controllers
 
             if (member == null)
             {
+                Adult adult = null;
+                try
+                {
+                    Guid gid = new Guid(Id);
+                    adult = db.Adults.FirstOrDefault(a => a.Id == gid);
+                } catch
+                {
+                    adult = null;
+                }
+
+                if (adult != null)
+                {
+                    return SignInAdult(adult);
+                }
+
+
                 return Json(new
                 {
                     ValidationMessage = "Unknown QR Code: " + Id
@@ -272,6 +290,20 @@ namespace CoderDojo.Controllers
 
             if (member == null)
             {
+                Adult adult = null;
+                if (!string.IsNullOrEmpty(loginModel.Password))
+                {
+                    string passwordHash = db.GeneratePasswordHash(loginModel.Password);
+                    adult = db.Adults.FirstOrDefault(
+                        a => (a.Login == loginModel.Username || ((a.FirstName + " " + a.LastName) == loginModel.Username))
+                            && a.PasswordHash == passwordHash
+                            && a.Deleted == false);
+                }
+                if (adult != null)
+                {
+                    return SignInAdult(adult);
+                }
+
                 return Json(new
                 {
                     ValidationMessage = "Username or password is not correct."
@@ -287,7 +319,7 @@ namespace CoderDojo.Controllers
             db.SaveChanges();
 
             DateTime sessionDate = DateTime.Today;
-            int sessionCount = db.AttendanceSet(member.Id, true, sessionDate);
+            int sessionCount = db.MemberAttendanceSet(member.Id, true, sessionDate);
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
@@ -302,12 +334,42 @@ namespace CoderDojo.Controllers
             });
         }
 
+        private ActionResult SignInAdult(Adult adult)
+        {
+            adult.SetLoginDate();
+            db.SaveChanges();
+
+            DateTime sessionDate = DateTime.Today;
+            int sessionCount = db.AdultAttendanceSet(adult.Id, true, sessionDate);
+            int adultAttendanceCount = db.AdultAttendances.Count(ma => ma.Date == sessionDate);
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adult.Id.ToString("N"), adult.FullName, "Mentors", true.ToString().ToLower(), sessionCount, adultAttendanceCount, "", adult.ImageUrl);
+            string message = adult.GetLoginMessage();
+
+            return Json(new
+            {
+                memberId = adult.Id.ToString("N"),
+                memberName = adult.FirstName + " " + adult.LastName,
+                memberSessionCount = sessionCount,
+                memberMessage = message
+            });
+        }
+
         private IEnumerable<MemberAttendance> GetSignedInMembers()
         {
             return from ma in db.MemberAttendances.Include("Member")
                                       where ma.Date == DateTime.Today
                                       orderby ma.Member.FirstName, ma.Member.LastName
                                       select ma;
+        }
+
+        private IEnumerable<AdultAttendance> GetSignedInAdults()
+        {
+            return from aa in db.AdultAttendances.Include("Adult")
+                   where aa.Date == DateTime.Today
+                   orderby aa.Adult.FirstName, aa.Adult.LastName
+                   select aa;
         }
 
         [HttpPost]

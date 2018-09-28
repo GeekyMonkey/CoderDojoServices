@@ -159,10 +159,22 @@ namespace CoderDojo.Views
                 .Select(a => a.MemberId)
                 .ToList();
 
+            var presentAdultIds = db.AdultAttendances
+                .Where(a => a.Date == sessionDate)
+                .OrderBy(a => a.AdultId)
+                .Select(a => a.AdultId)
+                .ToList();
+
             var members = (from m in db.Members
                            where m.Deleted == false
                            orderby m.FirstName, m.LastName
                            select m).ToList();
+
+            var adults = (from a in db.Adults
+                           where a.IsMentor == true
+                           && a.Deleted == false
+                           orderby a.FirstName, a.LastName
+                           select a).ToList();
 
             List<AttendanceModel> attendance = (from m in members
                                                 select new AttendanceModel
@@ -170,8 +182,19 @@ namespace CoderDojo.Views
                                                     MemberId = m.Id,
                                                     MemberName = m.FirstName + " " + m.LastName,
                                                     Present = presentMemberIds.Contains(m.Id),
-                                                    MemberBeltColorHex = m.BeltColorHex
+                                                    MemberBeltColorHex = m.BeltColorHex,
+                                                    IsAdult = false
                                                 }).ToList();
+            attendance.AddRange((from a in adults
+                                 select new AttendanceModel
+                                 {
+                                     MemberId = a.Id,
+                                     MemberName = a.FirstName + " " + a.LastName,
+                                     Present = presentAdultIds.Contains(a.Id),
+                                     MemberBeltColorHex = "#ffffff",
+                                     IsAdult = true
+                                 }).ToList());
+
             ViewBag.ShowBackButton = true;
             ViewBag.SelectedMemberId = memberId; //todo - scroll here
             ViewBag.SessionDates = sessionDates;
@@ -192,14 +215,20 @@ namespace CoderDojo.Views
                 sessionDate = DateTime.Today;
             }
             Guid membergId = new Guid(memberId);
-            DoAttendanceChange(membergId, present, sessionDate);
-
+            Member member = db.Members.FirstOrDefault(m => m.Id == membergId);
+            if (member != null)
+            {
+                DoMemberAttendanceChange(membergId, present, sessionDate);
+            } else
+            {
+                DoAdultAttendanceChange(membergId, present, sessionDate);
+            }
             return Json("OK");
         }
 
-        private void DoAttendanceChange(Guid memberId, bool present, DateTime sessionDate)
+        private void DoMemberAttendanceChange(Guid memberId, bool present, DateTime sessionDate)
         {
-            int sessionCount = db.AttendanceSet(memberId, present, sessionDate);
+            int sessionCount = db.MemberAttendanceSet(memberId, present, sessionDate);
             int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
             Member member = db.Members.FirstOrDefault(m => m.Id == memberId);
 
@@ -211,6 +240,22 @@ namespace CoderDojo.Views
                 memberMessage = member.GetLoginMessage();
             }
             context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
+        }
+
+        private void DoAdultAttendanceChange(Guid adultId, bool present, DateTime sessionDate)
+        {
+            int sessionCount = db.AdultAttendanceSet(adultId, present, sessionDate);
+            int adultAttendanceCount = db.AdultAttendances.Count(aa => aa.Date == sessionDate);
+            Adult adult = db.Adults.FirstOrDefault(a => a.Id == adultId);
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+            string memberMessage = "";
+            if (present)
+            {
+                memberMessage = adult.GetLoginMessage();
+            }
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adultId.ToString("N"), adult.FullName, "Mentors", present.ToString().ToLower(), sessionCount, adultAttendanceCount, memberMessage, adult.ImageUrl);
         }
 
         [HttpGet]
@@ -680,16 +725,16 @@ namespace CoderDojo.Views
                 memberChanges.AttendedToday = (Request.Form["AttendedToday"] ?? "").ToLower().EndsWith("true"); // Problem with jquery mobile checkbox
                 if (memberChanges.AttendedToday)
                 {
-                    DoAttendanceChange(member.Id, true, DateTime.Today);
+                    DoMemberAttendanceChange(member.Id, true, DateTime.Today);
                 }
                 else
                 {
-                    DoAttendanceChange(member.Id, member.MemberAttendances.Where(ma => ma.Date == DateTime.Today).Any(), DateTime.Today);
+                    DoMemberAttendanceChange(member.Id, member.MemberAttendances.Where(ma => ma.Date == DateTime.Today).Any(), DateTime.Today);
                 }
 
                 if (previousPage == "Attendance")
                 {
-                    db.AttendanceSet(member.Id, true, DateTime.Today);
+                    db.MemberAttendanceSet(member.Id, true, DateTime.Today);
                     return RedirectClient("/Mentor/Attendance?id=" + member.Id);
                 }
                 return RedirectClient("/Mentor/Members?id=" + member.Id);

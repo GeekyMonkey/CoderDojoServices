@@ -6,6 +6,7 @@
     ViewBag.BodyTheme = "a";
     DateTime sessionDate = ViewBag.SessionDate;
     IEnumerable<MemberAttendance> signedInMembers = ViewBag.SignedInMembers;
+    IEnumerable<AdultAttendance> signedInAdults = ViewBag.SignedInAdults;
     List<Team> teams = ViewBag.Teams;
     teams.Add(new Team { TeamName = "No Team", Id = Guid.Empty });
     char col = ' ';
@@ -60,6 +61,26 @@
             </div>
         </div>
         }
+        @{
+        col = (col == 'a') ? 'b' : 'a';
+        <div data-role="ui-block-@(col)" style="float:left;">
+            <div data-role="collapsible" data-collapsed="false" data-content-theme="a" class="TeamHeader" data-color="#ffffff">
+                <h3>
+                    Mentors
+                </h3>
+                <ul data-role="listview" data-autodividers="false" id="TeamMentor">
+                    @foreach (var aa in signedInAdults.Where(a => a.Adult.IsMentor))
+                    {
+                        <li id="m_@aa.AdultId.ToString("N")">
+                            <img data-src="@aa.Adult.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';"  />
+                            @aa.Adult.FullName
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        }
+
     </div>
 
 
@@ -171,7 +192,11 @@
 
                 // Update the list
                 $("li#m_" + memberId).remove();
-                $("#DojoAttendanceCount").html(dojoAttendanceCount);
+                if (teamId == "Mentors") {
+                    $("#AdultAttendanceCount").html(dojoAttendanceCount);
+                } else {
+                    $("#DojoAttendanceCount").html(dojoAttendanceCount);
+                }
                 var ul = $("ul#Team" + teamId);
                 if (present == "true") {
                     ul.prepend("<li id='m_" + memberId + "'><img src='" + memberImageUrl + "' />" + memberName + "</li>");
@@ -180,10 +205,6 @@
                 ul.trigger("updatelayout");
             }
         };
-
-
-
-
 
         var QRCodeScanner = {
             canvas: document.getElementById("qr-canvas"),

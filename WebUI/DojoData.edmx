@@ -26,6 +26,14 @@
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
         </EntityType>
+        <EntityType Name="AdultAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdultId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
         <EntityType Name="BadgeCategories">
           <Key>
             <PropertyRef Name="Id" />
@@ -313,6 +321,7 @@
         </Association>
         <EntityContainer Name="CoderDojoStoreContainer">
           <EntitySet Name="Adults" EntityType="Self.Adults" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="AdultAttendance" EntityType="Self.AdultAttendance" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="BadgeCategories" EntityType="Self.BadgeCategories" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="Badges" EntityType="Self.Badges" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="Belts" EntityType="Self.Belts" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
@@ -444,6 +453,15 @@
             <End Role="Team" EntitySet="Teams" />
             <End Role="Member" EntitySet="Members" />
           </AssociationSet>
+          <EntitySet Name="AdultAttendances" EntityType="CoderDojo.AdultAttendance" />
+          <AssociationSet Name="FK_AdultAttendance_Adult" Association="CoderDojo.FK_AdultAttendance_Adult">
+            <End Role="Adults" EntitySet="Adults" />
+            <End Role="AdultAttendance" EntitySet="AdultAttendances" />
+          </AssociationSet>
+          <AssociationSet Name="AdultAdultAttendance" Association="CoderDojo.AdultAdultAttendance">
+            <End Role="Adult" EntitySet="Adults" />
+            <End Role="AdultAttendance" EntitySet="AdultAttendances" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adult">
           <Key>
@@ -466,6 +484,7 @@
           <Property Type="Boolean" Name="GardaVetted" Nullable="false" />
           <Property Type="DateTime" Name="LoginDate" Precision="3" />
           <Property Type="DateTime" Name="LoginDatePrevious" Precision="3" />
+          <NavigationProperty Name="AdultAttendances" Relationship="CoderDojo.AdultAdultAttendance" FromRole="Adult" ToRole="AdultAttendance" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -773,6 +792,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdultAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Adult" Relationship="CoderDojo.AdultAdultAttendance" FromRole="AdultAttendance" ToRole="Adult" />
+          <Property Name="AdultId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AdultAttendance_Adult">
+          <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AdultAttendance" Type="CoderDojo.AdultAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adults">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdultAttendance">
+              <PropertyRef Name="AdultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdultAdultAttendance">
+          <End Type="CoderDojo.Adult" Role="Adult" Multiplicity="1" />
+          <End Type="CoderDojo.AdultAttendance" Role="AdultAttendance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adult">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdultAttendance">
+              <PropertyRef Name="AdultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -798,6 +852,15 @@
                 <ScalarProperty Name="XboxGamertag" ColumnName="XboxGamertag" />
                 <ScalarProperty Name="ScratchName" ColumnName="ScratchName" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdultAttendances">
+            <EntityTypeMapping TypeName="CoderDojo.AdultAttendance">
+              <MappingFragment StoreEntitySet="AdultAttendance">
+                <ScalarProperty Name="AdultId" ColumnName="AdultId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -21,5 +21,45 @@ namespace CoderDojo
             set;
         }
 
+        public string GetLoginMessage()
+        {
+            List<string> messages = new List<string>();
+            Int32 sessionCount = this.AdultAttendances.Count();
+
+            // Welcome message
+            if (LoginDatePrevious == null)
+            {
+                messages.Add("<h3>Welcome " + FirstName + "</h3>");
+            }
+            else
+            {
+                messages.Add("<h3>Welcome back " + FirstName + ".</h3>");
+            }
+
+            // Team 
+            messages.Add("Your team is: Mentors!");
+
+            // Attendance
+            if (LoginDatePrevious != null)
+            {
+                messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("dd-MMM-yyyy HH:mm"));
+            }
+            messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " Coder Dojo session.");
+
+            string html = "";
+            foreach (string message in messages)
+            {
+                if (message.StartsWith("<"))
+                {
+                    html += message;
+                }
+                else
+                {
+                    html += "<p>" + message + "</p>";
+                }
+            }
+            return html;
+        }
+
     }
 }

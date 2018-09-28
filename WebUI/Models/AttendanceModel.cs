@@ -12,6 +12,8 @@ namespace CoderDojo
         public bool Present { get; set; }
 
         public string MemberBeltColorHex { get; set; }
+        
+        public bool IsAdult { get; set; }
     }
 
     // Sign-in response object
