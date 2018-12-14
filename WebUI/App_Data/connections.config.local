@@ -1,4 +1,0 @@
-﻿<connectionStrings>
-  <add name="CoderDojoData-Local" connectionString="metadata=res://*/DojoData.csdl|res://*/DojoData.ssdl|res://*/DojoData.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\CoderDojoData.mdf;Integrated Security=True;Connect Timeout=30&quot;" providerName="System.Data.EntityClient" />
-  <add name="StorageConnection" connectionString="UseDevelopmentStorage=true"/>
-</connectionStrings>
