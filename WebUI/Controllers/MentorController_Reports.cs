@@ -53,7 +53,7 @@ namespace CoderDojo.Views
         {
             if (since == null)
             {
-                since = DateTime.Today.AddMonths(-11);
+                since = DateTime.Today.AddMonths(-24);
             }
 
             List<MemberBelt> memberBelts = (from b in db.MemberBelts
