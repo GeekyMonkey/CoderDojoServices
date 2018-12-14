@@ -20,7 +20,7 @@ namespace CoderDojo
         {
             // Disable initializer
             // Disables migrations so connectionstring can be set in azure portal
-            Database.SetInitializer<CoderDojoData>(null);
+            // Database.SetInitializer<CoderDojoData>(null);
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

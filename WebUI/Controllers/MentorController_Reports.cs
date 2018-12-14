@@ -43,9 +43,19 @@ namespace CoderDojo.Views
             }
             return ExportCsv(csv.ToString(), "ParentEmails");
         }
+
         private ActionResult ExportCsv(string csv, string fileName)
         {
-            return File(new System.Text.UTF8Encoding().GetBytes(csv), "text/csv", fileName + ".csv");
+            var cd = new System.Net.Mime.ContentDisposition
+            {
+                FileName = $"{fileName}.csv",
+
+                // always prompt the user for downloading, set to true if you want 
+                // the browser to try to show the file inline
+                Inline = false,
+            };
+            Response.AppendHeader("Content-Disposition", cd.ToString());
+            return File(new UTF8Encoding().GetBytes(csv), "text/x-csv");
         }
 
         [HttpGet]
@@ -72,6 +82,29 @@ namespace CoderDojo.Views
             ViewBag.SelectedMemberId = null;
             ViewBag.ShowBackButton = true;
             return View("RecentBelts", memberBelts);
+        }
+
+        [HttpGet]
+        public ActionResult RecentBeltsCsv(DateTime? since = null)
+        {
+            StringBuilder csv = new StringBuilder();
+            csv.AppendLine("First Name,Last Name,Belt,Awarded,Notes");
+
+            if (since == null)
+            {
+                since = DateTime.Today.AddMonths(-24);
+            }
+
+            List<MemberBelt> memberBelts = (from b in db.MemberBelts
+                                            where b.Awarded != null && b.Awarded >= since.Value
+                                            orderby b.Awarded.Value descending
+                                            select b).ToList();
+            foreach(var belt in memberBelts)
+            {
+                csv.AppendLine($"{belt.Member.FirstName},{belt.Member.LastName},{belt.Belt.Color},{belt.Awarded?.ToString("yyyy-MM-dd")},{belt.AwardedNotes.Replace(',','_')}");
+            }
+
+            return ExportCsv(csv.ToString(), "RecentBelts");
         }
     }
 }
