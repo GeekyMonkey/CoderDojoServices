@@ -428,6 +428,8 @@
     <Content Include="Content\font\oldeenglish-webfont.ttf" />
     <Content Include="Content\font\oldeenglish-webfont.woff" />
     <Content Include="Content\font\oldeenglish-webfont.woff2" />
+    <Content Include="Content\tools\ReadNFC.zip" />
+    <Content Include="Content\tools\WriteNFC.zip" />
     <None Include="Properties\PublishProfiles\CoderDojoMember %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\CoderDojoMember - Web Deploy.pubxml" />
