@@ -38,6 +38,13 @@ namespace CoderDojo.Controllers
             return Login();
         }
 
+        [AllowAnonymous]
+        public ActionResult Tools()
+        {
+            //no idea what model to put here. this seems fine
+            return View("Tools", new LoginModel());
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login()

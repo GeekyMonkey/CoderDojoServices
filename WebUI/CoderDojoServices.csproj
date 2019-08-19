@@ -731,6 +731,7 @@
     <Content Include="Views\Mentor\RecentBelts.cshtml" />
     <Content Include="Views\Home\TeamCard.cshtml" />
     <Content Include="Views\Mentor\AttendanceRandom.cshtml" />
+    <Content Include="Views\Home\Tools.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
