@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -178,7 +179,8 @@ namespace CoderDojo.Controllers
                 var team = db.Teams.FirstOrDefault(t => t.Id == gid);
                 if (team != null)
                 {
-                    ViewBag.Members = team.Members.OrderBy(m => m.FirstName).ToList();
+                    ViewBag.Members = team.Members
+                        .OrderBy(m => m.FirstName).ToList();
                 }
             }
 
@@ -194,11 +196,15 @@ namespace CoderDojo.Controllers
             Guid gid = Id != null ? new Guid(Id) : Guid.Empty;
 
             // Is this a mentor, or all mentors
-            Adult mentor = db.Adults.FirstOrDefault(a => a.Id == gid);
+            Adult mentor = db.Adults
+                .Include(a => a.BadgeCategories)
+                .FirstOrDefault(a => a.Id == gid);
             ViewBag.Adults = null;
             if (mentor == null)
             {
-                ViewBag.Mentors = db.Adults.Where(a => a.IsMentor && !a.Deleted).OrderBy(m => m.FirstName).ToList();
+                ViewBag.Mentors = db.Adults
+                    .Include(a => a.BadgeCategories)
+                    .Where(a => a.IsMentor && !a.Deleted).OrderBy(m => m.FirstName).ToList();
             }
 
             return View("PassportMentor", mentor);

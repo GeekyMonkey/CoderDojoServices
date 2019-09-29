@@ -3,6 +3,7 @@
     CoderDojo.Adult adult = Model;
     ViewBag.Title = adult.FullName;
     string adultMode = ViewBag.AdultMode;
+    List<BadgeCategory> allBadgeCategories = ViewBag.AllBadgeCategories;
     ViewBag.MenuActive = adultMode + "s";
     ViewBag.ParentMenuActive = "Details";
     bool newAdult = (adult.FirstName ?? "").Trim() == "";
@@ -83,11 +84,11 @@
                 </div>
                 <div data-role="fieldcontain">
                     <label for="NewPassword">New Password</label>
-                    @Html.PasswordFor(m => m.NewPassword)
+                    @Html.PasswordFor(m => m.NewPassword, new { autocomplete = "new-password" })
                 </div>
                 <div data-role="fieldcontain">
                     <label for="ConfirmPassword">Confirm Password</label>
-                    <input type="password" id="ConfirmPassword" />
+                    <input type="password" id="ConfirmPassword" , autocomplete="new-password" />
                 </div>
                 <div data-role="fieldcontain">
                     <label for="FingerprintId">Badge Number</label>
@@ -126,6 +127,18 @@
         </div>
     </fieldset>
 
+    @* --- SKILLS --- *@
+    if (allBadgeCategories != null)
+    {
+        <h3>Skills</h3>
+        <fieldset data-role="controlgroup">
+            @foreach (var bc in allBadgeCategories)
+            {
+                <label for="bc_@bc.Id">@bc.CategoryName</label>
+                <input type="checkbox" id="bc_@bc.Id" name="BadgeCategoriesSelected" value="@bc.Id" @((adult.BadgeCategories.Any(abc => abc.BadgeCategoryId == bc.Id)) ? "checked" : "") />
+            }
+        </fieldset>
+    }
 }
 
 
@@ -156,7 +169,7 @@
             }
         });
 
-        $("#PrintButton").on("click", function (e) {
+        $("body").on("click", "#PrintButton", function (e) {
             e.preventDefault();
             window.openNewWindow("/PassportMentor/@(adult.Id.ToString("N"))");
         });

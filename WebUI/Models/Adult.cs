@@ -21,6 +21,12 @@ namespace CoderDojo
             set;
         }
 
+        public List<Guid> BadgeCategoriesSelected
+        {
+            get;
+            set;
+        }
+
         public string GetLoginMessage()
         {
             List<string> messages = new List<string>();

@@ -10,7 +10,8 @@
     ViewBag.MemberMenuActive = "Details";
     string previousPage = ViewBag.PreviousPage;
     bool newMember = (member.FirstName ?? "").Trim() == "";
-    if (newMember) {
+    if (newMember)
+    {
         ViewBag.Title = "New Member";
     }
     else
@@ -22,9 +23,9 @@
 @section HeaderLeft {
     @if (!newMember)
     {
-        <a href="/Mentor/MemberMerge?id=@member.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
         <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
         <a data-role="button" data-icon="tag" id="BeltCertificate">Print Belt Cert</a>
+        <a href="/Mentor/MemberMerge?id=@member.Id.ToString("N")" data-role="button" data-icon="alert">Merge</a>
     }
 }
 
@@ -49,89 +50,89 @@
 
 @using (Html.BeginForm("MemberSave", "Mentor", new RouteValueDictionary(new { PreviousPage = previousPage }), FormMethod.Post))
 {
-        @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Id)
 
-        <label for="FirstName">First Name</label>
-        @Html.TextBoxFor(m => m.FirstName, new { @class=(newMember ? "AutoFocus" : "") })
+    <label for="FirstName">First Name</label>
+    @Html.TextBoxFor(m => m.FirstName, new { @class = (newMember ? "AutoFocus" : "") })
 
-        <label for="LastName">Last Name</label>
-        @Html.TextBoxFor(m => m.LastName)
+    <label for="LastName">Last Name</label>
+    @Html.TextBoxFor(m => m.LastName)
 
-        <label>Birth Year</label>
-        @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
+    <label>Birth Year</label>
+    @Html.DropDownListFor(m => m.BirthYear, years, new { data_inline = "true" })
 
-        <label>Team</label>
-        @Html.DropDownListFor(m => m.TeamId, teams, new { data_inline = "true" })
+    <label>Team</label>
+    @Html.DropDownListFor(m => m.TeamId, teams, new { data_inline = "true" })
 
-        <fieldset data-role="controlgroup">
-            <label for="RegisteredCurrentTerm">Registered Current Term</label>
-            @Html.CheckBoxFor(m => m.RegisteredCurrentTerm)
-        </fieldset>
-    
-        if (newMember)
-        {
-            <label>@Html.CheckBoxFor(m => m.AttendedToday) <span>Attended Today</span></label>
-        }
-    
-        <fieldset role="controlgroup">
-            <div data-role="collapsible-set" data-corners="true" data-inset="true">
-                <h3>Memberships</h3>
-                <div data-role="collapsible" data-content-theme="a">
-                    <h3>CoderDojo</h3>
-                    <div data-role="fieldcontain">
-                        <label for="Login">Login</label>
-                        @Html.TextBoxFor(m => m.Login)
-                    </div>
-                    <div data-role="fieldcontain">
-                        <label for="NewPassword">New Password</label>
-                        @Html.PasswordFor(m => m.NewPassword)
-                    </div>
-                    <div data-role="fieldcontain">
-                        <label for="ConfirmPassword">Confirm Password</label>
-                        <input type="password" id="ConfirmPassword" />
-                    </div>
-                    <div data-role="fieldcontain">
-                        <label for="FingerprintId">Badge Number</label>
-                        @Html.TextBoxFor(m => m.FingerprintId)
-                        @*<a data-role="button" data-icon="check" id="GenerateFingerprintIdButton">Generate Fingerprint ID</a>*@
-                    </div>
+    <fieldset data-role="controlgroup">
+        <label for="RegisteredCurrentTerm">Registered Current Term</label>
+        @Html.CheckBoxFor(m => m.RegisteredCurrentTerm)
+    </fieldset>
+
+    if (newMember)
+    {
+        <label>@Html.CheckBoxFor(m => m.AttendedToday) <span>Attended Today</span></label>
+    }
+
+    <fieldset role="controlgroup">
+        <div data-role="collapsible-set" data-corners="true" data-inset="true">
+            <h3>Memberships</h3>
+            <div data-role="collapsible" data-content-theme="a">
+                <h3>CoderDojo</h3>
+                <div data-role="fieldcontain">
+                    <label for="Login">Login</label>
+                    @Html.TextBoxFor(m => m.Login)
                 </div>
-                <div data-role="collapsible" data-content-theme="a">
-                    <h3>GitHub</h3>
-                    <div data-role="fieldcontain">
-                        <label for="GithubLogin">GitHub Login</label>
-                        @Html.TextBoxFor(m => m.GithubLogin)
-                    </div>
-                    @if (!string.IsNullOrEmpty(member.GithubLogin))
-                    {
-                        <a href="https://github.com" data-role="button" data-icon="github" data-iconpos="right" data-inline="true" id="GithubButton">Go to my GitHub page</a>
-                    }
+                <div data-role="fieldcontain">
+                    <label for="NewPassword">New Password</label>
+                    @Html.PasswordFor(m => m.NewPassword, new { autocomplete = "new-password" })
                 </div>
-                <div data-role="collapsible" data-content-theme="a">
-                    <h3>Scratch</h3>
-                    <div data-role="fieldcontain">
-                        <label for="ScratchName">Scratch Name</label>
-                        @Html.TextBoxFor(m => m.ScratchName)
-                    </div>
-                    @if (!string.IsNullOrEmpty(member.ScratchName))
-                    {
-                        <a href="http://scratch.mit.edu/users/@(member.ScratchName)" data-role="button" data-icon="scratch" data-iconpos="right" data-inline="true" id="ScratchButton">Go to my Scratch page</a>
-                    }
+                <div data-role="fieldcontain">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input type="password" id="ConfirmPassword" autocomplete="new-password" />
                 </div>
-                <div data-role="collapsible" data-content-theme="a">
-                    <h3>XBox</h3>
-                    <div data-role="fieldcontain">
-                        <label for="XboxGamertag">XBox Gamertag</label>
-                        @Html.TextBoxFor(m => m.XboxGamertag)
-                    </div>
-                    @if (!string.IsNullOrEmpty(member.XboxGamertag))
-                    {
-                        <a href="https://live.xbox.com/en-IE/Profile?gamertag=@(member.XboxGamertag)" data-role="button" data-icon="xbox" data-iconpos="right" data-inline="true" id="XboxButton">Go to my XBox page</a>
-                        <img src="https://avatar-ssl.xboxlive.com/avatar/@(member.XboxGamertag)/avatarpic-l.png" style="vertical-align:middle;margin-left: 50px;" />
-                    }
+                <div data-role="fieldcontain">
+                    <label for="FingerprintId">Badge Number</label>
+                    @Html.TextBoxFor(m => m.FingerprintId)
+                    @*<a data-role="button" data-icon="check" id="GenerateFingerprintIdButton">Generate Fingerprint ID</a>*@
                 </div>
             </div>
-        </fieldset>
+            <div data-role="collapsible" data-content-theme="a">
+                <h3>GitHub</h3>
+                <div data-role="fieldcontain">
+                    <label for="GithubLogin">GitHub Login</label>
+                    @Html.TextBoxFor(m => m.GithubLogin)
+                </div>
+                @if (!string.IsNullOrEmpty(member.GithubLogin))
+                {
+                    <a href="https://github.com" data-role="button" data-icon="github" data-iconpos="right" data-inline="true" id="GithubButton">Go to my GitHub page</a>
+                }
+            </div>
+            <div data-role="collapsible" data-content-theme="a">
+                <h3>Scratch</h3>
+                <div data-role="fieldcontain">
+                    <label for="ScratchName">Scratch Name</label>
+                    @Html.TextBoxFor(m => m.ScratchName)
+                </div>
+                @if (!string.IsNullOrEmpty(member.ScratchName))
+                {
+                    <a href="http://scratch.mit.edu/users/@(member.ScratchName)" data-role="button" data-icon="scratch" data-iconpos="right" data-inline="true" id="ScratchButton">Go to my Scratch page</a>
+                }
+            </div>
+            <div data-role="collapsible" data-content-theme="a">
+                <h3>XBox</h3>
+                <div data-role="fieldcontain">
+                    <label for="XboxGamertag">XBox Gamertag</label>
+                    @Html.TextBoxFor(m => m.XboxGamertag)
+                </div>
+                @if (!string.IsNullOrEmpty(member.XboxGamertag))
+                {
+                    <a href="https://live.xbox.com/en-IE/Profile?gamertag=@(member.XboxGamertag)" data-role="button" data-icon="xbox" data-iconpos="right" data-inline="true" id="XboxButton">Go to my XBox page</a>
+                    <img src="https://avatar-ssl.xboxlive.com/avatar/@(member.XboxGamertag)/avatarpic-l.png" style="vertical-align:middle;margin-left: 50px;" />
+                }
+            </div>
+        </div>
+    </fieldset>
 }
 
 
@@ -176,11 +177,11 @@
                 form.submit();
             }
         });
-        $("#PrintButton").on("click", function (e) {
+        $("body").on("click", "#PrintButton", function (e) {
             e.preventDefault();
             window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
         });
-        $("#BeltCertificate").on("click", function (e) {
+        $("body").on("click", "#BeltCertificate", function (e) {
             e.preventDefault();
             window.openNewWindow("/BeltCertificate/@(member.Id.ToString("N"))");
         });

@@ -209,6 +209,9 @@
     <Compile Include="AdultAttendance.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
+    <Compile Include="AdultBadgeCategory.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
     <Compile Include="AppCode\Extensions.cs" />
     <Compile Include="AppCode\SignInModeFilter.cs" />
     <Compile Include="App_Start\AuthorizeUser.cs" />

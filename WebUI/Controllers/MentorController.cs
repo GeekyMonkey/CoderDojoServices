@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -338,9 +337,12 @@ namespace CoderDojo.Views
         [HttpGet]
         public ActionResult Adult(Guid id)
         {
-            Adult adult = db.Adults.FirstOrDefault(m => m.Id == id);
+            Adult adult = db.Adults
+                .Include(a => a.BadgeCategories)
+                .FirstOrDefault(m => m.Id == id);
             ViewBag.ShowBackButton = true;
             ViewBag.AdultMode = adult.IsMentor ? "Mentor" : "Parent";
+            ViewBag.AllBadgeCategories = GetBadgeCategories();
             return View("Adult", adult);
         }
 
@@ -440,6 +442,29 @@ namespace CoderDojo.Views
                 adult.ScratchName = TrimNullableString(adultChanges.ScratchName);
                 adult.Login = TrimNullableString(adultChanges.Login);
                 adult.FingerprintId = adultChanges.FingerprintId;
+
+                // Badge Categories
+                List<AdultBadgeCategory> adultBadgeCategoriesToRemove = new List<AdultBadgeCategory>();
+                foreach(var bc in adult.BadgeCategories)
+                {
+                    if (!adultChanges.BadgeCategoriesSelected.Contains(bc.BadgeCategoryId))
+                    {
+                        adultBadgeCategoriesToRemove.Add(bc);
+                    }
+                }
+                foreach (var abcToRemove in adultBadgeCategoriesToRemove) {
+                    db.AdultBadgeCategories.Remove(abcToRemove);
+                }
+                foreach(Guid bcs in adultChanges.BadgeCategoriesSelected)
+                {
+                    if (!adult.BadgeCategories.Any(abc => abc.BadgeCategoryId == bcs))
+                    {
+                        adult.BadgeCategories.Add(new AdultBadgeCategory {
+                            AdultId = adult.Id,
+                            BadgeCategoryId = bcs
+                        });
+                    }
+                }
 
                 // Password change
                 if (string.IsNullOrEmpty(adultChanges.NewPassword) == false)

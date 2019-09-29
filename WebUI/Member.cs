@@ -17,6 +17,7 @@ namespace CoderDojo
         public Member()
         {
             this.Deleted = false;
+            this.RegisteredCurrentTerm = false;
             this.MemberAttendances = new HashSet<MemberAttendance>();
             this.MemberBadges = new HashSet<MemberBadge>();
             this.MemberBelts = new HashSet<MemberBelt>();

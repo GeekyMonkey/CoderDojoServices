@@ -18,9 +18,6 @@ namespace CoderDojo
         public CoderDojoData()
             : base("name=CoderDojoData")
         {
-            // Disable initializer
-            // Disables migrations so connectionstring can be set in azure portal
-            // Database.SetInitializer<CoderDojoData>(null);
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -40,5 +37,6 @@ namespace CoderDojo
         public DbSet<Dojo> Dojos { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<AdultAttendance> AdultAttendances { get; set; }
+        public DbSet<AdultBadgeCategory> AdultBadgeCategories { get; set; }
     }
 }

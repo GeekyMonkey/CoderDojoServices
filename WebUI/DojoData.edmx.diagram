@@ -32,6 +32,9 @@
         <EntityTypeShape EntityType="CoderDojo.AdultAttendance" Width="1.5" PointX="10.625" PointY="2.25" />
         <AssociationConnector Association="CoderDojo.FK_AdultAdultAttendance" />
         <AssociationConnector Association="CoderDojo.AdultAdultAttendance" />
+        <EntityTypeShape EntityType="CoderDojo.AdultBadgeCategory" Width="1.5" PointX="11.375" PointY="6.375" />
+        <AssociationConnector Association="CoderDojo.AdultAdultBadgeCategory" />
+        <AssociationConnector Association="CoderDojo.BadgeCategoryAdultBadgeCategory" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

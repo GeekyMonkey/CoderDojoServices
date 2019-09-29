@@ -35,6 +35,14 @@
           <Property Name="AdultId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="AdultBadgeCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdultId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BadgeCategoryId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="BadgeCategories">
           <Key>
             <PropertyRef Name="Id" />
@@ -324,6 +332,7 @@
         <EntityContainer Name="CoderDojoStoreContainer">
           <EntitySet Name="Adults" EntityType="Self.Adults" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="AdultAttendance" EntityType="Self.AdultAttendance" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="AdultBadgeCategory" EntityType="Self.AdultBadgeCategory" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="BadgeCategories" EntityType="Self.BadgeCategories" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="Badges" EntityType="Self.Badges" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <EntitySet Name="Belts" EntityType="Self.Belts" Schema="dbo" p3:Type="Tables" xmlns:p3="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
@@ -464,6 +473,15 @@
             <End Role="Adult" EntitySet="Adults" />
             <End Role="AdultAttendance" EntitySet="AdultAttendances" />
           </AssociationSet>
+          <EntitySet Name="AdultBadgeCategories" EntityType="CoderDojo.AdultBadgeCategory" />
+          <AssociationSet Name="AdultAdultBadgeCategory" Association="CoderDojo.AdultAdultBadgeCategory">
+            <End Role="Adult" EntitySet="Adults" />
+            <End Role="AdultBadgeCategory" EntitySet="AdultBadgeCategories" />
+          </AssociationSet>
+          <AssociationSet Name="BadgeCategoryAdultBadgeCategory" Association="CoderDojo.BadgeCategoryAdultBadgeCategory">
+            <End Role="BadgeCategory" EntitySet="BadgeCategories" />
+            <End Role="AdultBadgeCategory" EntitySet="AdultBadgeCategories" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Adult">
           <Key>
@@ -488,6 +506,7 @@
           <Property Type="DateTime" Name="LoginDatePrevious" Precision="3" />
           <NavigationProperty Name="AdultAttendances" Relationship="CoderDojo.AdultAdultAttendance" FromRole="Adult" ToRole="AdultAttendance" />
           <Property Name="FingerprintId" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="BadgeCategories" Relationship="CoderDojo.AdultAdultBadgeCategory" FromRole="Adult" ToRole="AdultBadgeCategory" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -831,6 +850,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdultBadgeCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BadgeCategoryId" Type="Guid" Nullable="false" />
+          <Property Name="AdultId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Adult" Relationship="CoderDojo.AdultAdultBadgeCategory" FromRole="AdultBadgeCategory" ToRole="Adult" />
+          <NavigationProperty Name="BadgeCategory" Relationship="CoderDojo.BadgeCategoryAdultBadgeCategory" FromRole="AdultBadgeCategory" ToRole="BadgeCategory" />
+        </EntityType>
+        <Association Name="AdultAdultBadgeCategory">
+          <End Type="CoderDojo.Adult" Role="Adult" Multiplicity="1" />
+          <End Type="CoderDojo.AdultBadgeCategory" Role="AdultBadgeCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adult">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdultBadgeCategory">
+              <PropertyRef Name="AdultId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BadgeCategoryAdultBadgeCategory">
+          <End Type="CoderDojo.BadgeCategory" Role="BadgeCategory" Multiplicity="1" />
+          <End Type="CoderDojo.AdultBadgeCategory" Role="AdultBadgeCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BadgeCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdultBadgeCategory">
+              <PropertyRef Name="BadgeCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -991,6 +1044,15 @@
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="HexCode" ColumnName="HexCode" />
                 <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdultBadgeCategories">
+            <EntityTypeMapping TypeName="IsTypeOf(CoderDojo.AdultBadgeCategory)">
+              <MappingFragment StoreEntitySet="AdultBadgeCategory">
+                <ScalarProperty Name="BadgeCategoryId" ColumnName="BadgeCategoryId" />
+                <ScalarProperty Name="AdultId" ColumnName="AdultId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

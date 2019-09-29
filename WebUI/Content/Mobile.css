@@ -175,3 +175,21 @@ ul#TeamMembers li {list-style-type: none;}
 li.MemberListItem.NotRegistered a.ui-link-inherit {
     color: #666 !important;
 }
+
+.Checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .Checkboxes .Checkbox {
+        flex-grow: 1;
+        min-width: 300px;
+    }
+
+        .Checkboxes .Checkbox label {
+            color: blue;
+        }
+
+        .Checkboxes .Checkbox input {
+            color: green;
+        }

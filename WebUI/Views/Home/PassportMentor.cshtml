@@ -118,6 +118,8 @@ body
 .Card .Badges span
 {
     display: block;
+    font-size: 0.4cm;
+    margin-bottom: 0.1cm;
 }
 
 .Card .Belt
@@ -224,17 +226,15 @@ body
         <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
     </div>
 
-    @*
     <div class="Badges">
-        @foreach (var mbc in m.GetBadgeCategories())
+        @foreach (var abc in m.BadgeCategories.OrderBy(x => x.BadgeCategory.CategoryName))
         {
             <div class="Badge">
-                <img src="@mbc.BadgeCategory.ImageUrl" />
-                <span>@mbc.BadgeCount</span>
+                <img src="@abc.BadgeCategory.ImageUrl" />
+                <span>@abc.BadgeCategory.CategoryName</span>
             </div>
         }
     </div>
-    *@
 
     <div class="Belt" style="background-color: black !important;">
         <span class="CoderDojo">CoderDojo</span>
