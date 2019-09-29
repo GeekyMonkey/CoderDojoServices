@@ -185,6 +185,25 @@ namespace CoderDojo.Controllers
             return View("Passport", member);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult PassportMentor(string Id)
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+
+            Guid gid = Id != null ? new Guid(Id) : Guid.Empty;
+
+            // Is this a mentor, or all mentors
+            Adult mentor = db.Adults.FirstOrDefault(a => a.Id == gid);
+            ViewBag.Adults = null;
+            if (mentor == null)
+            {
+                ViewBag.Mentors = db.Adults.Where(a => a.IsMentor && !a.Deleted).OrderBy(m => m.FirstName).ToList();
+            }
+
+            return View("PassportMentor", mentor);
+        }
+
         /// <summary>
         /// Print passports for all registered members
         /// </summary>

@@ -7,6 +7,9 @@
 
 @section HeaderLeft
 {
+    @if (adultMode == "Mentor") {
+        <a data-role="button" data-icon="tag" id="PrintButton">Print IDs</a>
+    }
 }
 
 @section HeaderRight
@@ -37,3 +40,12 @@
         }
     </ul>
 </div>
+
+<script typeof="text/javascript">
+    $(function () {
+        $("#PrintButton").on("click", function (e) {
+            e.preventDefault();
+            window.openNewWindow("/PassportMentor/");
+        });
+    });
+</script>
