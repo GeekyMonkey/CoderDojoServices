@@ -172,15 +172,30 @@ namespace CoderDojo.Controllers
 
             // Is this a member, or a team
             Member member = db.Members.FirstOrDefault(m => m.Id == gid);
-            Team team = null;  
+            ViewBag.Members = null;  
             if (member == null)
             {
-                team = db.Teams.FirstOrDefault(t => t.Id == gid);
+                var team = db.Teams.FirstOrDefault(t => t.Id == gid);
+                if (team != null)
+                {
+                    ViewBag.Members = team.Members.OrderBy(m => m.FirstName).ToList();
+                }
             }
 
-            ViewBag.Team = team;
-
             return View("Passport", member);
+        }
+
+        /// <summary>
+        /// Print passports for all registered members
+        /// </summary>
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Passports()
+        {
+            HttpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+            ViewBag.Members = db.Members.Where(m => m.RegisteredCurrentTerm == true).OrderBy(m => m.FirstName).ToList();
+
+            return View("Passport", null);
         }
 
         [HttpGet]

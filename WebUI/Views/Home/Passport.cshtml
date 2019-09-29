@@ -1,12 +1,13 @@
 ﻿@model CoderDojo.Member
 @{
-    Team team = ViewBag.Team;
+    List<Member> members = ViewBag.Members;
     ViewBag.Title = "ID Printout";
     ViewBag.HideMenuButton = true;
     this.Layout = null;
     Member member = Model;
     double widthCm = 10.0;
     double heightCm = 6.5;
+    int cardsPerSheet = 4;
 }
 
 
@@ -58,15 +59,17 @@ body
     margin: 0 auto;
     padding: 0.25cm;
     position: relative;
-    page-break-inside: avoid;
+    break-inside: avoid;
     font-size: 20px;
 }
 
-.Card:nth-child(4n+4)
+@*
+.Card:nth-child(5n+5)
 {
-    page-break-before:always;
+    break-before: always;
     margin-top: 1cm;
 }
+*@
 
 .Card .ImageRow {
     display: flex;
@@ -188,19 +191,27 @@ body
     </script>
 </head>
 <body class="A4">
-    <section class="sheet padding-10mm">
-        @if (team != null)
+    @if (members != null)
+    {
+        int skip = 0;
+        do
         {
-            foreach (var m in team.Members)
-            {
-                @Card(m)
-            }
-        }
-        else
-        {
+            var membersOnSheet = members.Skip(skip).Take(cardsPerSheet);
+            skip += cardsPerSheet;
+            <section class="sheet padding-10mm">
+                @foreach (var m in membersOnSheet)
+                {
+                    @Card(m)
+                }
+            </section>
+        } while (skip < members.Count);
+    }
+    else
+    {
+        <section class="sheet padding-10mm">
             @Card(member)
-        }
-    </section>
+        </section>
+    }
 </body>
 </html>
 
