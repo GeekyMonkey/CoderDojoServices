@@ -5,12 +5,9 @@
     ViewBag.HideMenuButton = true;
     this.Layout = null;
     Member member = Model;
-    double widthCm = 10.7;
-    double heightCm = 7.7;
-    double pageWidthCm = 21.0;
-    double pageHeightCm = 29.7;
+    double widthCm = 10.0;
+    double heightCm = 6.5;
 }
-
 
 
 <!doctype html>
@@ -18,7 +15,17 @@
 <head>
     <meta charset="utf-8">
     <title>Member IDs</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
+    <link href="~/Content/font/ocr.css" rel="stylesheet" />
+
     <style>
+
+@@page
+{
+    size: A4
+}
+
 *
 {
     border: 0;
@@ -35,41 +42,12 @@
 
 html
 {
-    font: 16px/1 'Open Sans', sans-serif;
-    overflow: auto;
-    padding: 0;
-    background: #999;
-    cursor: default;
-    padding: 2cm;
 }
 
 body
 {
-    /* width: @(pageWidthCm)cm; */
-    margin: 0 auto;
-    overflow: hidden;
-    padding: 1cm;
-    position: relative;
-    background: #FFF;
-}
-
-@@media print
-{
-    * {
-        -webkit-print-color-adjust: exact;
-    }
-    html {
-        background: none;
-        padding: 0;
-    }
-    body {
-        /* height: @(pageHeightCm)cm;  */
-        margin: 0;
-    }
-}
-
-@@page {
-    margin: 0 1cm;
+    font-family: 'ocraext';
+    -webkit-print-color-adjust: exact !important;
 }
 
 .Card
@@ -90,49 +68,53 @@ body
     margin-top: 1cm;
 }
 
-.Card .qrcode
+.Card .ImageRow {
+    display: flex;
+    margin-top: 0.2cm;
+}
+
+.Card .ImageRow img,.qrcode
 {
-    float: right;
-    width: 2.8cm;
+    flex-grow: 1;
+    width: 2.4cm;
+    height: 2.4cm;
+    object-fit: contain;
+    text-align: center;
 }
 
 .Card .qrcode canvas
 {
     width: 100%;
-}
-
-.Card .Avatar
-{
-    float: right;
-    max-width: 2.3cm;
-    max-height: 2.8cm;
-    width: auto;
-    height: auto;
-    margin-right: .2cm;
+    max-width: 2.4cm;
 }
 
 .Card .Badges
 {
-        width: 100%;
-        table-layout: fixed;
-        left: 0;
-        text-align: center;
-        position: absolute;
-        bottom: .4cm;
-        max-height: 4cm;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    position: absolute;
+    bottom: .41cm;
+    max-height: 3.5cm;
+    display: flex;
 }
 
-.Card .Badges img
+.Card .Badges .Badge
+{
+    flex-grow: 1;
+}
+
+.Card .Badges .Badge img
 {
     width: 90%;
-    max-height: 3cm;
-    max-width: 3cm;
+    max-height: 1.4cm;
+    max-width: 1.4cm;
     height: auto;
 }
 
 .Card .Badges span
 {
-        display: block;
+    display: block;
 }
 
 .Card .Belt
@@ -147,43 +129,44 @@ body
 
 .Card .Belt span
 {
-        display: block;
-        font-size: .4cm;
-        margin-top: .05cm;
-        color: black;
-        text-shadow: 1px 1px 2px rgba(255, 255, 255, .8);
+    display: block;
+    font-size: .4cm;
+    margin-top: .05cm;
+    color: black;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, .8);
 }
 
 .Card .Belt .BadgeTotal
 {
-        text-align: center;
+    text-align: center;
 }
 .Card .Belt .CoderDojo
 {
-        position: absolute;
-        left: .2cm;
-        top: 0;
+    position: absolute;
+    left: .2cm;
+    top: 0;
 }
 .Card .Belt .Location
 {
-        position: absolute;
-        right: .2cm;
-        top: 0;
+    position: absolute;
+    right: .2cm;
+    top: 0;
 }
 
 .Card h1
 {
-    font-size: 30px;
+    font-size: 0.7cm;
     font-weight: bold;
+    text-align: center;
 }
 
 .Card h2
 {
-    margin-top: 10px;
-    font-size: 20px;
+    font-size: 0.4cm;
+    font-style: italic;
+    text-align: center;
+    margin: .1cm;
 }
-
-
     </style>
 
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
@@ -204,45 +187,52 @@ body
         });
     </script>
 </head>
-<body>
-    @if (team != null)
-    {
-        foreach (var m in team.Members)
+<body class="A4">
+    <section class="sheet padding-10mm">
+        @if (team != null)
         {
-            @Card(m)
+            foreach (var m in team.Members)
+            {
+                @Card(m)
+            }
         }
-    }
-    else
-    {
-        @Card(member)
-    }
+        else
+        {
+            @Card(member)
+        }
+    </section>
 </body>
 </html>
 
 @helper Card(Member m)
 {
-        string teamName = m.Team != null ? ("Team: " + m.Team.TeamName) : string.Empty;
-    <div class="Card">
-        <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
+    string teamName = (m.Team != null && !m.Team.TeamName.StartsWith("(")) ? ("Team: " + m.Team.TeamName) : string.Empty;
+<div class="Card">
+    <h1>@m.MemberName</h1>
+    <h2>@teamName</h2>
+    <div class="ImageRow">
         <img class="Avatar" src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
-        <h1>@m.MemberName</h1>
-        <h2>@teamName</h2>
-
-        <table class="Badges">
-            <tr>
-                @foreach (var mbc in m.GetBadgeCategories())
-                {
-                    <td>
-                        <img src="@mbc.BadgeCategory.ImageUrl" />
-                        <span>@mbc.BadgeCount</span>
-                    </td>
-                }
-            </tr>
-        </table>
-        <div class="Belt" style="background-color: @(m.BeltColorHex);">
-            <span class="CoderDojo">Coder Dojo</span>
-            <span class="BadgeTotal">@m.MemberBadges.Where(mb => mb.Awarded != null).Count()</span>
-            <span class="Location">Ennis</span>
-        </div>
+        @if (m.Team != null && !m.Team.TeamName.StartsWith("("))
+        {
+            <img class="TeamIcon" src="@m.Team.ImageUrl" onerror="$(this).hide();" />
+        }
+        <div class="qrcode" data-id="@(m.Id.ToString("N"))"></div>
     </div>
+
+    <div class="Badges">
+        @foreach (var mbc in m.GetBadgeCategories())
+        {
+            <div class="Badge">
+                <img src="@mbc.BadgeCategory.ImageUrl" />
+                <span>@mbc.BadgeCount</span>
+            </div>
+        }
+    </div>
+    <div class="Belt" style="background-color: @(m.BeltColorHex) !important;">
+        <div class="BeltBackground"></div>
+        <span class="CoderDojo">Coder Dojo</span>
+        <span class="BadgeTotal">@m.MemberBadges.Where(mb => mb.Awarded != null).Count()</span>
+        <span class="Location">Ennis</span>
+    </div>
+</div>
 }
