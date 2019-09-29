@@ -22,11 +22,13 @@
     <div data-role="collapsible" data-content-theme="a">
         <h3>Maintenance</h3>
         <ul data-role="listview" data-inset="true">
-            <li>@Html.ActionLink("Belts", "Belts", "Mentor", null, new { @class=(activePage == "Belts" ? activeClass : inactiveClass)})</li>
-            <li>@Html.ActionLink("Badges", "Badges", "Mentor", null, new { @class=(activePage == "Badges" ? activeClass : inactiveClass)})</li>
-            <li>@Html.ActionLink("Badge Categories", "BadgeCategories", "Mentor", null, new { @class=(activePage == "BadgeCategories" ? activeClass : inactiveClass)})</li>
-            <li>@Html.ActionLink("Data Cleanup", "DataCleanup", "Mentor", null, new { @class = (activePage == "DataCleanup" ? activeClass : inactiveClass) })</li>
+            <li>@Html.ActionLink("Belts", "Belts", "Mentor", null, new { @class = (activePage == "Belts" ? activeClass : inactiveClass) })</li>
+            <li>@Html.ActionLink("Badges", "Badges", "Mentor", null, new { @class = (activePage == "Badges" ? activeClass : inactiveClass) })</li>
+            <li>@Html.ActionLink("Badge Categories", "BadgeCategories", "Mentor", null, new { @class = (activePage == "BadgeCategories" ? activeClass : inactiveClass) })</li>
             <li>@Html.ActionLink("Teams", "Teams", "Mentor", null, new { @class = (activePage == "Teams" ? activeClass : inactiveClass) })</li>
+            <li></li>
+            <li>@Html.ActionLink("Purge Members", "DataCleanup", "Mentor", null, new { @class = (activePage == "DataCleanup" ? activeClass : inactiveClass) })</li>
+            <li>@Html.ActionLink("Purge Registrations", "PurgeRegistrations", "Mentor", null, new { @class = (activePage == "PurgeRegistrations" ? activeClass : inactiveClass) })</li>
         </ul>
     </div>
 

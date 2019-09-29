@@ -63,6 +63,11 @@
         <label>Team</label>
         @Html.DropDownListFor(m => m.TeamId, teams, new { data_inline = "true" })
 
+        <fieldset data-role="controlgroup">
+            <label for="RegisteredCurrentTerm">Registered Current Term</label>
+            @Html.CheckBoxFor(m => m.RegisteredCurrentTerm)
+        </fieldset>
+    
         if (newMember)
         {
             <label>@Html.CheckBoxFor(m => m.AttendedToday) <span>Attended Today</span></label>

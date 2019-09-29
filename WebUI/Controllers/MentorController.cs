@@ -46,6 +46,10 @@ namespace CoderDojo.Views
             return View("Index", mentor);
         }
 
+        /// <summary>
+        /// Delete old members and parents
+        /// </summary>
+        /// <returns></returns>
         public ActionResult DataCleanup()
         {
             DateTime oneYearAgo = DateTime.Today.AddYears(-1);
@@ -85,6 +89,34 @@ namespace CoderDojo.Views
             ViewBag.MembersDeleted = membersDeleted;
             ViewBag.ParentsDeleted = parentsDeleted;
             return View("DataCleanup");
+        }
+
+        /// <summary>
+        /// Clear out the registered flag at the end of each term
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PurgeRegistrations()
+        {
+            int membersUnregistered = 0;
+
+            try
+            {
+                // Delete parents who haven't attended in a year 
+                foreach (var member in db.Members.Where(m => m.RegisteredCurrentTerm == true).ToList())
+                {
+                    member.RegisteredCurrentTerm = false;
+                    membersUnregistered++;
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex;
+            }
+
+            ViewBag.MembersUnregistered = membersUnregistered;
+            return View("PurgeRegistrations");
         }
 
         [HttpGet]
@@ -166,7 +198,7 @@ namespace CoderDojo.Views
                 .ToList();
 
             var members = (from m in db.Members
-                           where m.Deleted == false
+                           where m.Deleted == false && m.RegisteredCurrentTerm == true
                            orderby m.FirstName, m.LastName
                            select m).ToList();
 
@@ -714,6 +746,7 @@ namespace CoderDojo.Views
                 member.XboxGamertag = TrimNullableString(memberChanges.XboxGamertag);
                 member.TeamId = memberChanges.TeamId;
                 member.FingerprintId = memberChanges.FingerprintId;
+                member.RegisteredCurrentTerm = memberChanges.RegisteredCurrentTerm;
 
                 // Password change
                 if (string.IsNullOrEmpty(memberChanges.NewPassword) == false)

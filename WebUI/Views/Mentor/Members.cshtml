@@ -30,7 +30,7 @@
             {
                 string memId = m.Id.ToString("N");
                 bool present = presentMemberIds.Contains(m.Id);
-                <li class="@(present ? "Present" : "" )">
+                <li class="MemberListItem @(present ? "Present" : "" ) @(m.RegisteredCurrentTerm ? "Registered" : "NotRegistered" )">
                     <a href="Member/@(memId)">
                         <img data-src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                         <div class="BeltStripe" style="background-color:@(m.BeltColorHex)"></div>

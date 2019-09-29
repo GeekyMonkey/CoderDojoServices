@@ -59,7 +59,7 @@
                 string memId = a.MemberId.ToString("N");
                 <li>
                     <input type="checkbox" id="P@(memId)" @if (a.Present) { <text> checked="checked" </text> } />
-                    <label for="P@(memId)">_@a.MemberName</label>
+                    <label for="P@(memId)">&#8205;Mentor: @a.MemberName</label>
                     <div class="BeltStripe" style="background-color:#ffffff"></div>
                     <!-- todo: <span class="Count"></span> -->
                 </li>

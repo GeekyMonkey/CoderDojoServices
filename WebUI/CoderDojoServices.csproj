@@ -734,6 +734,7 @@
     <Content Include="Views\Home\TeamCard.cshtml" />
     <Content Include="Views\Mentor\AttendanceRandom.cshtml" />
     <Content Include="Views\Home\Tools.cshtml" />
+    <Content Include="Views\Mentor\PurgeRegistrations.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

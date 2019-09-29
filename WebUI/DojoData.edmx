@@ -138,6 +138,7 @@
           <Property Name="LoginDatePrevious" Type="datetime" />
           <Property Name="TeamId" Type="uniqueidentifier" />
           <Property Name="FingerprintId" Type="int" />
+          <Property Name="RegisteredCurrentTerm" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Teams">
           <Key>
@@ -584,6 +585,7 @@
           <Property Type="Guid" Name="TeamId" />
           <NavigationProperty Name="Team" Relationship="CoderDojo.FK_Members_Team" FromRole="Member" ToRole="Team" />
           <Property Name="FingerprintId" Type="Int32" Nullable="true" />
+          <Property Type="Boolean" Name="RegisteredCurrentTerm" Nullable="false" DefaultValue="false" />
         </EntityType>
         <Association Name="FK_MemberBadges_Adult">
           <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="0..1" />
@@ -950,6 +952,7 @@
                 <ScalarProperty Name="GithubLogin" ColumnName="GithubLogin" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
                 <ScalarProperty Name="FingerprintId" ColumnName="FingerprintId" />
+                <ScalarProperty Name="RegisteredCurrentTerm" ColumnName="RegisteredCurrentTerm"  />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
