@@ -172,7 +172,7 @@ namespace CoderDojo.Controllers
 
             // Is this a member, or a team
             Member member = db.Members.FirstOrDefault(m => m.Id == gid);
-            Team team = null;
+            Team team = null;  
             if (member == null)
             {
                 team = db.Teams.FirstOrDefault(t => t.Id == gid);
