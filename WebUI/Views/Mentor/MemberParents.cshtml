@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#ParentSelect").on("click", "a", function (e) {
+        $("#ParentSelect").off("click").on("click", "a", function (e) {
             e.preventDefault();
             var parentId = $(this).data("adultid");
             var memberId = '@(member.Id.ToString("N"))';
@@ -85,33 +85,35 @@
             });
         });
 
-        $("#ParentList").on("click", "a.Delete", function (e) {
+        $("#ParentList").off("click").on("click", "a.Delete", function (e) {
             e.preventDefault();
             var relationshipId = $(this).closest("li").data("relationshipid");
             $("#DeleteRelationshipPopup").data("relationshipid", relationshipId);
             $("#DeleteRelationshipPopup").popup("open");
+            setTimeout(function () {
+                $("a#ConfirmDelete").off("click").on("click", function (e) {
+                    var relationshipId = $("#DeleteRelationshipPopup").data("relationshipid");
+                    $.ajax("/Mentor/DeleteRelationship", {
+                        type: "POST",
+                        data: {
+                            id: relationshipId
+                        }
+                    })
+                        .then(function (response) {
+                            $("#ParentList li[data-relationshipid=" + relationshipId + "]").fadeOut(200, function () {
+                                $(this).remove();
+                                $("ul#ParentList").listview("refresh").trigger("updatelayout");
+                            });
+                        });
+                });
+
+            }, 500);
         });
 
-        $("#ParentList").on("click", "a.View", function (e) {
+        $("#ParentList").off("click").on("click", "a.View", function (e) {
             e.preventDefault();
             var adultId = $(this).closest("li").data("adultid");
             window.location = "/Mentor/Adult/" + adultId;
-        });
-
-        $("body").on("click", "a#ConfirmDelete", function (e) {
-            var relationshipId = $("#DeleteRelationshipPopup").data("relationshipid");
-            $.ajax("/Mentor/DeleteRelationship", {
-                type: "POST",
-                data: {
-                    id: relationshipId
-                }
-            })
-            .then(function (response) {
-                $("#ParentList li[data-relationshipid=" + relationshipId + "]").fadeOut(200, function () {
-                    $(this).remove();
-                    $("ul#ParentList").listview("refresh").trigger("updatelayout");
-                });
-            });
         });
 
         $("#ParentSelect").on("listviewbeforefilter", function (e, data) {

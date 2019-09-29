@@ -87,13 +87,13 @@
 
 <script type="text/javascript">
     $(function () {
-        $("input").on("change", function () {
+        $("input").off("change").on("change", function () {
             $(".ErrorMessage").fadeOut();
         });
 
         $("#Username,#Password").val("");
 
-        $("#Username,#Password").on("keypress", function (e) {
+        $("#Username,#Password").off("keypress").on("keypress", function (e) {
             if (e.which == 13) {
                 $("#SignInButton").trigger("click");
             }
@@ -107,7 +107,7 @@
             });
         }, 1000);
 
-        $("#SignInButton").on("click", function (e) {
+        $("#SignInButton").off("click").on("click", function (e) {
             e.preventDefault();
             $.ajax("SignIn", {
                 type: "POST",

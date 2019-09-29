@@ -55,7 +55,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#SaveButton").on("click", function (e) {
+        $("#SaveButton").off("click").on("click", function (e) {
             e.preventDefault();
             if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
                 alert("Password and Confirm Password do not match.");

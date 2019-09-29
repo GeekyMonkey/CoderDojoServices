@@ -130,7 +130,7 @@
     var minMessageLength = 5;
 
     $(function () {
-        $(".BadgeApplyButton").on("click", function (e) {
+        $(".BadgeApplyButton").off("click").on("click", function (e) {
             e.preventDefault();
             var applicationContainer = $(this).closest(".BadgeHeader");
             var message = applicationContainer.find(".BadgeApplicationMessage").val();
@@ -151,7 +151,7 @@
             }
         });
 
-        $(".BadgeApplicationMessage").on("keyup change", function () {
+        $(".BadgeApplicationMessage").off("keyup change").on("keyup change", function () {
             var applicationContainer = $(this).closest(".BadgeHeader");
             setTimeout(function () {
                 var message = applicationContainer.find(".BadgeApplicationMessage").val();

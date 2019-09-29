@@ -43,7 +43,7 @@
 
 <script typeof="text/javascript">
     $(function () {
-        $("body").on("click", "#PrintButton", function (e) {
+        $("#PrintButton").off("click").on("click", function (e) {
             e.preventDefault();
             window.openNewWindow("/PassportMentor/");
         });

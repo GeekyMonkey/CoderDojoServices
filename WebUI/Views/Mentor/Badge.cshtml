@@ -67,22 +67,23 @@
 
 <script type="text/javascript">
     $(function () {
-        $("a#Delete").on("click", function (e) {
+        $("a#Delete").off("click").on("click", function (e) {
             e.preventDefault();
             $("#DeleteConfirmPopup").popup("open");
-        });
-
-        $("body").on("click", "a#ConfirmDelete", function (e) {
-            var id = $("#Id").val();
-            $.ajax("/Mentor/BadgeDelete", {
-                type: "POST",
-                data: {
-                    id: id
-                }
-            })
-            .then(function (response) {
-                window.location = "/Mentor/Badges";
-            });
+            setTimeout(function () {
+                $("a#ConfirmDelete").off("click").on("click", function (e) {
+                    var id = $("#Id").val();
+                    $.ajax("/Mentor/BadgeDelete", {
+                        type: "POST",
+                        data: {
+                            id: id
+                        }
+                    })
+                        .then(function (response) {
+                            window.location = "/Mentor/Badges";
+                        });
+                });
+            }, 500);
         });
     });
 </script>

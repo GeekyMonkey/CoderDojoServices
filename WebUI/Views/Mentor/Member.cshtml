@@ -137,21 +137,22 @@
 
 
 <script type="text/javascript">
-    $(function () {
-        $(".Controller_Mentor.Action_Member #ScratchButton").off().on("click", function (e) {
-            e.preventDefault();
-            openNewWindow("http://scratch.mit.edu/users/" + $(".Controller_Mentor.Action_Member #ScratchName").val());
-        });
-        $(".Controller_Mentor.Action_Member #XboxButton").off().on("click", function (e) {
-            e.preventDefault();
-            openNewWindow("https://live.xbox.com/en-IE/Profile?gamertag=" + $(".Controller_Mentor.Action_Member #XboxGamertag").val());
-        });
-        $(".Controller_Mentor.Action_Member #GithubButton").off().on("click", function (e) {
-            e.preventDefault();
-            openNewWindow("https://github.com/" + $(".Controller_Mentor.Action_Member #GithubLogin").val() + "/");
-        });
+    setTimeout(function () {
+        $(function () {
+            $(".Controller_Mentor.Action_Member #ScratchButton").off().on("click", function (e) {
+                e.preventDefault();
+                openNewWindow("http://scratch.mit.edu/users/" + $(".Controller_Mentor.Action_Member #ScratchName").val());
+            });
+            $(".Controller_Mentor.Action_Member #XboxButton").off().on("click", function (e) {
+                e.preventDefault();
+                openNewWindow("https://live.xbox.com/en-IE/Profile?gamertag=" + $(".Controller_Mentor.Action_Member #XboxGamertag").val());
+            });
+            $(".Controller_Mentor.Action_Member #GithubButton").off().on("click", function (e) {
+                e.preventDefault();
+                openNewWindow("https://github.com/" + $(".Controller_Mentor.Action_Member #GithubLogin").val() + "/");
+            });
         @*
-        $("#GenerateFingerprintIdButton").on("click", function (e) {
+        $("#GenerateFingerprintIdButton").off("click").on("click", function (e) {
             e.preventDefault();
             $.ajax("/Mentor/MemberGenerateFingerprintId", {
                 type: "POST",
@@ -165,25 +166,27 @@
             });
         });
         *@
-        $("#SaveButton").on("click", function (e) {
-            e.preventDefault();
-            if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
-                alert("Password and Confirm Password do not match.");
-            } else {
-                var form = $(this).closest("div.pagerole").find("form");
-                if (form.length == 0) {
-                    console.log("Form save clicked, but form not found");
+            $("#SaveButton").off().on("click", function (e) {
+                e.preventDefault();
+                if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
+                    alert("Password and Confirm Password do not match.");
+                } else {
+                    var form = $(this).closest("div.pagerole").find("form");
+                    if (form.length == 0) {
+                        console.log("Form save clicked, but form not found");
+                    }
+                    form.submit();
                 }
-                form.submit();
-            }
+            });
+            $("#PrintButton").off().on("click", function (e) {
+                e.preventDefault();
+                console.log("print id @(member.Id.ToString("N"))");
+                window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
+            });
+            $("#BeltCertificate").off().on("click", function (e) {
+                e.preventDefault();
+                window.openNewWindow("/BeltCertificate/@(member.Id.ToString("N"))");
+            });
         });
-        $("body").on("click", "#PrintButton", function (e) {
-            e.preventDefault();
-            window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
-        });
-        $("body").on("click", "#BeltCertificate", function (e) {
-            e.preventDefault();
-            window.openNewWindow("/BeltCertificate/@(member.Id.ToString("N"))");
-        });
-    });
+    }, 100);
 </script>

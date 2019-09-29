@@ -61,25 +61,27 @@
 
 <script type="text/javascript">
     $(function () {
-        $("a#Delete").on("click", function (e) {
+        $("a#Delete").off("click").on("click", function (e) {
             e.preventDefault();
             $("#DeleteConfirmPopup").popup("open");
+            setTimeout(function () {
+
+                $("a#ConfirmDelete").off("click").on("click", function (e) {
+                    var id = $("#Id").val();
+                    $.ajax("/Mentor/BeltDelete", {
+                        type: "POST",
+                        data: {
+                            id: id
+                        }
+                    })
+                        .then(function (response) {
+                            window.location = "/Mentor/Belts";
+                        });
+                });
+            }, 500);
         });
 
-        $("body").on("click", "a#ConfirmDelete", function (e) {
-            var id = $("#Id").val();
-            $.ajax("/Mentor/BeltDelete", {
-                type: "POST",
-                data: {
-                    id: id
-                }
-            })
-            .then(function (response) {
-                window.location = "/Mentor/Belts";
-            });
-        });
-
-        $("input#HexCode").on("change", function () {
+        $("input#HexCode").off("change").on("change", function () {
             updateHexColor();
         });
     });

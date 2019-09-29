@@ -73,25 +73,26 @@
 
 <script type="text/javascript">
     $(function () {
-        $("a#Delete").on("click", function (e) {
+        $("a#Delete").off("click").on("click", function (e) {
             e.preventDefault();
             $("#DeleteConfirmPopup").popup("open");
+            setTimeout(function () {
+                $("a#ConfirmDelete").off("click").on("click", function (e) {
+                    var id = $("#Id").val();
+                    $.ajax("/Mentor/TeamDelete", {
+                        type: "POST",
+                        data: {
+                            id: id
+                        }
+                    })
+                        .then(function (response) {
+                            window.location = "/Mentor/Teams";
+                        });
+                });
+            }, 500);
         });
 
-        $("body").on("click", "a#ConfirmDelete", function (e) {
-            var id = $("#Id").val();
-            $.ajax("/Mentor/TeamDelete", {
-                type: "POST",
-                data: {
-                    id: id
-                }
-            })
-            .then(function (response) {
-                window.location = "/Mentor/Teams";
-            });
-        });
-
-        $("input#HexCode").on("change", function () {
+        $("input#HexCode").off("change").on("change", function () {
             updateHexColor();
         });
     });
@@ -106,12 +107,12 @@
         updateHexColor();
     }, 1000);
 
-    $("#PrintButton").on("click", function (e) {
+    $("#PrintButton").off("click").on("click", function (e) {
         e.preventDefault();
         window.openNewWindow("/Passport/@(team.Id.ToString("N"))");
     });
 
-    $("#PrintTeamCardButton").on("click", function (e) {
+    $("#PrintTeamCardButton").off("click").on("click", function (e) {
         e.preventDefault();
         window.openNewWindow("/Home/TeamCard/@(team.Id.ToString("N"))");
     });

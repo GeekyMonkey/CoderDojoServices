@@ -157,7 +157,7 @@
             $(".ApplicationPending h3").first().trigger("click");
         }, 1000);
 
-        $(".ApproveBadge,.RejectBadge").on("click", function (e) {
+        $(".ApproveBadge,.RejectBadge").off("click").on("click", function (e) {
             e.preventDefault();
             var applicationContainer = $(this).closest(".ApplicationPending");
             var message = applicationContainer.find(".ApproveRejectMessage").val();
@@ -175,7 +175,7 @@
             }
         });
 
-        $(".UndoBadge").on("click", function (e) {
+        $(".UndoBadge")off("click").on("click", function (e) {
             e.preventDefault();
             $.ajax($(this).attr("href"), {
                 type: "POST",
@@ -188,7 +188,7 @@
             });
         });
 
-        $(".ApproveRejectMessage").on("keyup change", function () {
+        $(".ApproveRejectMessage").off("keyup change").on("keyup change", function () {
             var applicationContainer = $(this).closest(".ApplicationPending");
             setTimeout(function () {
                 var message = applicationContainer.find(".ApproveRejectMessage").val();

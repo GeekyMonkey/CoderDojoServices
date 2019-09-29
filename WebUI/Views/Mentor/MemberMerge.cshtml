@@ -141,7 +141,7 @@
         });
 
         // Other member selected
-        $("#MemberSelect").on("click", "a", function (e) {
+        $("#MemberSelect").off("click").on("click", "a", function (e) {
             e.preventDefault();
 
             $(".MergeTable").addClass("MemberSelected");
@@ -158,7 +158,7 @@
         });
 
         // Merge button clicked
-        $("#MergeButton").on("click", function (e) {
+        $("#MergeButton").off("click").on("click", function (e) {
 
             $.ajax("/Mentor/MergeMembers", {
                 type: "POST",

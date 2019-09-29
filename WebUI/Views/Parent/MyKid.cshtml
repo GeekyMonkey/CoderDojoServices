@@ -59,7 +59,7 @@
 <script type="text/javascript">
     $(function () {
 
-        $("#PrintButton").on("click", function (e) {
+        $("#PrintButton").off("click").on("click", function (e) {
             e.preventDefault();
             window.openNewWindow("/Passport/@(member.Id.ToString("N"))");
         });

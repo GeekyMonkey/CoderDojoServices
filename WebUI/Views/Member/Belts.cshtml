@@ -107,7 +107,7 @@
             });
         }, 1000);
 
-        $("#BeltApplyButton").on("click", function (e) {
+        $("#BeltApplyButton").off("click").on("click", function (e) {
             e.preventDefault();
             var message = $("#BeltApplicationMessage").val();
             if (message.length >= minMessageLength) {
@@ -127,7 +127,7 @@
             }
         });
 
-        $("#BeltApplicationMessage").on("keyup change", function () {
+        $("#BeltApplicationMessage").off("keyup change").on("keyup change", function () {
             setTimeout(function () {
                 var message = $("#BeltApplicationMessage").val();
                 $('a#ApproveBelt').button();

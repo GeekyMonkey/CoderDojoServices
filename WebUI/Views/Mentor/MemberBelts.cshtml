@@ -123,7 +123,7 @@
             $(".ApplicationPending h3").first().trigger("click");
         }, 1000);
 
-        $("#ApproveBelt,#RejectBelt").on("click", function (e) {
+        $("#ApproveBelt,#RejectBelt").off("click").on("click", function (e) {
             e.preventDefault();
             var message = $("#ApproveRejectMessage").val();
             if (message.length) {
@@ -140,7 +140,7 @@
             }
         });
 
-        $(".UndoBelt").on("click", function (e) {
+        $(".UndoBelt").off("click").on("click", function (e) {
             e.preventDefault();
             $.ajax($(this).attr("href"), {
                 type: "POST",
@@ -153,7 +153,7 @@
             });
         });
 
-        $("#ApproveRejectMessage").on("keyup change", function () {
+        $("#ApproveRejectMessage").off("keyup change").on("keyup change", function () {
             var applicationContainer = $(this).closest(".ApplicationPending");
             setTimeout(function () {
                 var message = applicationContainer.find("#ApproveRejectMessage").val();

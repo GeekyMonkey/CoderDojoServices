@@ -80,7 +80,7 @@ function initAttendancePage() {
         }
     });
 
-    $("#AttendanceDateSelect").on("change", function (e) {
+    $("#AttendanceDateSelect").off("change").on("change", function (e) {
         var dateSelected = $("#AttendanceDateSelect").val();
         window.location = "/Mentor/Attendance?attendanceDate=" + dateSelected;
     });
@@ -122,7 +122,7 @@ function initAttendancePage() {
             $("#MemberMessages").html(memberMessage);
             $("#WelcomeDetailsButton").attr("href", "/Mentor/Member/" + memberId + "?PreviousPage=Attendance");
             $("#MemberWelcomeDialog").popup("open"/*, { positionTo: "#P" + memberId }*/)
-            $("#MemberWelcomeDialog").on("click", ".CloseButton", function () {
+            $("#MemberWelcomeDialog").off("click").on("click", ".CloseButton", function () {
                 $("#MemberWelcomeDialog").popup("close");
             });
         }

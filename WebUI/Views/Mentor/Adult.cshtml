@@ -156,7 +156,7 @@
             e.preventDefault();
             openNewWindow("https://github.com/" + $(".Controller_Mentor.Action_Adult #GithubLogin").val() + "/");
         });
-        $("#SaveButton").on("click", function (e) {
+        $("#SaveButton").off("click").on("click", function (e) {
             e.preventDefault();
             if ($("#NewPassword").val() != $("#ConfirmPassword").val()) {
                 alert("Password and Confirm Password do not match.");
@@ -169,7 +169,7 @@
             }
         });
 
-        $("body").on("click", "#PrintButton", function (e) {
+        $("#PrintButton").off("click").on("click", function (e) {
             e.preventDefault();
             window.openNewWindow("/PassportMentor/@(adult.Id.ToString("N"))");
         });
