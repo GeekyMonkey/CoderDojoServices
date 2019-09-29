@@ -268,7 +268,7 @@ namespace CoderDojo.Views
             string memberMessage = "";
             if (present)
             {
-                memberMessage = member.GetLoginMessage();
+                memberMessage = member.GetLoginMessage(true);
             }
             context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
         }
@@ -284,7 +284,7 @@ namespace CoderDojo.Views
             string memberMessage = "";
             if (present)
             {
-                memberMessage = adult.GetLoginMessage();
+                memberMessage = adult.GetLoginMessage(true);
             }
             context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adultId.ToString("N"), adult.FullName, "Mentors", present.ToString().ToLower(), sessionCount, adultAttendanceCount, memberMessage, adult.ImageUrl);
         }

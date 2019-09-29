@@ -46,7 +46,7 @@ namespace CoderDojo
             }
         }
 
-        public string GetLoginMessage()
+        public string GetLoginMessage(bool isHtml)
         {
             List<string> messages = new List<string>();
             Int32 sessionCount = this.MemberAttendances.Count();
@@ -54,11 +54,25 @@ namespace CoderDojo
             // Welcome message
             if (LoginDatePrevious == null)
             {
-                messages.Add("<h3>Welcome " + FirstName + "</h3>");
+                if (isHtml)
+                {
+                    messages.Add("<h3>Welcome " + FirstName + "</h3>");
+                }
+                else
+                {
+                    messages.Add("Welcome " + FirstName + "");
+                }
             }
             else
             {
-                messages.Add("<h3>Welcome back " + FirstName + ".</h3>");
+                if (isHtml)
+                {
+                    messages.Add("<h3>Welcome back " + FirstName + "</h3>");
+                }
+                else
+                {
+                    messages.Add("Welcome back " + FirstName + "");
+                }
             }
 
             // Team 
@@ -85,12 +99,23 @@ namespace CoderDojo
                            select mb;
             foreach (var mb in newBelts)
             {
-                string beltMessage = "<p><strong>You have been awarded the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt!</strong>";
-                if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                string beltMessage;
+                if (isHtml)
                 {
-                    beltMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
+                    beltMessage = "<p><strong>You have been awarded the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt!</strong>";
+                    if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                    {
+                        beltMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
+                    }
+                    beltMessage += "</p>";
+                } else
+                {
+                    beltMessage = "You have been awarded the " + mb.Belt.Color + " belt!";
+                    if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                    {
+                        beltMessage += "\r\n  " + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "";
+                    }
                 }
-                beltMessage += "</p>";
                 messages.Add(beltMessage);
             }
 
@@ -101,12 +126,23 @@ namespace CoderDojo
                            select mb;
             foreach (var mb in rejectedBelts)
             {
-                string beltMessage = "<p><strong>Your application for the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt has been rejected. You can apply again any time.</strong>";
-                if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                string beltMessage;
+                if (isHtml)
                 {
-                    beltMessage += "<br /><em>" + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName + "</em>";
+                    beltMessage = "<p><strong>Your application for the <span style='color:" + mb.Belt.HexCode + ";'>" + mb.Belt.Color + "</span> belt has been rejected. You can apply again any time.</strong>";
+                    if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                    {
+                        beltMessage += "<br /><em>" + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName + "</em>";
+                    }
+                    beltMessage += "</p>";
+                } else
+                {
+                    beltMessage = "Your application for the " + mb.Belt.Color + " belt has been rejected. You can apply again any time.";
+                    if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                    {
+                        beltMessage += "\r\n  " + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName;
+                    }
                 }
-                beltMessage += "</p>";
                 messages.Add(beltMessage);
             }
 
@@ -117,12 +153,23 @@ namespace CoderDojo
                            select mb;
             foreach (var mb in newBadges)
             {
-                string badgeMessage = "<p><strong>You have been awarded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge.</strong>";
-                if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                string badgeMessage;
+                if (isHtml)
                 {
-                    badgeMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
+                    badgeMessage = "<p><strong>You have been awarded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge.</strong>";
+                    if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                    {
+                        badgeMessage += "<br /><em>" + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName + "</em>";
+                    }
+                    badgeMessage += "</p>";
+                } else
+                {
+                    badgeMessage = "You have been awarded the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge.";
+                    if (!string.IsNullOrEmpty(mb.AwardedNotes))
+                    {
+                        badgeMessage += "\r\n  " + mb.AwardedNotes + " - " + mb.AwardedByAdult.FullName;
+                    }
                 }
-                badgeMessage += "</p>";
                 messages.Add(badgeMessage);
             }
 
@@ -138,28 +185,45 @@ namespace CoderDojo
                             select mb;
             foreach (var mb in rejectedBadges)
             {
-                string badgeMessage = "<p><strong>Your application for the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge has been rejected. You can apply again any time.</strong>";
-                if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                string badgeMessage;
+                if (isHtml)
                 {
-                    badgeMessage += "<br /><em>" + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName + "</em>";
+                    badgeMessage = "<p><strong>Your application for the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge has been rejected. You can apply again any time.</strong>";
+                    if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                    {
+                        badgeMessage += "<br /><em>" + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName + "</em>";
+                    }
+                    badgeMessage += "</p>";
+                } else
+                {
+                    badgeMessage = "Your application for the " + mb.Badge.BadgeCategory.CategoryName + " - " + mb.Badge.Achievement + " badge has been rejected. You can apply again any time.";
+                    if (!string.IsNullOrEmpty(mb.RejectedNotes))
+                    {
+                        badgeMessage += "\r\n  " + mb.RejectedNotes + " - " + mb.RejectedByAdult.FullName;
+                    }
                 }
-                badgeMessage += "</p>";
                 messages.Add(badgeMessage);
             }
 
-            string html = "";
-            foreach (string message in messages)
+            if (isHtml)
             {
-                if (message.StartsWith("<"))
+                string html = "";
+                foreach (string message in messages)
                 {
-                    html += message;
+                    if (message.StartsWith("<"))
+                    {
+                        html += message;
+                    }
+                    else
+                    {
+                        html += "<p>" + message + "</p>";
+                    }
                 }
-                else
-                {
-                    html += "<p>" + message + "</p>";
-                }
+                return html;
+            } else
+            {
+                return string.Join("\r\n", messages);
             }
-            return html;
         }
 
         public string BeltColorHex

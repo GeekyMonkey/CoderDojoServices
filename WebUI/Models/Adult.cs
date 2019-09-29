@@ -27,7 +27,7 @@ namespace CoderDojo
             set;
         }
 
-        public string GetLoginMessage()
+        public string GetLoginMessage(bool isHtml)
         {
             List<string> messages = new List<string>();
             Int32 sessionCount = this.AdultAttendances.Count();
@@ -35,11 +35,23 @@ namespace CoderDojo
             // Welcome message
             if (LoginDatePrevious == null)
             {
-                messages.Add("<h3>Welcome " + FirstName + "</h3>");
+                if (isHtml)
+                {
+                    messages.Add("<h3>Welcome " + FirstName + "</h3>");
+                } else
+                {
+                    messages.Add("Welcome " + FirstName);
+                }
             }
             else
             {
-                messages.Add("<h3>Welcome back " + FirstName + ".</h3>");
+                if (isHtml)
+                {
+                    messages.Add("<h3>Welcome back " + FirstName + "</h3>");
+                } else
+                {
+                    messages.Add("Welcome back " + FirstName + "");
+                }
             }
 
             // Team 
@@ -52,20 +64,25 @@ namespace CoderDojo
             }
             messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " CoderDojo session.");
 
-            string html = "";
-            foreach (string message in messages)
+            if (isHtml)
             {
-                if (message.StartsWith("<"))
+                string html = "";
+                foreach (string message in messages)
                 {
-                    html += message;
+                    if (message.StartsWith("<"))
+                    {
+                        html += message;
+                    }
+                    else
+                    {
+                        html += "<p>" + message + "</p>";
+                    }
                 }
-                else
-                {
-                    html += "<p>" + message + "</p>";
-                }
+                return html;
+            } else
+            {
+                return string.Join("\r\n", messages);
             }
-            return html;
         }
-
     }
 }

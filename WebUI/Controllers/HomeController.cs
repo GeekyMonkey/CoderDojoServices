@@ -371,7 +371,7 @@ namespace CoderDojo.Controllers
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
             context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
-            string message = member.GetLoginMessage();
+            string message = member.GetLoginMessage(true);
 
             return Json(new {
                 memberId = member.Id.ToString("N"),
@@ -392,7 +392,7 @@ namespace CoderDojo.Controllers
             // Notify other members looking at this screen
             IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
             context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adult.Id.ToString("N"), adult.FullName, "Mentors", true.ToString().ToLower(), sessionCount, adultAttendanceCount, "", adult.ImageUrl);
-            string message = adult.GetLoginMessage();
+            string message = adult.GetLoginMessage(true);
 
             return Json(new
             {

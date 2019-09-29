@@ -137,7 +137,7 @@ namespace CoderDojo.Controllers.Api
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
                     context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
                 }
-                string message = member.GetLoginMessage();
+                string message = member.GetLoginMessage(false);
 
                 var responseObject = new SignInResponse
                 {
@@ -176,7 +176,7 @@ namespace CoderDojo.Controllers.Api
                         IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
                         context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adult.Id.ToString("N"), adult.FullName, (Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", adult.ImageUrl);
                     }
-                    string message = adult.GetLoginMessage();
+                    string message = adult.GetLoginMessage(false);
 
                     var responseObject = new SignInResponse
                     {
