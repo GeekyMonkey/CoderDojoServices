@@ -76,7 +76,7 @@ namespace CoderDojo
             {
                 messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("dd-MMM-yyyy HH:mm"));
             }
-            messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " Coder Dojo session.");
+            messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " CoderDojo session.");
 
             // Find belts awarded
             var newBelts = from mb in this.MemberBelts

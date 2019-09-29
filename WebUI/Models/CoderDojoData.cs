@@ -23,7 +23,7 @@ namespace CoderDojo
         }
 
         /// <summary>
-        /// Get a list of all of the coder dojo sessions that have been held
+        /// Get a list of all of the CoderDojo sessions that have been held
         /// </summary>
         /// <returns></returns>
         public IList<DateTime> GetSessionDates(DateTime? DateToInclude)

@@ -44,7 +44,7 @@ namespace CoderDojo
             {
                 messages.Add("Your last login was at: " + LoginDatePrevious.Value.ToString("dd-MMM-yyyy HH:mm"));
             }
-            messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " Coder Dojo session.");
+            messages.Add("This is your " + sessionCount + sessionCount.IntegerSuffix() + " CoderDojo session.");
 
             string html = "";
             foreach (string message in messages)
