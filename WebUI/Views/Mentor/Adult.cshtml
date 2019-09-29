@@ -74,12 +74,23 @@
             <h3>Memberships</h3>
             <div data-role="collapsible" data-content-theme="a">
                 <h3>Coder Dojo</h3>
-                <label for="Login">Login</label>
-                @Html.TextBoxFor(m => m.Login)
-                <label for="NewPassword">New Password</label>
-                @Html.PasswordFor(m => m.NewPassword)
-                <label for="ConfirmPassword">Confirm Password</label>
-                <input type="password" id="ConfirmPassword" />
+                <div data-role="fieldcontain">
+                    <label for="Login">Login</label>
+                    @Html.TextBoxFor(m => m.Login)
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="NewPassword">New Password</label>
+                    @Html.PasswordFor(m => m.NewPassword)
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input type="password" id="ConfirmPassword" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="FingerprintId">Badge Number</label>
+                    @Html.TextBoxFor(m => m.FingerprintId)
+                    @*<a data-role="button" data-icon="check" id="GenerateFingerprintIdButton">Generate Fingerprint ID</a>*@
+                </div>
             </div>
             <div data-role="collapsible">
                 <h3>Scratch</h3>

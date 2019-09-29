@@ -25,6 +25,7 @@
           <Property Name="ScratchName" Type="nvarchar" MaxLength="50" />
           <Property Name="LoginDate" Type="datetime" />
           <Property Name="LoginDatePrevious" Type="datetime" />
+          <Property Name="FingerprintId" Type="int" />
         </EntityType>
         <EntityType Name="AdultAttendance">
           <Key>
@@ -485,6 +486,7 @@
           <Property Type="DateTime" Name="LoginDate" Precision="3" />
           <Property Type="DateTime" Name="LoginDatePrevious" Precision="3" />
           <NavigationProperty Name="AdultAttendances" Relationship="CoderDojo.AdultAdultAttendance" FromRole="Adult" ToRole="AdultAttendance" />
+          <Property Name="FingerprintId" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -852,6 +854,7 @@
                 <ScalarProperty Name="XboxGamertag" ColumnName="XboxGamertag" />
                 <ScalarProperty Name="ScratchName" ColumnName="ScratchName" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted"  />
+                <ScalarProperty Name="FingerprintId" ColumnName="FingerprintId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

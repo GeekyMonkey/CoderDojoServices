@@ -229,7 +229,7 @@ namespace CoderDojo.Views
         private void DoMemberAttendanceChange(Guid memberId, bool present, DateTime sessionDate)
         {
             int sessionCount = db.MemberAttendanceSet(memberId, present, sessionDate);
-            int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
+            int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate) + db.AdultAttendances.Count(aa => aa.Date == sessionDate);
             Member member = db.Members.FirstOrDefault(m => m.Id == memberId);
 
             // Notify other members looking at this screen
@@ -407,6 +407,7 @@ namespace CoderDojo.Views
                 adult.XboxGamertag = TrimNullableString(adultChanges.XboxGamertag);
                 adult.ScratchName = TrimNullableString(adultChanges.ScratchName);
                 adult.Login = TrimNullableString(adultChanges.Login);
+                adult.FingerprintId = adultChanges.FingerprintId;
 
                 // Password change
                 if (string.IsNullOrEmpty(adultChanges.NewPassword) == false)
@@ -661,6 +662,7 @@ namespace CoderDojo.Views
             return View("Member", member);
         }
 
+        /*
         [HttpPost]
         public ActionResult MemberGenerateFingerprintId(Guid memberId)
         {
@@ -680,6 +682,7 @@ namespace CoderDojo.Views
                 fingerprintId = member.FingerprintId.ToString()
             });
         }
+        */
 
         [HttpPost]
         public ActionResult MemberSave(Member memberChanges, string previousPage)

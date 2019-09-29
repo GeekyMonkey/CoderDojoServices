@@ -15,24 +15,55 @@ namespace CoderDojo.Controllers.Api
     {
         private CoderDojoData db = new CoderDojoData();
 
+        /*
+        /// <summary>
+        /// Get the latest added fingerprint ?
+        /// </summary>
+        /// <returns></returns>
         [ActionName("getnextfingerprintid")]
         [HttpGet]
         public HttpResponseMessage GetNextFingerprintIt()
         {
-            var highestFingerprintMember = db.Members
+            NextFingerprintResponse responseObject = null;
+
+            var highestMemberFingerprintMember = db.Members
                 .Where(m => m.FingerprintId != null)
                 .OrderByDescending(m => m.FingerprintId)
                 .FirstOrDefault();
 
-            var responseObject = new NextFingerprintResponse
+            var highestAdultFingerprintMember = db.Members
+                .Where(a => a.FingerprintId != null)
+                .OrderByDescending(a => a.FingerprintId)
+                .FirstOrDefault();
+
+            if (highestAdultFingerprintMember == null && highestAdultFingerprintMember == null)
             {
-                fingerprintId = highestFingerprintMember.FingerprintId.Value,
-                memberName = highestFingerprintMember.MemberName
-            };
+                responseObject = new NextFingerprintResponse
+                {
+                    fingerprintId = 0,
+                    memberName = ""
+                };
+            } else if (highestAdultFingerprintMember != null && (highestAdultFingerprintMember == null || highestAdultFingerprintMember.FingerprintId < highestMemberFingerprintMember.FingerprintId ))
+            {
+                responseObject = new NextFingerprintResponse
+                {
+                    fingerprintId = highestMemberFingerprintMember.FingerprintId.Value,
+                    memberName = highestMemberFingerprintMember.MemberName
+                };
+            }
+            else if (highestAdultFingerprintMember != null && (highestMemberFingerprintMember == null || highestMemberFingerprintMember.FingerprintId < highestAdultFingerprintMember.FingerprintId))
+            {
+                responseObject = new NextFingerprintResponse
+                {
+                    fingerprintId = highestAdultFingerprintMember.FingerprintId.Value,
+                    memberName = highestAdultFingerprintMember.MemberName
+                };
+            }
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
             return response;
         }
+        */
 
         // GET api/Member
         public IEnumerable<Member> GetMembers()

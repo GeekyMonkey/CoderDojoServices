@@ -100,14 +100,24 @@ namespace CoderDojo.Controllers.Api
             return Request.CreateResponse(HttpStatusCode.OK, memberattendance);
         }
 
+        /// <summary>
+        /// Sign in by fingerprint or rfid tag for members or adults
+        /// </summary>
+        /// <param name="id">Fingerprint/RFID number</param>
+        /// <param name="testing">If true, just respond without actually recording an attendance record</param>
+        /// <returns>Login response</returns>
         // POST api/MemberAttendance/Fingerprint?id=3&testing=false
         [ActionName("fingerprint")]
         [HttpPost]
-        public HttpResponseMessage GetFingerprint(int id, bool testing = false)
+        public HttpResponseMessage FingerprintSignIn(int id, bool testing = false)
         {
+            bool found = false;
+
+            // Try member first
             var member = db.Members.FirstOrDefault(m => m.FingerprintId == id);
             if (member != null)
             {
+                found = true;
                 member.SetLoginDate();
                 db.SaveChanges();
 
@@ -122,7 +132,7 @@ namespace CoderDojo.Controllers.Api
                 {
                     // Do a real sign-in
                     sessionCount = db.MemberAttendanceSet(member.Id, true, sessionDate);
-                    int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate);
+                    int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate) + db.AdultAttendances.Count(aa => aa.Date == sessionDate);
                     // Notify other members looking at this screen
                     IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
                     context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), member.Id.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", member.ImageUrl);
@@ -140,10 +150,49 @@ namespace CoderDojo.Controllers.Api
                 HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
                 return response;
             }
-            else
+            if (!found)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                // Search for adult fingerprint match
+                var adult = db.Adults.FirstOrDefault(a => a.FingerprintId == id);
+                if (adult != null)
+                {
+                    found = true;
+                    adult.SetLoginDate();
+                    db.SaveChanges();
+
+                    DateTime sessionDate = DateTime.Today;
+                    int sessionCount;
+                    if (testing)
+                    {
+                        // Testing fingerprint feature only - don't do actual sign-in
+                        sessionCount = db.AdultAttendances.Count(aa => aa.AdultId == adult.Id);
+                    }
+                    else
+                    {
+                        // Do a real sign-in
+                        sessionCount = db.AdultAttendanceSet(adult.Id, true, sessionDate);
+                        int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate) + db.AdultAttendances.Count(aa => aa.Date == sessionDate);
+                        // Notify other members looking at this screen
+                        IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+                        context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adult.Id.ToString("N"), adult.FullName, (Guid.Empty).ToString("N"), true.ToString().ToLower(), sessionCount, dojoAttendanceCount, "", adult.ImageUrl);
+                    }
+                    string message = adult.GetLoginMessage();
+
+                    var responseObject = new SignInResponse
+                    {
+                        memberId = adult.Id.ToString("N"),
+                        memberName = adult.FullName,
+                        memberSessionCount = sessionCount,
+                        memberMessage = message
+                    };
+
+                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseObject);
+                    return response;
+                }
             }
+
+            // Neither member nor adult found
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>

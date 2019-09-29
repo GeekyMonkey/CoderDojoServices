@@ -37,7 +37,8 @@ namespace CoderDojo
         public bool GardaVetted { get; set; }
         public Nullable<System.DateTime> LoginDate { get; set; }
         public Nullable<System.DateTime> LoginDatePrevious { get; set; }
-    
+        public Nullable<int> FingerprintId { get; set; }
+
         public virtual ICollection<MemberParent> MemberParents { get; set; }
         public virtual ICollection<AdultAttendance> AdultAttendances { get; set; }
     }
