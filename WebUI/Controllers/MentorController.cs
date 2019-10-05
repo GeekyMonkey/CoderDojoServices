@@ -444,25 +444,30 @@ namespace CoderDojo.Views
                 adult.FingerprintId = adultChanges.FingerprintId;
 
                 // Badge Categories
-                List<AdultBadgeCategory> adultBadgeCategoriesToRemove = new List<AdultBadgeCategory>();
-                foreach(var bc in adult.BadgeCategories)
+                if (adultChanges.BadgeCategoriesSelected != null)
                 {
-                    if (!adultChanges.BadgeCategoriesSelected.Contains(bc.BadgeCategoryId))
+                    List<AdultBadgeCategory> adultBadgeCategoriesToRemove = new List<AdultBadgeCategory>();
+                    foreach (var bc in adult.BadgeCategories)
                     {
-                        adultBadgeCategoriesToRemove.Add(bc);
+                        if (!adultChanges.BadgeCategoriesSelected.Contains(bc.BadgeCategoryId))
+                        {
+                            adultBadgeCategoriesToRemove.Add(bc);
+                        }
                     }
-                }
-                foreach (var abcToRemove in adultBadgeCategoriesToRemove) {
-                    db.AdultBadgeCategories.Remove(abcToRemove);
-                }
-                foreach(Guid bcs in adultChanges.BadgeCategoriesSelected)
-                {
-                    if (!adult.BadgeCategories.Any(abc => abc.BadgeCategoryId == bcs))
+                    foreach (var abcToRemove in adultBadgeCategoriesToRemove)
                     {
-                        adult.BadgeCategories.Add(new AdultBadgeCategory {
-                            AdultId = adult.Id,
-                            BadgeCategoryId = bcs
-                        });
+                        db.AdultBadgeCategories.Remove(abcToRemove);
+                    }
+                    foreach (Guid bcs in adultChanges.BadgeCategoriesSelected)
+                    {
+                        if (!adult.BadgeCategories.Any(abc => abc.BadgeCategoryId == bcs))
+                        {
+                            adult.BadgeCategories.Add(new AdultBadgeCategory
+                            {
+                                AdultId = adult.Id,
+                                BadgeCategoryId = bcs
+                            });
+                        }
                     }
                 }
 
