@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#ParentSelect").off("click").on("click", "a", function (e) {
+        $("#ParentSelect").off("click", "a").on("click", "a", function (e) {
             e.preventDefault();
             var parentId = $(this).data("adultid");
             var memberId = '@(member.Id.ToString("N"))';
@@ -85,7 +85,7 @@
             });
         });
 
-        $("#ParentList").off("click").on("click", "a.Delete", function (e) {
+        $("#ParentList").off("click", "a.Delete").on("click", "a.Delete", function (e) {
             e.preventDefault();
             var relationshipId = $(this).closest("li").data("relationshipid");
             $("#DeleteRelationshipPopup").data("relationshipid", relationshipId);
@@ -110,7 +110,7 @@
             }, 500);
         });
 
-        $("#ParentList").off("click").on("click", "a.View", function (e) {
+        $("#ParentList").off("click", "a.View").on("click", "a.View", function (e) {
             e.preventDefault();
             var adultId = $(this).closest("li").data("adultid");
             window.location = "/Mentor/Adult/" + adultId;

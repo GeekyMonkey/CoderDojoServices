@@ -62,7 +62,7 @@
 
 <script type="text/javascript">
     $(function () {
-        $("#MemberSelect").off("click").on("click", "a", function (e) {
+        $("#MemberSelect").off("click", "a").on("click", "a", function (e) {
             e.preventDefault();
             var parentId = '@(adult.Id.ToString("N"))';
             var memberId = $(this).data("memberid");
@@ -85,7 +85,7 @@
             });
         });
 
-        $("#KidList").off("click").on("click", "a.Delete", function (e) {
+        $("#KidList").off("click", "a.Delete").on("click", "a.Delete", function (e) {
             e.preventDefault();
             var relationshipId = $(this).closest("li").data("relationshipid");
             $("#DeleteKidPopup").data("relationshipid", relationshipId);
@@ -110,13 +110,13 @@
             }, 500);
         });
 
-        $("#KidList").off("click").on("click", "a.View", function (e) {
+        $("#KidList").off("click", "a.View").on("click", "a.View", function (e) {
             e.preventDefault();
             var memberId = $(this).closest("li").data("memberid");
             window.location = "/Mentor/Member/" + memberId;
         });
 
-        $("#MemberSelect").off("click").on("listviewbeforefilter", function (e, data) {
+        $("#MemberSelect").off("listviewbeforefilter").on("listviewbeforefilter", function (e, data) {
             var $ul = $(this),
                 $input = $(data.input),
                 value = $input.val(),
