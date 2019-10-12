@@ -175,7 +175,7 @@
             }
         });
 
-        $(".UndoBadge")off("click").on("click", function (e) {
+        $(".UndoBadge").off("click").on("click", function (e) {
             e.preventDefault();
             $.ajax($(this).attr("href"), {
                 type: "POST",
