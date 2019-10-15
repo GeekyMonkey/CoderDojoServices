@@ -696,7 +696,7 @@ namespace CoderDojo.Views
         [HttpGet]
         public ActionResult Members(Guid? id = null)
         {
-            List<Member> members = (from m in db.Members
+            List<Member> members = (from m in db.Members.Include(m => m.Team)
                                     where m.Deleted == false
                                     orderby m.FirstName, m.LastName
                                     select m).ToList();
