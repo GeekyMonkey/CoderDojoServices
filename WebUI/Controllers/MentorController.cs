@@ -196,7 +196,7 @@ namespace CoderDojo.Views
                 .Select(a => a.AdultId)
                 .ToList();
 
-            var members = (from m in db.Members
+            var members = (from m in db.Members.Include(m => m.Team)
                            where m.Deleted == false && m.RegisteredCurrentTerm == true
                            orderby m.FirstName, m.LastName
                            select m).ToList();
@@ -212,6 +212,8 @@ namespace CoderDojo.Views
                                                 {
                                                     MemberId = m.Id,
                                                     MemberName = m.FirstName + " " + m.LastName,
+                                                    ImageUrl = m.ImageUrl,
+                                                    TeamImageUrl = (m.Team != null) ? m.Team.ImageUrl : null,
                                                     Present = presentMemberIds.Contains(m.Id),
                                                     MemberBeltColorHex = m.BeltColorHex,
                                                     IsAdult = false
@@ -221,6 +223,8 @@ namespace CoderDojo.Views
                                  {
                                      MemberId = a.Id,
                                      MemberName = a.FirstName + " " + a.LastName,
+                                     ImageUrl = a.ImageUrl,
+                                     TeamImageUrl = null,
                                      Present = presentAdultIds.Contains(a.Id),
                                      MemberBeltColorHex = "#ffffff",
                                      IsAdult = true

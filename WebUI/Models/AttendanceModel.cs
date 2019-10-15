@@ -9,6 +9,8 @@ namespace CoderDojo
     {
         public Guid MemberId { get; set; }
         public string MemberName { get; set; }
+        public string ImageUrl { get; set; }
+        public string TeamImageUrl { get; set; }
         public bool Present { get; set; }
 
         public string MemberBeltColorHex { get; set; }
