@@ -33,7 +33,8 @@
         @foreach (var mb in beltApplications)
         {
             bool present = presentMemberIds.Contains(mb.MemberId);
-            <li data-beltcolor="@mb.Belt.HexCode" class="@(present ? "Present" : "" )">
+            <li data-beltcolor="@mb.Belt.HexCode"
+                class="ApplicationListItem @(present ? "Present" : "") @(mb.Member.RegisteredCurrentTerm ? "Registered" : "NotRegistered")">
                 <a href="/Mentor/MemberBelts/@mb.MemberId.ToString("N")">
                     <img data-src="@mb.Member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                     <div class="BeltStripe" style="background-color:@(mb.Member.BeltColorHex)"></div>
@@ -56,7 +57,7 @@ else
         @foreach (var mb in badgeApplications)
         {
             bool present = presentMemberIds.Contains(mb.MemberId);
-            <li class="@(present ? "Present" : "" )">
+            <li class="ApplicationListItem @(present ? "Present" : "") @(mb.Member.RegisteredCurrentTerm ? "Registered" : "NotRegistered")">
                 <a href="/Mentor/MemberBadges/@mb.MemberId.ToString("N")">
                     <img data-src="@mb.Member.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
                     <div class="BeltStripe" style="background-color:@(mb.Member.BeltColorHex)"></div>

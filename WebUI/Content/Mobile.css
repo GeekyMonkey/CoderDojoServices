@@ -172,7 +172,8 @@ ul#TeamMembers li {list-style-type: none;}
     background-color: lime;        
 }
 
-li.MemberListItem.NotRegistered a.ui-link-inherit {
+li.MemberListItem.NotRegistered a.ui-link-inherit,
+li.ApplicationListItem.NotRegistered a.ui-link-inherit {
     color: #666 !important;
 }
 
