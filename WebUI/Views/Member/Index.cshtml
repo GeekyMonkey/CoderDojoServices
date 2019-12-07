@@ -21,7 +21,7 @@
     @Html.Partial("_MemberMenu")
 }
 
-<div id="MemberIndexMessages">@Html.Raw(member.GetLoginMessage())</div>
+<div id="MemberIndexMessages">@Html.Raw(member.GetLoginMessage(true))</div>
 
 <style type="text/css">
 #MemberIndexMessages p {
