@@ -20,3 +20,4 @@ WebUI/Properties/PublishProfiles
 Backup/
 WebUI/App_Data/App_Data.7z
 WebUI/App_Data
+packages/Microsoft.Data.OData.5.8.4
