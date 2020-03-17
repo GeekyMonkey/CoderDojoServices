@@ -207,6 +207,7 @@ li.ApplicationListItem.NotRegistered a.ui-link-inherit {
 #SessionList {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .SessionCard {
