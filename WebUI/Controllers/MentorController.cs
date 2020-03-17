@@ -1169,7 +1169,11 @@ namespace CoderDojo.Views
         public ActionResult Sessions()
         {
             DateTime now = DateTime.UtcNow;
-            List<Session> sessions = db.Sessions.Where(s => s.EndDate > now).OrderBy(s => s.Topic).ToList();
+            List<Session> sessions = db.Sessions
+                .Where(s => s.EndDate > now)
+                .OrderBy(s => s.MentorsOnly)
+                .ThenBy(s => s.Topic)
+                .ToList();
             return View("Sessions", sessions);
         }
 
@@ -1227,6 +1231,7 @@ namespace CoderDojo.Views
             session.Adult2Id = s.Adult2Id;
             session.Topic = s.Topic;
             session.Url = s.Url;
+            session.MentorsOnly = s.MentorsOnly;
             db.SaveChanges();
 
             // Notify other members looking at this screen

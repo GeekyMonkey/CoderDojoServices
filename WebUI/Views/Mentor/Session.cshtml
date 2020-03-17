@@ -21,7 +21,8 @@
 @section Footer
 {
     <a data-role="button" data-icon="check" class="FormSave">Save</a>
-    @if (!newItem) {
+    @if (!newItem)
+    {
         <a data-role="button" data-icon="delete" id="Delete">Delete</a>
     }
 }
@@ -33,22 +34,29 @@
 
 @using (Html.BeginForm("SessionSave", "Mentor"))
 {
-<fieldset data-role="controlgroup">
+    <fieldset data-role="controlgroup">
 
-    @Html.HiddenFor(s => s.Id)
-    @Html.HiddenFor(s => s.CreatedDate)
-    @Html.HiddenFor(s => s.EndDate)
+        @Html.HiddenFor(s => s.Id)
+        @Html.HiddenFor(s => s.CreatedDate)
+        @Html.HiddenFor(s => s.EndDate)
 
-    <label for="Topic">Topic</label>
-    @Html.TextBoxFor(s => s.Topic, new { @class = "AutoFocus" })
+        <label for="Topic">Topic</label>
+        @Html.TextBoxFor(s => s.Topic, new { @class = "AutoFocus" })
 
-    <label for="Url">URL</label>
-    @Html.TextBoxFor(s => s.Url)
+        <label for="Url">URL</label>
+        @Html.TextBoxFor(s => s.Url)
 
-    <label for="Notes">Hosted By</label>
-    @Html.DropDownListFor(s => s.AdultId, mentors, new { data_inline = "true" })
-    @Html.DropDownListFor(s => s.Adult2Id, mentors2, new { data_inline = "true" })
-</fieldset>
+        <label for="Notes">Hosted By</label>
+        @Html.DropDownListFor(s => s.AdultId, mentors, new { data_inline = "true" })
+        @Html.DropDownListFor(s => s.Adult2Id, mentors2, new { data_inline = "true" })
+    </fieldset>
+
+    <fieldset data-role="controlgroup">
+
+        <label for="MentorsOnly">Visible To Mentors Only</label>
+        @Html.CheckBoxFor(s => s.MentorsOnly)
+
+    </fieldset>
 }
 
 <div data-role="popup" id="DeleteConfirmPopup" data-overlay-theme="a" data-theme="c" data-dismissible="false" class="ui-corner-all">

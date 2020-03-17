@@ -131,7 +131,10 @@ namespace CoderDojo.Views
         public ActionResult Sessions()
         {
             DateTime now = DateTime.UtcNow;
-            List<Session> sessions = db.Sessions.Where(s => s.EndDate > now).OrderBy(s => s.Topic).ToList();
+            List<Session> sessions = db.Sessions
+                .Where(s => s.EndDate > now && s.MentorsOnly == false)
+                .OrderBy(s => s.Topic)
+                .ToList();
             return View("Sessions", sessions);
         }
 

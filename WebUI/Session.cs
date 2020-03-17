@@ -21,6 +21,7 @@ namespace CoderDojo
         public string Topic { get; set; }
         public Nullable<System.Guid> AdultId { get; set; }
         public Nullable<System.Guid> Adult2Id { get; set; }
+        public bool MentorsOnly { get; set; }
     
         public virtual Adult Adult { get; set; }
         public virtual Adult Adult2 { get; set; }

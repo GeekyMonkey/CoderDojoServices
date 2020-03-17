@@ -159,6 +159,7 @@
           <Property Name="Topic" Type="nvarchar" MaxLength="256" />
           <Property Name="AdultId" Type="uniqueidentifier" />
           <Property Name="Adult2Id" Type="uniqueidentifier" />
+          <Property Name="MentorsOnly" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Teams">
           <Key>
@@ -953,6 +954,7 @@
           <NavigationProperty Name="Adult" Relationship="CoderDojo.FK_Sessions_Adults" FromRole="Sessions" ToRole="Adult" />
           <Property Name="Adult2Id" Type="Guid" />
           <NavigationProperty Name="Adult2" Relationship="CoderDojo.FK_Sessions_Adult2" FromRole="Session" ToRole="Adult" />
+          <Property Name="MentorsOnly" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Sessions_Adults">
           <End Type="CoderDojo.Adult" Role="Adult" Multiplicity="0..1" />
@@ -1154,6 +1156,7 @@
           <EntitySetMapping Name="Sessions">
             <EntityTypeMapping TypeName="CoderDojo.Session">
               <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="MentorsOnly" ColumnName="MentorsOnly" />
                 <ScalarProperty Name="Adult2Id" ColumnName="Adult2Id" />
                 <ScalarProperty Name="AdultId" ColumnName="AdultId" />
                 <ScalarProperty Name="Topic" ColumnName="Topic" />

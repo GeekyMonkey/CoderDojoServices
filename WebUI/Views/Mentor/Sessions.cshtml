@@ -29,7 +29,7 @@
 	<div id="SessionList">
     @foreach (CoderDojo.Session s in sessions)
     {
-        <div class="SessionCard">
+        <div class="SessionCard @(s.MentorsOnly ? "MentorsOnly" : "Public")">
             <h2>
                 @s.Topic
             </h2>
