@@ -1162,6 +1162,107 @@ namespace CoderDojo.Views
         }
 
         /// <summary>
+        /// Sessions Maintenance
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Sessions()
+        {
+            DateTime now = DateTime.UtcNow;
+            List<Session> sessions = db.Sessions.Where(s => s.EndDate > now).OrderBy(s => s.Topic).ToList();
+            return View("Sessions", sessions);
+        }
+
+        /// <summary>
+        /// Add a session
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SessionAdd()
+        {
+            Session newSession = new Session();
+            newSession.CreatedDate = DateTime.UtcNow;
+            newSession.EndDate = DateTime.UtcNow.AddHours(2.5);
+            newSession.Adult = GetCurrentAdult();
+            newSession.AdultId = newSession.Adult.Id;
+            newSession.Topic = "";
+            newSession.Url = "";
+            ViewBag.Mentors = GetActiveMentors(true);
+            return View("Session", newSession);
+        }
+
+        /// <summary>
+        /// Edit a session
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult SessionEdit(Guid id)
+        {
+            Session session = db.Sessions.FirstOrDefault(s => s.Id == id);
+            ViewBag.Mentors = GetActiveMentors(true);
+            return View("Session", session);
+        }
+
+        /// <summary>
+        /// Save changes to a session
+        /// </summary>
+        /// <param name="s">Session details</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SessionSave(Session s)
+        {
+            Session session;
+            if (s.Id == null || s.Id == Guid.Empty)
+            {
+                session = new Session();
+                session.Id = Guid.NewGuid();
+                session.CreatedDate = DateTime.UtcNow;
+                db.Sessions.Add(session);
+            }
+            else
+            {
+                session = db.Sessions.FirstOrDefault(x => x.Id == s.Id);
+            }
+            session.EndDate = DateTime.UtcNow.AddHours(2.5);
+            session.AdultId = s.AdultId;
+            session.Adult2Id = s.Adult2Id;
+            session.Topic = s.Topic;
+            session.Url = s.Url;
+            db.SaveChanges();
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<SessionHub>();
+            context.Clients.All.OnSessionChange(s.Id);
+
+            return RedirectClient("/Mentor/Sessions");
+        }
+
+        /// <summary>
+        /// Delete a session
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SessionDelete(Guid id)
+        {
+            if (id != null && id != Guid.Empty)
+            {
+                Session session;
+                session = db.Sessions.FirstOrDefault(x => x.Id == id);
+                if (session != null)
+                {
+                    db.Sessions.Remove(session);
+                    db.SaveChanges();
+                }
+            }
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<SessionHub>();
+            context.Clients.All.OnSessionChange(id);
+
+            return RedirectClient("/Mentor/Sessions");
+        }
+
+        /// <summary>
         /// Team Maintenance
         /// </summary>
         /// <returns></returns>
@@ -1222,6 +1323,23 @@ namespace CoderDojo.Views
         {
             ViewBag.CurrentAdult = this.GetCurrentAdult();
             base.OnActionExecuting(filterContext);
+        }
+
+        /// <summary>
+        /// Get a list of active mentors
+        /// </summary>
+        /// <returns></returns>
+        protected List<Adult> GetActiveMentors(bool includeBlank)
+        {
+            List<Adult> mentors = db.Adults.Where(a => a.Deleted == false && a.IsMentor == true)
+                .OrderBy(a => a.FirstName)
+                .ThenBy(a => a.LastName)
+                .ToList();
+            if (includeBlank)
+            {
+                mentors.Insert(0, new Adult { FirstName = "", LastName = "" });
+            }
+            return mentors;
         }
     }
 }

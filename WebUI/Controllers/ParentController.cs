@@ -184,6 +184,18 @@ namespace CoderDojo.Views
             return View("MemberBelts", member);
         }
 
+        /// <summary>
+        /// Sessions Maintenance
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult Sessions()
+        {
+            DateTime now = DateTime.UtcNow;
+            List<Session> sessions = db.Sessions.Where(s => s.EndDate > now).OrderBy(s => s.Topic).ToList();
+            return View("Sessions", sessions);
+        }
+
         public ActionResult TeamMember(Guid id)
         {
             Member otherMember = db.Members.FirstOrDefault(m => m.Id == id);

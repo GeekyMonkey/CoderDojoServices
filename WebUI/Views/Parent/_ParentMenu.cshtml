@@ -13,6 +13,7 @@
     <ul data-role="listview" data-inset="true">
         <li><a href="/Parent/MyAccount" class="@(activePage == "MyAccount" ? activeClass : inactiveClass)">My Account</a></li>
         <li><a href="/Parent/MyKids" class="@(activePage == "MyKids" ? activeClass : inactiveClass)">My Kids</a></li>
+        <li><a href="/Parent/Sessions">@System.Configuration.ConfigurationManager.AppSettings["SessionsMenuTitle"]</a></li>
     </ul>
 
     @if (ViewBag.CurrentAdult.IsMentor) {

@@ -20,6 +20,8 @@ namespace CoderDojo
             this.MemberParents = new HashSet<MemberParent>();
             this.AdultAttendances = new HashSet<AdultAttendance>();
             this.BadgeCategories = new HashSet<AdultBadgeCategory>();
+            this.Sessions = new HashSet<Session>();
+            this.Sessions1 = new HashSet<Session>();
         }
     
         public System.Guid Id { get; set; }
@@ -43,5 +45,7 @@ namespace CoderDojo
         public virtual ICollection<MemberParent> MemberParents { get; set; }
         public virtual ICollection<AdultAttendance> AdultAttendances { get; set; }
         public virtual ICollection<AdultBadgeCategory> BadgeCategories { get; set; }
+        public virtual ICollection<Session> Sessions { get; set; }
+        public virtual ICollection<Session> Sessions1 { get; set; }
     }
 }

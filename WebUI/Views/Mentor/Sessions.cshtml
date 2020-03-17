@@ -1,0 +1,83 @@
+﻿@model List<CoderDojo.Session>
+@{
+    string sessionTitle = System.Configuration.ConfigurationManager.AppSettings["SessionMenuTitle"];
+    string sessionsTitle = System.Configuration.ConfigurationManager.AppSettings["SessionsMenuTitle"];
+    List<CoderDojo.Session> sessions = Model;
+    ViewBag.MenuActive = sessionsTitle;
+    ViewBag.Title = sessionsTitle;
+}
+
+@section HeaderLeft
+{
+}
+
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+    <a href="SessionAdd" data-role="button" data-icon="plus">New @sessionTitle</a>
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
+<div class="content-primary">
+	<div id="SessionList">
+    @foreach (CoderDojo.Session s in sessions)
+    {
+        <div class="SessionCard">
+            <h2>
+                @s.Topic
+            </h2>
+            <div>
+                <div class="HostCards">
+                    @if (s.Adult != null)
+                    {
+                        <div class="HostCard">
+                            <img data-src="@s.Adult.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
+                            <span>@s.Adult.FirstName @s.Adult.LastName</span>
+                        </div>
+                    }
+                    @if (s.Adult2 != null)
+                    {
+                        <div class="HostCard">
+                            <img data-src="@s.Adult2.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
+                            <span>@s.Adult2.FirstName @s.Adult2.LastName</span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <a href="@s.Url" target="_blank" data-role="button" data-icon="arrow-r">Join</a>
+            <a href="SessionEdit/@(s.Id.ToString("N"))" data-role="button" data-icon="gear">Edit</a>
+        </div>
+    }
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    // Start the SignalR connection
+    $.connection.hub.start().done(function () {
+    });
+
+    /**
+     * Receive a notification that someone altered a session
+     */
+    $.connection.sessionHub.client.onSessionChange = function (sessionId) {
+        // If the viewer is on a sessions page, then reload the page
+        if (window.location.href.includes("Sessions")) {
+            window.location.reload(true);
+        }
+    };
+
+    /**
+     * Refresh every 5 minutes for sessions that end on schedule
+     */
+    setInterval(function () {
+        window.location.reload(true);
+    }, 1000 * 60 * 5)
+</script>

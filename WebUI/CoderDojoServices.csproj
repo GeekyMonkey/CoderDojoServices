@@ -225,6 +225,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="SessionHub.cs" />
     <Compile Include="AttendanceHub.cs" />
     <Compile Include="Badge.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
@@ -313,6 +314,9 @@
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\MentorController.cs" />
+    <Compile Include="Session.cs">
+      <DependentUpon>DojoData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Team.cs">
       <DependentUpon>DojoData.tt</DependentUpon>
     </Compile>
@@ -739,6 +743,10 @@
     <Content Include="Views\Home\Tools.cshtml" />
     <Content Include="Views\Mentor\PurgeRegistrations.cshtml" />
     <Content Include="Views\Home\PassportMentor.cshtml" />
+    <Content Include="Views\Mentor\Sessions.cshtml" />
+    <Content Include="Views\Mentor\Session.cshtml" />
+    <Content Include="Views\Member\Sessions.cshtml" />
+    <Content Include="Views\Parent\Sessions.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

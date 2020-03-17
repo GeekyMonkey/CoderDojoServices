@@ -1,4 +1,6 @@
 ﻿@{
+    string sessionTitle = System.Configuration.ConfigurationManager.AppSettings["SessionMenuTitle"];
+    string sessionsTitle = System.Configuration.ConfigurationManager.AppSettings["SessionsMenuTitle"];
     string activePage = ViewBag.MenuActive;
     string activeClass = "ui-btn-active ui-state-persist";
     string inactiveClass = "";
@@ -11,12 +13,13 @@
     </div>
 
     <ul data-role="listview" data-inset="true">
-        <li>@Html.ActionLink("Home", "Index", "Mentor", null, new { @class=(activePage == "Index" ? activeClass : inactiveClass)})</li>
-        <li>@Html.ActionLink("Attendance", "Attendance", "Mentor", null, new { @class=(activePage == "Attendance" ? activeClass : inactiveClass)})</li>
-        <li>@Html.ActionLink("Members", "Members", "Mentor", null, new { @class=(activePage == "Members" ? activeClass : inactiveClass)})</li>
-        <li>@Html.ActionLink("Parents", "Parents", "Mentor", null, new { @class=(activePage == "Parents" ? activeClass : inactiveClass)})</li>
-        <li>@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { @class=(activePage == "Mentors" ? activeClass : inactiveClass)})</li>
-		<li><a href="http://webhub.coderdojoennis.com/editor">Web Hub</a></li>
+        <li>@Html.ActionLink("Home", "Index", "Mentor", null, new { @class = (activePage == "Index" ? activeClass : inactiveClass) })</li>
+        <li>@Html.ActionLink("Attendance", "Attendance", "Mentor", null, new { @class = (activePage == "Attendance" ? activeClass : inactiveClass) })</li>
+        <li>@Html.ActionLink("Members", "Members", "Mentor", null, new { @class = (activePage == "Members" ? activeClass : inactiveClass) })</li>
+        <li>@Html.ActionLink("Parents", "Parents", "Mentor", null, new { @class = (activePage == "Parents" ? activeClass : inactiveClass) })</li>
+        <li>@Html.ActionLink("Mentors", "Mentors", "Mentor", null, new { @class = (activePage == "Mentors" ? activeClass : inactiveClass) })</li>
+        <!--<li><a href="http://webhub.coderdojoennis.com/editor">Web Hub</a></li>-->
+        <li>@Html.ActionLink(@System.Configuration.ConfigurationManager.AppSettings["SessionsMenuTitle"], "Sessions", "Mentor", null, new { @class = (activePage == sessionsTitle ? activeClass : inactiveClass) })</li>
     </ul>
 
     <div data-role="collapsible" data-content-theme="a">
