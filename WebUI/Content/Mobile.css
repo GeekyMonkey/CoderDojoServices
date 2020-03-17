@@ -198,6 +198,12 @@ li.ApplicationListItem.NotRegistered a.ui-link-inherit {
 
 /*---- Sessions ----*/
 
+@keyframes PodKeyframes {
+  0%   {background-size:110%}
+  50%  {background-size:100%}
+  100% {background-size:110%}
+}
+
 #SessionList {
     display: flex;
     flex-direction: row;
@@ -208,10 +214,19 @@ li.ApplicationListItem.NotRegistered a.ui-link-inherit {
     margin: 10px;
     padding: 0 10px;
     border: solid 1px #0f0;
+    border-radius: 30px;
     box-shadow: rgba(0,255,0, 0.4) 0px 0px 20px;
     max-width: 600px;
     text-align: center;
-    background-color: #202820
+    background-color: #202820;
+    background-image: url(/Content/Images/pod.jpg);
+    background-size: 105%;
+    background-position: center center;
+    animation-name: PodKeyframes;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    background-repeat: repeat;
+    animation-timing-function: ease-in-out;
 }
 
 .HostCards {
@@ -223,7 +238,7 @@ li.ApplicationListItem.NotRegistered a.ui-link-inherit {
     flex-grow: 1;
     margin: 5px;
     padding: 5px;
-    border: solid 1px #004400;
+    /*border: solid 1px #004400;*/
 }
 
     .HostCard img {
