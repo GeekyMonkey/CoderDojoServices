@@ -26,35 +26,43 @@
 }
 
 <div class="content-primary">
-	<div id="SessionList">
-    @foreach (CoderDojo.Session s in sessions)
+
+    @if (sessions.Count() == 0)
     {
-        <div class="SessionCard @(s.MentorsOnly ? "MentorsOnly" : "Public")">
-            <h2>
-                @s.Topic
-            </h2>
-            <div>
-                <div class="HostCards">
-                    @if (s.Adult != null)
-                    {
-                        <div class="HostCard">
-                            <img data-src="@s.Adult.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
-                            <span>@s.Adult.FirstName @s.Adult.LastName</span>
-                        </div>
-                    }
-                    @if (s.Adult2 != null)
-                    {
-                        <div class="HostCard">
-                            <img data-src="@s.Adult2.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
-                            <span>@s.Adult2.FirstName @s.Adult2.LastName</span>
-                        </div>
-                    }
-                </div>
-            </div>
-            <a href="@s.Url" target="_blank" data-role="button" data-icon="arrow-r">Join</a>
-            <a href="SessionEdit/@(s.Id.ToString("N"))" data-role="button" data-icon="gear">Edit</a>
-        </div>
+        <h2 style="text-align:center;">There are no pods currently being hosted. Check our calendar below for scheduled times.</h2>
+        <iframe src="https://www.google.com/calendar/embed?title=Ennis%20Coder%20Dojo&amp;mode=AGENDA&amp;height=600&amp;wkst=2&amp;bgcolor=%23228822&amp;src=enniscoderdojo%40gmail.com&amp;color=%23125A12&amp;ctz=Europe%2FDublin"
+                style="border-width:0;" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
     }
+
+    <div id="SessionList">
+        @foreach (CoderDojo.Session s in sessions)
+        {
+            <div class="SessionCard @(s.MentorsOnly ? "MentorsOnly" : "Public")">
+                <h2>
+                    @s.Topic
+                </h2>
+                <div>
+                    <div class="HostCards">
+                        @if (s.Adult != null)
+                        {
+                            <div class="HostCard">
+                                <img data-src="@s.Adult.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
+                                <span>@s.Adult.FirstName @s.Adult.LastName</span>
+                            </div>
+                        }
+                        @if (s.Adult2 != null)
+                        {
+                            <div class="HostCard">
+                                <img data-src="@s.Adult2.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
+                                <span>@s.Adult2.FirstName @s.Adult2.LastName</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <a href="@s.Url" target="_blank" data-role="button" data-icon="arrow-r">Join</a>
+                <a href="SessionEdit/@(s.Id.ToString("N"))" data-role="button" data-icon="gear">Edit</a>
+            </div>
+        }
     </div>
 </div>
 
