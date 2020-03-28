@@ -28,11 +28,17 @@ namespace CoderDojo
         /// <returns></returns>
         public IList<DateTime> GetSessionDates(DateTime? DateToInclude)
         {
-            List<DateTime> dates = this.MemberAttendances
+            List<DateTime> memberDates = this.MemberAttendances
                 .Select(ma => ma.Date)
                 .Distinct()
                 .OrderByDescending(d => d)
                 .ToList();
+            List<DateTime> adultDates = this.AdultAttendances
+                .Select(aa => aa.Date)
+                .Distinct()
+                .OrderByDescending(d => d)
+                .ToList();
+            List<DateTime> dates = adultDates.Concat(memberDates).Distinct().OrderByDescending(d => d).ToList();
             if (DateToInclude != null && !dates.Contains(DateToInclude.Value))
             {
                 dates.Add(DateToInclude.Value);

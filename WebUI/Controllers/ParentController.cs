@@ -196,6 +196,7 @@ namespace CoderDojo.Views
                 .Where(s => s.EndDate > now && s.MentorsOnly == false)
                 .OrderBy(s => s.Topic)
                 .ToList();
+            ViewBag.UserId = this.User.Identity.Name.Split('|')[1];
             return View("Sessions", sessions);
         }
 

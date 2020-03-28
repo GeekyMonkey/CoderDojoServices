@@ -1174,6 +1174,7 @@ namespace CoderDojo.Views
                 .OrderBy(s => s.MentorsOnly)
                 .ThenBy(s => s.Topic)
                 .ToList();
+            ViewBag.UserId = this.User.Identity.Name.Split('|')[1];
             return View("Sessions", sessions);
         }
 
@@ -1228,7 +1229,7 @@ namespace CoderDojo.Views
             }
             session.EndDate = DateTime.UtcNow.AddHours(2.5);
             session.AdultId = s.AdultId;
-            session.Adult2Id = s.Adult2Id;
+            session.Adult2Id = (s.Adult2Id != Guid.Empty) ? s.Adult2Id : null;
             session.Topic = s.Topic;
             session.Url = s.Url;
             session.MentorsOnly = s.MentorsOnly;
