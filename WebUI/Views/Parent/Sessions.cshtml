@@ -78,12 +78,10 @@
 
             // Update attendance
             window.settingAttendanceMemberId = null; // '@(userId)';   // If this is the same as the current user id, then the welcome message displays
-            $.ajax("AttendanceChange", {
+            $.ajax("/SessionPodLogin", {
                 type: "POST",
                 data: {
-                    memberId: '@(userId)',
-                    present: true,
-                    attendanceDate: $("#AttendanceDateSelect").val()
+                    memberId: '@(userId)'
                 }
             });
         });

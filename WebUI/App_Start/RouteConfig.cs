@@ -26,6 +26,12 @@ namespace CoderDojo
             );
 
             routes.MapRoute(
+                name: "SessionPodLogin",
+                url: "SessionPodLogin",
+                defaults: new { controller = "Home", action = "SessionPodLogin", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Passport",
                 url: "Passport/{id}",
                 defaults: new { controller = "Home", action = "Passport", id = UrlParameter.Optional }

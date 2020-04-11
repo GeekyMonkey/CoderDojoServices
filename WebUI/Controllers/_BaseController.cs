@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -98,5 +99,38 @@ namespace CoderDojo
                     return Entity1Value;
             }
         }
+
+        protected void DoMemberAttendanceChange(Guid memberId, bool present, DateTime sessionDate)
+        {
+            int sessionCount = db.MemberAttendanceSet(memberId, present, sessionDate);
+            int dojoAttendanceCount = db.MemberAttendances.Count(ma => ma.Date == sessionDate) + db.AdultAttendances.Count(aa => aa.Date == sessionDate);
+            Member member = db.Members.FirstOrDefault(m => m.Id == memberId);
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+            string memberMessage = "";
+            if (present)
+            {
+                memberMessage = member.GetLoginMessage(true);
+            }
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), memberId.ToString("N"), member.MemberName, (member.TeamId ?? Guid.Empty).ToString("N"), present.ToString().ToLower(), sessionCount, dojoAttendanceCount, memberMessage, member.ImageUrl);
+        }
+
+        protected void DoAdultAttendanceChange(Guid adultId, bool present, DateTime sessionDate)
+        {
+            int sessionCount = db.AdultAttendanceSet(adultId, present, sessionDate);
+            int adultAttendanceCount = db.AdultAttendances.Count(aa => aa.Date == sessionDate);
+            Adult adult = db.Adults.FirstOrDefault(a => a.Id == adultId);
+
+            // Notify other members looking at this screen
+            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<AttendanceHub>();
+            string memberMessage = "";
+            if (present)
+            {
+                memberMessage = adult.GetLoginMessage(true);
+            }
+            context.Clients.All.OnAttendanceChange(sessionDate.ToString("dd-MMM-yyyy"), adultId.ToString("N"), adult.FullName, "Mentors", present.ToString().ToLower(), sessionCount, adultAttendanceCount, memberMessage, adult.ImageUrl);
+        }
+
     }
 }

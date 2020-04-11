@@ -452,5 +452,25 @@ namespace CoderDojo.Controllers
 
             return Json(new { success = true });
         }
+
+        // /SessionPodLogin
+        [ActionName("SessionPodLogin")]
+        [HttpPost]
+        public ActionResult SessionPodLogin(string memberId)
+        {
+            DateTime sessionDate = DateTime.Today;
+            Guid membergId = new Guid(memberId);
+            Member member = db.Members.FirstOrDefault(m => m.Id == membergId);
+            if (member != null)
+            {
+                DoMemberAttendanceChange(membergId, true, sessionDate);
+            }
+            else
+            {
+                DoAdultAttendanceChange(membergId, true, sessionDate);
+            }
+
+            return Json(new { success = true });
+        }
     }
 }
