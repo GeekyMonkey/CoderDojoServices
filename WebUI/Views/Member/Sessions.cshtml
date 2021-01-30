@@ -79,11 +79,7 @@
     $(function () {
         // Join button
         $(".SessionCard .JoinButton").click(function (event) {
-
-            // Open window
             event.preventDefault();
-            let url = $(event.currentTarget).attr("data-href");
-            window.open(url);
 
             // Update attendance
             window.settingAttendanceMemberId = null; // '@(userId)';   // If this is the same as the current user id, then the welcome message displays
@@ -93,6 +89,10 @@
                     memberId: '@(userId)'
                 }
             });
+
+            // Open window
+            let url = $(event.currentTarget).attr("data-href");
+            window.open(url);
         });
     });
 
