@@ -75,6 +75,17 @@ body
     display: flex;
     margin-top: 0.2cm;
 }
+        .Card .ImageRow .Login {
+            writing-mode: vertical-lr;
+            text-align: center;
+            font-size: .65em;
+            line-height: 0.9;
+            margin-top: 0;
+            margin-right: 0;
+            transform: rotate(-180deg);
+            height: 2.4cm;
+            word-break: break-all;
+        }
 
 .Card .ImageRow img,.qrcode
 {
@@ -222,6 +233,7 @@ body
     <h1>@m.MemberName</h1>
     <h2>@teamName</h2>
     <div class="ImageRow">
+        <div class="Login">@(m.Login)</div>
         <img class="Avatar" src="@m.ImageUrl" onerror="if (this.src != '/Images/User.png') this.src = '/Images/User.png';" />
         @if (m.Team != null && !m.Team.TeamName.StartsWith("("))
         {
