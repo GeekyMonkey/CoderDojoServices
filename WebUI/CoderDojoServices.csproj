@@ -748,6 +748,7 @@
     <Content Include="Views\Mentor\Session.cshtml" />
     <Content Include="Views\Member\Sessions.cshtml" />
     <Content Include="Views\Parent\Sessions.cshtml" />
+    <Content Include="Views\Member\BadgesAvailable.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

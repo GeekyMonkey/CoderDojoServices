@@ -49,6 +49,18 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
+        public ActionResult BadgesAvailable()
+        {
+            Member member = GetCurrentMember();
+            var badges = from badge in db.Badges
+                         where badge.Deleted == false
+                         orderby badge.BadgeCategory.CategoryName, badge.Achievement
+                         select badge;
+            ViewBag.BadgeCategories = GetBadgeCategories();
+            return View("BadgesAvailable", badges.ToList());
+        }
+
+        [HttpGet]
         public ActionResult Belts()
         {
             var belts = from belt in db.Belts
@@ -149,6 +161,14 @@ namespace CoderDojo.Views
         {
             ViewBag.CurrentMember = this.GetCurrentMember();
             base.OnActionExecuting(filterContext);
+        }
+
+        private IEnumerable<BadgeCategory> GetBadgeCategories()
+        {
+            return db.BadgeCategories
+                .Where(bc => bc.Deleted == false)
+                .OrderBy(bc => bc.CategoryName)
+                .ToList();
         }
     }
 }

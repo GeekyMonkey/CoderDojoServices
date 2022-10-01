@@ -27,7 +27,9 @@
 	<ul data-role="listview" data-autodividers="false" id="myFilter" data-filter="false" data-filter-placeholder="Search..." data-filter-theme="a">
     @foreach (Belt b in belts)
     {
-        <li class="BeltHeader" data-color="@b.HexCode"><a href="Belt/@(b.Id.ToString("N"))">@b.Color</a></li>
+        <li class="BeltHeader" data-color="@b.HexCode">
+            <a href="Belt/@(b.Id.ToString("N"))">@b.Color</a>
+        </li>
     }
     </ul>
 </div>
