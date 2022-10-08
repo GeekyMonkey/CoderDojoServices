@@ -147,6 +147,8 @@
           <Property Name="TeamId" Type="uniqueidentifier" />
           <Property Name="FingerprintId" Type="int" />
           <Property Name="RegisteredCurrentTerm" Type="bit" Nullable="false" />
+          <Property Name="GoalShortTerm" Type="nvarchar(max)" />
+          <Property Name="GoalLongTerm" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Sessions">
           <Key>
@@ -662,6 +664,8 @@
           <NavigationProperty Name="Team" Relationship="CoderDojo.FK_Members_Team" FromRole="Member" ToRole="Team" />
           <Property Name="FingerprintId" Type="Int32" Nullable="true" />
           <Property Type="Boolean" Name="RegisteredCurrentTerm" Nullable="false" DefaultValue="false" />
+          <Property Name="GoalShortTerm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GoalLongTerm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_MemberBadges_Adult">
           <End Role="Adults" Type="CoderDojo.Adult" Multiplicity="0..1" />
@@ -1087,6 +1091,8 @@
           <EntitySetMapping Name="Members">
             <EntityTypeMapping TypeName="CoderDojo.Member">
               <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="GoalLongTerm" ColumnName="GoalLongTerm" />
+                <ScalarProperty Name="GoalShortTerm" ColumnName="GoalShortTerm" />
                 <ScalarProperty Name="TeamId" ColumnName="TeamId" />
                 <ScalarProperty Name="LoginDatePrevious" ColumnName="LoginDatePrevious" />
                 <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />

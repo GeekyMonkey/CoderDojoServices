@@ -39,6 +39,8 @@ namespace CoderDojo
         public Nullable<System.Guid> TeamId { get; set; }
         public Nullable<int> FingerprintId { get; set; }
         public bool RegisteredCurrentTerm { get; set; }
+        public string GoalShortTerm { get; set; }
+        public string GoalLongTerm { get; set; }
     
         public virtual ICollection<MemberAttendance> MemberAttendances { get; set; }
         public virtual ICollection<MemberBadge> MemberBadges { get; set; }

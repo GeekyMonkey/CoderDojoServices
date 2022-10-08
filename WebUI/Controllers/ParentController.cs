@@ -172,6 +172,19 @@ namespace CoderDojo.Views
         }
 
         [HttpGet]
+        public ActionResult MemberGoals(Guid id, string previousPage = "")
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            if (member.MemberParents.Any(mp => mp.AdultId == CurrentUserId) == false)
+            {
+                throw new Exception("Attempt to view child record not associated with parent");
+            }
+            ViewBag.PreviousPage = previousPage;
+            ViewBag.ShowBackButton = true;
+            return View("MemberGoals", member);
+        }
+
+        [HttpGet]
         public ActionResult MemberBelts(Guid id)
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);

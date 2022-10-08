@@ -696,6 +696,15 @@ namespace CoderDojo.Views
             return View("Member", member);
         }
 
+        [HttpGet]
+        public ActionResult MemberGoals(Guid id, string previousPage = "")
+        {
+            Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            ViewBag.PreviousPage = previousPage;
+            ViewBag.ShowBackButton = true;
+            return View("MemberGoals", member);
+        }
+
         /*
         [HttpPost]
         public ActionResult MemberGenerateFingerprintId(Guid memberId)

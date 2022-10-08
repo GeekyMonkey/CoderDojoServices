@@ -33,8 +33,17 @@ namespace CoderDojo.Views
             member.GithubLogin = memberChanges.GithubLogin;
             member.XboxGamertag = memberChanges.XboxGamertag;
             member.ScratchName = memberChanges.ScratchName;
+            member.GoalShortTerm = memberChanges.GoalShortTerm;
+            member.GoalLongTerm = memberChanges.GoalLongTerm;
             db.SaveChanges();
             return RedirectClient("/Member/Profile");
+        }
+
+        [HttpGet]
+        public ActionResult Goals()
+        {
+            Member member = GetCurrentMember();
+            return View("Goals", member);
         }
 
         [HttpGet]

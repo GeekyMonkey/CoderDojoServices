@@ -1,0 +1,59 @@
+﻿@model CoderDojo.Member
+@{
+    CoderDojo.Member member = Model;
+    ViewBag.Title = member.MemberName;
+    ViewBag.MenuActive = "Members";
+    ViewBag.MemberMenuActive = "Goals";
+    Adult mentor = ViewBag.Mentor;
+}
+
+@section HeaderLeft {
+}
+
+@section HeaderRight {
+}
+
+@section Footer {
+}
+
+@section Panels
+{
+    @Html.Partial("_MentorMenu")
+}
+
+@Html.Partial("_MemberMenu")
+
+
+<div data-role="collapsible-set" data-corners="true" data-inset="true">
+    <h3>Goals</h3>
+
+    <h4>Short Term Goal (2 months)</h4>
+    <blockquote>
+        @if (member.GoalShortTerm != null && member.GoalShortTerm != "")
+        {
+            @member.GoalShortTerm
+        }
+        else
+        {
+            <em>No short term goal set. Talk to a ninja.</em>
+        }
+    </blockquote>
+
+    <h4>Long Term Goal (2 years)</h4>
+    <blockquote>
+        @if (member.GoalLongTerm != null && member.GoalShortTerm != "")
+        {
+            @member.GoalLongTerm
+        }
+        else
+        {
+        <em>No long term goal set. Talk to a ninja.</em>
+        }
+    </blockquote>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+    });
+</script>

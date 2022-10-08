@@ -749,6 +749,9 @@
     <Content Include="Views\Member\Sessions.cshtml" />
     <Content Include="Views\Parent\Sessions.cshtml" />
     <Content Include="Views\Member\BadgesAvailable.cshtml" />
+    <Content Include="Views\Parent\MemberGoals.cshtml" />
+    <Content Include="Views\Member\Goals.cshtml" />
+    <Content Include="Views\Mentor\MemberGoals.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

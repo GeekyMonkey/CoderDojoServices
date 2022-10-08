@@ -1,0 +1,49 @@
+﻿@model Member
+@{
+    Member member = Model;
+    ViewBag.Title = "Goals";
+    ViewBag.MenuActive = "Goals";
+    List<Member> otherTeamMembers = null;
+}
+
+@section HeaderLeft
+{
+    <a data-role="button" data-icon="tag" id="PrintButton">Print ID</a>
+}
+
+@section HeaderRight
+{
+}
+
+@section Footer
+{
+    <a data-role="button" data-icon="check" class="FormSave">Save</a>
+}
+
+@section Panels
+{
+    @Html.Partial("_MemberMenu")
+}
+
+
+<div data-role="content">
+    <form role="controlgroup" action="ProfileSave" method="post">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.XboxGamertag)
+        @Html.HiddenFor(m => m.Login)
+        @Html.HiddenFor(m => m.GithubLogin)
+        @Html.HiddenFor(m => m.ScratchName)
+
+        <h3>Short Term Goal (2 months)</h3>
+        @Html.TextAreaFor(m => m.GoalShortTerm)
+
+        <h3>Long Term Goal (2 years)</h3>
+        @Html.TextAreaFor(m => m.GoalLongTerm)
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+    });
+</script>
