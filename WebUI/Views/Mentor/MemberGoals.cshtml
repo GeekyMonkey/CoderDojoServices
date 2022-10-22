@@ -68,7 +68,7 @@
             beltApplication = MemberBeltsPending.FirstOrDefault(mb => mb.BeltId == belt.Id);
             divclass += " ApplicationPending";
         }
-        <h3>Next Belt</h3>
+        <h4>Next Belt</h4>
         <div data-role="collapsible" data-content-theme="a" class="@divclass" data-color="@belt.HexCode">
             <h3>@belt.Color</h3>
             <div data-role="fieldcontain">
