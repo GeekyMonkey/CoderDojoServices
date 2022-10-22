@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace CoderDojo.Views
 {
@@ -43,6 +41,7 @@ namespace CoderDojo.Views
         public ActionResult Goals()
         {
             Member member = GetCurrentMember();
+            ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
             return View("Goals", member);
         }
 

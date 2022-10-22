@@ -179,6 +179,7 @@ namespace CoderDojo.Views
             {
                 throw new Exception("Attempt to view child record not associated with parent");
             }
+            ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
             ViewBag.PreviousPage = previousPage;
             ViewBag.ShowBackButton = true;
             return View("MemberGoals", member);

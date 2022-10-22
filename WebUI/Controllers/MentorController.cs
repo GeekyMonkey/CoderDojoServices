@@ -700,6 +700,7 @@ namespace CoderDojo.Views
         public ActionResult MemberGoals(Guid id, string previousPage = "")
         {
             Member member = db.Members.FirstOrDefault(m => m.Id == id);
+            ViewBag.Belts = db.Belts.Where(b => !b.Deleted).OrderBy(b => b.SortOrder).ToList();
             ViewBag.PreviousPage = previousPage;
             ViewBag.ShowBackButton = true;
             return View("MemberGoals", member);
