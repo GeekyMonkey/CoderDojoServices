@@ -40,7 +40,7 @@
         <div data-role="collapsible" data-content-theme="a" class="BeltHeader" data-color="@memberBelt.Belt.HexCode">
             <h3>@memberBelt.Belt.Color</h3>
             <div data-role="fieldcontain">
-                <p>@memberBelt.Belt.Description</p>
+                <p>@Html.Raw(memberBelt.Belt.Description.Replace("\r\n", "<br />"))</p>
                 <blockquote>@memberBelt.ApplicationNotes</blockquote>
                 <p>Awarded on @memberBelt.Awarded.Value.ToString("dd-MMM-yyyy")</p>
                 <blockquote>@memberBelt.AwardedNotes - @memberBelt.AwardedByAdult.FullName</blockquote>
@@ -65,7 +65,7 @@
             <div data-role="collapsible" data-content-theme="a" class="@divclass" data-color="@belt.HexCode">
                 <h3>@belt.Color</h3>
                 <div data-role="fieldcontain">
-                    <p>@belt.Description</p>
+                    <p>@Html.Raw(belt.Description.Replace("\r\n", "<br />"))</p>
 
                     @* Rejections *@
                     @foreach (var rejection in member.MemberBelts
