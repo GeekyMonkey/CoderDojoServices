@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -35,6 +36,35 @@ namespace CoderDojo.Views
             member.GoalLongTerm = memberChanges.GoalLongTerm;
             db.SaveChanges();
             return RedirectClient("/Member/Profile");
+        }
+
+        [HttpPost]
+        public ActionResult MemberGoalChange(Guid MemberId, Guid BadgeId, bool IsGoal)
+        {
+            Member member = GetCurrentMember();
+            var now = DateTime.Now;
+            var memberbadge = member.MemberBadges.FirstOrDefault((b) => b.BadgeId == BadgeId);
+            if (IsGoal == true) {
+                // Add Goal
+                if (memberbadge == null)
+                {
+                    memberbadge = new MemberBadge();
+                    memberbadge.Id = Guid.NewGuid();
+                    db.MemberBadges.Add(memberbadge);
+                }
+                memberbadge.MemberId = member.Id;
+                memberbadge.BadgeId = BadgeId;
+                memberbadge.GoalDate = now;
+            } else
+            {
+                // Remove Goal
+                if (memberbadge != null)
+                {
+                    memberbadge.GoalDate = null;
+                }
+            }
+            db.SaveChanges();
+            return Json("OK");
         }
 
         [HttpGet]
@@ -123,6 +153,7 @@ namespace CoderDojo.Views
             bool alreadyApplied = db.MemberBadges.Any(
                 mb => mb.MemberId == currentMemberId
                     && mb.BadgeId == id
+                    && mb.ApplicationDate != null
                     && mb.Awarded == null
                     && mb.RejectedDate == null);
             if (alreadyApplied)

@@ -11,7 +11,17 @@
     List<Guid> BeltsEarnedIds = MemberBelts.Select(mb => mb.BeltId).ToList();
     List<Guid> BeltsPendingIds = MemberBeltsPending.Select(mb => mb.BeltId).ToList();
     List<Belt> BeltsNotEarned = belts.Where(b => BeltsEarnedIds.Contains(b.Id) == false).ToList();
+    List<MemberBadge> MemberBadgeGoals = member.MemberBadges.Where(mb => mb.Awarded == null && mb.GoalDate != null)
+        .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
+        .ThenBy(mb => mb.Badge.Achievement)
+        .ToList();
+    List<MemberBadge> MemberBadgesPending = member.MemberBadges
+    .Where(mb => mb.Awarded == null && mb.RejectedDate == null && mb.ApplicationDate != null)
+    .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
+    .ThenBy(mb => mb.Badge.Achievement)
+    .ToList();
     Belt NextBelt = BeltsNotEarned.FirstOrDefault();
+    MemberBadge badgePending;
 }
 
 @section HeaderLeft {
@@ -96,6 +106,40 @@
                 }
             </div>
         </div>
+    }
+
+    <h4>Badge Goals</h4>
+    @if (MemberBadgeGoals.Count == 0)
+    {
+        <p>No Goals Selected</p>
+    }
+    else
+    {
+        foreach (var goal in MemberBadgeGoals)
+        {
+            var badge = goal.Badge;
+
+            <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
+                <h3 class="BadgeGoalHeading">
+                    <span>@(goal.Badge.BadgeCategory.CategoryName) - @(goal.Badge.Achievement)</span>
+                    <img src="~/Images/Icons/star.png" />
+                </h3>
+
+                <div data-role="fieldcontain">
+                    <div class="DescriptionAndGoal">
+                        <p>@Html.Raw(badge.Description.Replace("\r\n", "<br />"))</p>
+                    </div>
+
+                    @{
+                        badgePending = MemberBadgesPending.FirstOrDefault(mb => mb.BadgeId == badge.Id);
+                    }
+                    @if (badgePending != null)
+                    {
+                        <p><i>Application for the @(badge.BadgeCategory.CategoryName) - @(badge.Achievement) badge was submitted on @(badgePending.ApplicationDate.Value.ToString("dd-MMM-yyyy")). Select the Badges tab to evaluate.</i></p>
+                    }
+                </div>
+            </div>
+        }
     }
 
 </div>

@@ -11,10 +11,16 @@
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
     List<MemberBadge> MemberBadgesPending = member.MemberBadges
-        .Where(mb => mb.Awarded == null && mb.RejectedDate == null)
+        .Where(mb => mb.Awarded == null && mb.RejectedDate == null && mb.ApplicationDate != null)
         .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
+    List<MemberBadge> MemberBadgesGoal = member.MemberBadges
+        .Where(mb => mb.Awarded == null && mb.GoalDate != null)
+        .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
+        .ThenBy(mb => mb.Badge.Achievement)
+        .ToList();
+    List<Guid> BadgesGoalIds = MemberBadgesGoal.Select(mb => mb.BadgeId).ToList();
     List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
     List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
     List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false && BadgesPendingIds.Contains(b.Id) == false).ToList();
@@ -80,7 +86,8 @@
                         {
                             <blockquote>@(badgeApplication.ApplicationNotes) - @(badgeApplication.Member.MemberName)</blockquote>
                         }
-                        if (!IsMentorsChild) {
+                        if (!IsMentorsChild)
+                        {
                             <div data-role="fieldcontain">
                                 <label for="ApproveRejectMessage">Approval / Rejection Message</label>
                                 <textarea id="ApproveRejectMessage" class="ApproveRejectMessage"></textarea>
@@ -130,7 +137,16 @@
         {
             MemberBadge badgeApplication = null;
             <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
-                <h3>@(badge.BadgeCategory.CategoryName) - @(badge.Achievement)</h3>
+                <h3 class="BadgeGoalHeading">
+                    <span>@(badge.BadgeCategory.CategoryName) - @(badge.Achievement)</span>
+
+                    <!-- Goal Star -->
+                    @if (BadgesGoalIds.Contains(badge.Id))
+                    {
+                        <img src="~/Images/Icons/star.png" />
+                    }
+                </h3>
+
                 <div data-role="fieldcontain">
                     <p>@badge.Description</p>
 
@@ -149,6 +165,20 @@
         }
     </div>
 }
+
+
+<style>
+    .BadgeGoalHeading .ui-btn-text {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .DescriptionAndGoal {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
 
 <script type="text/javascript">
     $(function () {

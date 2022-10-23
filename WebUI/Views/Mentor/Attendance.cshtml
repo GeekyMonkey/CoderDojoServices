@@ -28,16 +28,14 @@
         <a href="MemberSignup?PreviousPage=Attendance" data-role="button" data-icon="plus">Signup</a>
     }
 
-    @section Footer
-{
+    @section Footer {
         <div data-role="controlgroup">
             <label>Total Attendance:&nbsp;</label><span id="TotalAttendanceNumber">@attendanceCount</span>
             <a href="AttendanceRandom" data-role="button" data-icon="plus">Choose Random</a>
         </div>
     }
 
-    @section Panels
-{
+    @section Panels {
         @Html.Partial("_MentorMenu")
     }
 

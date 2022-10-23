@@ -10,7 +10,7 @@
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
     List<MemberBadge> MemberBadgesPending = member.MemberBadges
-        .Where(mb => mb.Awarded == null && mb.RejectedDate == null)
+        .Where(mb => mb.Awarded == null && mb.RejectedDate == null && mb.ApplicationDate != null)
         .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
         .ThenBy(mb => mb.Badge.Achievement)
         .ToList();
@@ -89,45 +89,9 @@
 </div>
 
 
-
 <script type="text/javascript">
-    var minMessageLength = 5;
 
     $(function () {
-        $(".BadgeApplyButton").off("click").on("click", function (e) {
-            e.preventDefault();
-            var applicationContainer = $(this).closest(".BadgeHeader");
-            var message = applicationContainer.find(".BadgeApplicationMessage").val();
-            if (message.length >= minMessageLength) {
-                $.ajax($(this).attr("href"), {
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        message: message
-                    },
-                    success: function (data) {
-                        location.reload();
-                    }
-                });
-            } else {
-                applicationContainer.find(".BadgeApplicationMessage").focus();
-                applicationContainer.find(".BadgeApplicationMessage").prev("label").css("color", "red");
-            }
-        });
-
-        $(".BadgeApplicationMessage").off("keyup change").on("keyup change", function () {
-            var applicationContainer = $(this).closest(".BadgeHeader");
-            setTimeout(function () {
-                var message = applicationContainer.find(".BadgeApplicationMessage").val();
-                applicationContainer.find('a.ApproveBadge').button();
-                if (message.length >= minMessageLength) {
-                    applicationContainer.find('a.BadgeApplyButton').removeClass('ui-disabled');
-                } else {
-                    applicationContainer.find('a.BadgeApplyButton').addClass('ui-disabled');
-                }
-            }, 5);
-        }
-        );
 
     });
 </script>

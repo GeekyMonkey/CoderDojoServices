@@ -103,6 +103,7 @@
           <Property Name="RejectedNotes" Type="ntext" />
           <Property Name="RejectedDate" Type="datetime" />
           <Property Name="AwardedNotes" Type="ntext" />
+          <Property Name="GoalDate" Type="datetime" />
         </EntityType>
         <EntityType Name="MemberBelts">
           <Key>
@@ -619,6 +620,7 @@
           <Property Type="String" Name="RejectedNotes" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="AwardedNotes" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="RejectedByAdult" Relationship="CoderDojo.FK_MemberBadges_AdultRejected" FromRole="MemberBadge" ToRole="Adult" />
+          <Property Name="GoalDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MemberBelt">
           <Key>
@@ -1057,6 +1059,7 @@
           <EntitySetMapping Name="MemberBadges">
             <EntityTypeMapping TypeName="CoderDojo.MemberBadge">
               <MappingFragment StoreEntitySet="MemberBadges">
+                <ScalarProperty Name="GoalDate" ColumnName="GoalDate" />
                 <ScalarProperty Name="AwardedNotes" ColumnName="AwardedNotes" />
                 <ScalarProperty Name="RejectedNotes" ColumnName="RejectedNotes" />
                 <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />

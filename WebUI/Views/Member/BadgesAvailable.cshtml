@@ -11,10 +11,16 @@
             .ThenBy(mb => mb.Badge.Achievement)
             .ToList();
         List<MemberBadge> MemberBadgesPending = member.MemberBadges
-            .Where(mb => mb.Awarded == null && mb.RejectedDate == null)
+            .Where(mb => mb.Awarded == null && mb.RejectedDate == null && mb.ApplicationDate != null)
             .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
             .ThenBy(mb => mb.Badge.Achievement)
             .ToList();
+        List<MemberBadge> MemberBadgesGoal = member.MemberBadges
+            .Where(mb => mb.Awarded == null && mb.GoalDate != null)
+            .OrderBy(mb => mb.Badge.BadgeCategory.CategoryName)
+            .ThenBy(mb => mb.Badge.Achievement)
+            .ToList();
+        List<Guid> BadgesGoalIds = MemberBadgesGoal.Select(mb => mb.BadgeId).ToList();
         List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
         List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
         List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false && BadgesPendingIds.Contains(b.Id) == false).ToList();
@@ -52,76 +58,137 @@
                     if (badge.BadgeCategoryId == badgeCategory.Id)
                     {
 
-                    <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
-                        <h3>@(badge.Achievement)</h3>
-                        <div data-role="fieldcontain">
-                            <p>@Html.Raw(badge.Description.Replace("\r\n", "<br />"))</p>
+                        <div data-role="collapsible" data-content-theme="a" class="BadgeHeader">
+                            <h3 class="BadgeGoalHeading">
+                                <span>@(badge.Achievement)</span>
 
-                            @* Rejections *@
-                            @foreach (var rejection in member.MemberBadges
-                                .Where(mb => (mb.BadgeId == badge.Id) && (mb.RejectedDate != null))
-                                .OrderBy(mb => mb.RejectedDate))
-                            {
-                                <div class="BadgeRejection">
-                                    <p>Rejected on @(rejection.RejectedDate.Value.ToString("dd-MMM-yyyy"))</p>
-                                    <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
-                                </div>
-                            }
+                                <!-- Goal Star -->
+                                @if (BadgesGoalIds.Contains(badge.Id)) {
+                                    <img src="~/Images/Icons/star.png" />
+                                }
+                            </h3>
 
-                            @* Application *@
                             <div data-role="fieldcontain">
-                                <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
-                                <textarea id="BadgeApplicationMessage" class="BadgeApplicationMessage"></textarea>
-                            </div>
-                            <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" data-role="button" data-inline="false" data-icon="star" class="BadgeApplyButton ui-disabled">Apply</a>
+                                <div class="DescriptionAndGoal">
+                                    <p>@Html.Raw(badge.Description.Replace("\r\n", "<br />"))</p>
+                                    <div>
+                                        @if (BadgesGoalIds.Contains(badge.Id)) {
+                                            <a data-role="button" data-badgeid="@(badge.Id)" data-icon="star" data-iconpos="right" data-inline="true" class="GoalRemoveButton">Remove Goal</a>
+                                        } else {
+                                            <a data-role="button" data-badgeid="@(badge.Id)" data-icon="star" data-iconpos="right" data-inline="true" class="GoalAddButton">Choose Goal</a>
+                                        }
+                                    </div>
+                                </div>
 
+                                @* Rejections *@
+                                @foreach (var rejection in member.MemberBadges
+                                    .Where(mb => (mb.BadgeId == badge.Id) && (mb.RejectedDate != null))
+                                    .OrderBy(mb => mb.RejectedDate))
+                                {
+                                    <div class="BadgeRejection">
+                                        <p>Rejected on @(rejection.RejectedDate.Value.ToString("dd-MMM-yyyy"))</p>
+                                        <blockquote>@rejection.RejectedNotes - @rejection.RejectedByAdult.FullName</blockquote>
+                                    </div>
+                                }
+
+                                @* Application *@
+                                <div data-role="fieldcontain">
+                                    <label for="BadgeApplicationMessage">Tell us why you deserve this:</label>
+                                    <textarea id="BadgeApplicationMessage" class="BadgeApplicationMessage"></textarea>
+                                </div>
+                                <a href="/Member/BadgeApplication/@badge.Id.ToString("N")" data-role="button" data-inline="false" data-icon="star" class="BadgeApplyButton ui-disabled">Apply</a>
+
+                            </div>
                         </div>
-                    </div>
                     }
                 }
             </div>
 
-            }
+        }
+    }
+
+    <style>
+        .BadgeGoalHeading .ui-btn-text {
+            display: flex;
+            justify-content: space-between;
         }
 
-        <script type="text/javascript">
-            var minMessageLength = 5;
+        .DescriptionAndGoal {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
 
-            $(function () {
-                $(".BadgeApplyButton").off("click").on("click", function (e) {
-                    e.preventDefault();
-                    var applicationContainer = $(this).closest(".BadgeHeader");
+
+    <script type="text/javascript">
+        var minMessageLength = 5;
+
+        $(function () {
+            $(".BadgeApplyButton").off("click").on("click", function (e) {
+                e.preventDefault();
+                var applicationContainer = $(this).closest(".BadgeHeader");
+                var message = applicationContainer.find(".BadgeApplicationMessage").val();
+                if (message.length >= minMessageLength) {
+                    $.ajax($(this).attr("href"), {
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            message: message
+                        },
+                        success: function (data) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    applicationContainer.find(".BadgeApplicationMessage").focus();
+                    applicationContainer.find(".BadgeApplicationMessage").prev("label").css("color", "red");
+                }
+            });
+
+            $(".BadgeApplicationMessage").off("keyup change").on("keyup change", function () {
+                var applicationContainer = $(this).closest(".BadgeHeader");
+                setTimeout(function () {
                     var message = applicationContainer.find(".BadgeApplicationMessage").val();
+                    applicationContainer.find('a.ApproveBadge').button();
                     if (message.length >= minMessageLength) {
-                        $.ajax($(this).attr("href"), {
-                            type: "POST",
-                            dataType: "json",
-                            data: {
-                                message: message
-                            },
-                            success: function (data) {
-                                location.reload();
-                            }
-                        });
+                        applicationContainer.find('a.BadgeApplyButton').removeClass('ui-disabled');
                     } else {
-                        applicationContainer.find(".BadgeApplicationMessage").focus();
-                        applicationContainer.find(".BadgeApplicationMessage").prev("label").css("color", "red");
+                        applicationContainer.find('a.BadgeApplyButton').addClass('ui-disabled');
+                    }
+                }, 5);
+            });
+
+            $(".GoalAddButton").off("click").on("click", function () {
+                var badgeId = $(this).data("badgeid");
+                $.ajax("MemberGoalChange", {
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        MemberId: "@(member.Id)",
+                        BadgeId: badgeId,
+                        IsGoal: true
+                    },
+                    success: function (data) {
+                        location.reload();
                     }
                 });
-
-                $(".BadgeApplicationMessage").off("keyup change").on("keyup change", function () {
-                    var applicationContainer = $(this).closest(".BadgeHeader");
-                    setTimeout(function () {
-                        var message = applicationContainer.find(".BadgeApplicationMessage").val();
-                        applicationContainer.find('a.ApproveBadge').button();
-                        if (message.length >= minMessageLength) {
-                            applicationContainer.find('a.BadgeApplyButton').removeClass('ui-disabled');
-                        } else {
-                            applicationContainer.find('a.BadgeApplyButton').addClass('ui-disabled');
-                        }
-                    }, 5);
-                }
-                );
-
             });
-        </script>
+
+            $(".GoalRemoveButton").off("click").on("click", function () {
+                var badgeId = $(this).data("badgeid");
+                $.ajax("MemberGoalChange", {
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        MemberId: "@(member.Id)",
+                        BadgeId: badgeId,
+                        IsGoal: false
+                    },
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+
+        });
+    </script>

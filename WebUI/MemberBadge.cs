@@ -25,6 +25,7 @@ namespace CoderDojo
         public Nullable<System.DateTime> RejectedDate { get; set; }
         public string RejectedNotes { get; set; }
         public string AwardedNotes { get; set; }
+        public Nullable<System.DateTime> GoalDate { get; set; }
     
         public virtual Adult AwardedByAdult { get; set; }
         public virtual Badge Badge { get; set; }
