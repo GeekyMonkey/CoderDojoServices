@@ -42,7 +42,7 @@ namespace CoderDojo.Views
         public ActionResult MemberGoalChange(Guid MemberId, Guid BadgeId, bool IsGoal)
         {
             Member member = GetCurrentMember();
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var memberbadge = member.MemberBadges.FirstOrDefault((b) => b.BadgeId == BadgeId);
             if (IsGoal == true) {
                 // Add Goal
@@ -162,14 +162,26 @@ namespace CoderDojo.Views
             }
 
             Guid badgeId = id;
-            MemberBadge application = new MemberBadge
+            MemberBadge application = db.MemberBadges.FirstOrDefault(mb => mb.MemberId == currentMemberId && mb.BadgeId == id && mb.ApplicationDate == null);
+            if (application == null)
             {
-                MemberId = currentMemberId,
-                BadgeId = badgeId,
-                ApplicationDate = DateTime.UtcNow,
-                ApplicationNotes = message
-            };
-            db.MemberBadges.Add(application);
+                // New application - not from goal
+                application = new MemberBadge
+                {
+                    MemberId = currentMemberId,
+                    BadgeId = badgeId,
+                    ApplicationDate = DateTime.UtcNow,
+                    ApplicationNotes = message
+                };
+                db.MemberBadges.Add(application);
+            }
+            else
+            {
+                // Upgrade a goal badge
+                application.ApplicationDate = DateTime.UtcNow;
+                    application.ApplicationNotes = message;
+            }
+
             db.SaveChanges();
             return Json("OK");
         }
