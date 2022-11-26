@@ -9,10 +9,10 @@
 }
 
 @using (Html.BeginForm("Login", "Home")) {
-    <label for="UsernameInput">User:</label>
+    <label for="UsernameInput">User</label>
     @Html.TextBoxFor(x => x.Username, new { @class = "AutoFocus" })
     
-    <label for="PassowrdInput">Password:</label>
+    <label for="PassowrdInput">Password</label>
     @Html.PasswordFor(x => x.Password)
 
     <input type="hidden" name="returnurl" value='@Request.QueryString["returnurl"]' />
