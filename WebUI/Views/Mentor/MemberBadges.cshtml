@@ -86,7 +86,7 @@
                         {
                             <blockquote>@(badgeApplication.ApplicationNotes) - @(badgeApplication.Member.MemberName)</blockquote>
                         }
-                        if (!IsMentorsChild)
+                        if (!IsMentorsChild || mentor.FirstName == "Russ") // Temporarily relax this rule
                         {
                             <div data-role="fieldcontain">
                                 <label for="ApproveRejectMessage">Approval / Rejection Message</label>
