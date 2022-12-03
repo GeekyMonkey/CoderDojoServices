@@ -84,7 +84,7 @@ namespace CoderDojo.Views
             ViewBag.ShowBackButton = true;
             ViewBag.Badges = db.Badges
                 .Include("BadgeCategory")
-                .Where(b => !b.Deleted)
+                //.Where(b => !b.Deleted)
                 .OrderBy(b => b.BadgeCategory.CategoryName)
                 .ThenBy(b => b.Achievement)
                 .ToList();

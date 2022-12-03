@@ -23,7 +23,7 @@
         List<Guid> BadgesGoalIds = MemberBadgesGoal.Select(mb => mb.BadgeId).ToList();
         List<Guid> BadgesEarnedIds = MemberBadges.Select(mb => mb.BadgeId).ToList();
         List<Guid> BadgesPendingIds = MemberBadgesPending.Select(mb => mb.BadgeId).ToList();
-        List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false && BadgesPendingIds.Contains(b.Id) == false).ToList();
+        List<Badge> BadgesNotEarned = badges.Where(b => BadgesEarnedIds.Contains(b.Id) == false && b.Deleted == false && BadgesPendingIds.Contains(b.Id) == false).ToList();
         List<Badge> BadgesApplied = badges.Where(b => BadgesPendingIds.Contains(b.Id) == true).ToList();
         MemberBadge badgePending;
     }

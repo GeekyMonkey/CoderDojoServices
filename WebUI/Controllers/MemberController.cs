@@ -1,6 +1,7 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -80,7 +81,7 @@ namespace CoderDojo.Views
         {
             Member member = GetCurrentMember();
             var badges = from badge in db.Badges
-                         where badge.Deleted == false
+                         // where badge.Deleted == false
                          orderby badge.BadgeCategory.CategoryName, badge.Achievement
                          select badge;
             return View("Badges", badges.ToList());
@@ -91,7 +92,7 @@ namespace CoderDojo.Views
         {
             Member member = GetCurrentMember();
             var badges = from badge in db.Badges
-                         where badge.Deleted == false
+                         // where badge.Deleted == false
                          orderby badge.BadgeCategory.CategoryName, badge.Achievement
                          select badge;
             ViewBag.BadgeCategories = GetBadgeCategories();
@@ -179,7 +180,8 @@ namespace CoderDojo.Views
             {
                 // Upgrade a goal badge
                 application.ApplicationDate = DateTime.UtcNow;
-                    application.ApplicationNotes = message;
+                application.ApplicationNotes = message;
+                db.Entry(application).State = EntityState.Modified;
             }
 
             db.SaveChanges();

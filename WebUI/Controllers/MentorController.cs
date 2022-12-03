@@ -29,6 +29,7 @@ namespace CoderDojo.Views
 
             ViewBag.BadgeApplications = (from mb in db.MemberBadges.Include("Member").Include("Badge.BadgeCategory")
                                          where mb.Awarded == null
+                                         && mb.ApplicationDate != null
                                          && mb.RejectedDate == null
                                          orderby mb.Member.FirstName, mb.Member.LastName, mb.Badge.BadgeCategory.CategoryName, mb.Badge.Achievement
                                          select mb).ToList();
@@ -804,6 +805,7 @@ namespace CoderDojo.Views
             ViewBag.ShowBackButton = true;
             return View("MemberAttendance", member);
         }
+
         [HttpGet]
         public ActionResult MemberBadges(Guid id)
         {
@@ -811,13 +813,14 @@ namespace CoderDojo.Views
             ViewBag.ShowBackButton = true;
             ViewBag.Badges = db.Badges
                 .Include("BadgeCategory")
-                .Where(b => !b.Deleted)
+                // .Where(b => !b.Deleted)
                 .OrderBy(b => b.BadgeCategory.CategoryName)
                 .ThenBy(b => b.Achievement)
                 .ToList();
             ViewBag.Mentor = GetCurrentAdult();
             return View("MemberBadges", member);
         }
+
         [HttpGet]
         public ActionResult MemberBelts(Guid id)
         {
