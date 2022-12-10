@@ -227,6 +227,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ChatbotController.cs" />
     <Compile Include="SessionHub.cs" />
     <Compile Include="AttendanceHub.cs" />
     <Compile Include="Badge.cs">
