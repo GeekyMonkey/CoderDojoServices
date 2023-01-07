@@ -25,7 +25,6 @@ namespace CoderDojo.Controllers
         {
             var badges = db.Badges
                 .Include("BadgeCategory")
-                .Where(b => !b.Deleted)
                 .ToList()
                 .Select(b => new
                 {
