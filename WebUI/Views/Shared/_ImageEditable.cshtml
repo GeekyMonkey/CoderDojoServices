@@ -10,7 +10,7 @@
     }
 
     #holder {
-        border: 10px dashed #ccc;
+        border: 10px dashed #CCC;
         width: 300px;
         max-width: 90%;
         min-height: 100px;
@@ -73,7 +73,12 @@
     .fail {
         background: #c00;
         padding: 2px;
-        color: #fff;
+        color: #FFF;
+    }
+
+    #upload {
+        scale: 60%;
+        margin-top: -25px;
     }
 
     .hidden {
@@ -84,11 +89,11 @@
 <div id="EntityImage">
     <div id="holder">
         <div id="ImageInstructions">
-            <span>Drop an image here.</span>
+            <span id="DropMessage">Drop an image here.</span>
         </div>
         <img src="@(ImageUrl)@(fileName).jpg" />
     </div>
-    @*<p id="upload" class="hidden"><label>Upload Image:<br><input type="file"></label></p>*@
+    <p id="upload"><label>Upload Image:<br><input type="file"></label></p>
     <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
 </div>
 
@@ -127,6 +132,7 @@
     }
 
     function readfiles(files) {
+
         var formData = tests.formdata ? new FormData() : null;
         var i = 0;
         //for (var i = 0; i < files.length; i++) {
@@ -169,10 +175,12 @@
             readfiles(e.dataTransfer.files);
         }
     } else {
-        fileupload.className = 'hidden';
-        fileupload.querySelector('input').onchange = function () {
-            readfiles(this.files);
-        };
+        // fileupload.className = '';
+        $("#DropMessage").hide();
     }
+
+    fileupload.querySelector('input').onchange = function () {
+        readfiles(this.files);
+    };
 
 </script>
